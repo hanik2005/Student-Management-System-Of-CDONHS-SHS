@@ -22,16 +22,23 @@ import com.google.zxing.common.HybridBinarizer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 import javax.naming.spi.DirStateFactory.Result;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -44,6 +51,7 @@ public class Home extends javax.swing.JFrame {
     Student student = new Student();
     int xx, xy;
     private DefaultTableModel model;
+    private String imagePath;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Home.class.getName());
     public Webcam webcam;
@@ -199,15 +207,15 @@ public class Home extends javax.swing.JFrame {
         webPanel = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
-        jLabelImage1 = new javax.swing.JLabel();
-        jButton10 = new javax.swing.JButton();
+        imagePanel = new javax.swing.JLabel();
+        browseImg = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         StartWebcam = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        addNewBt = new javax.swing.JButton();
         Clear = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
@@ -452,6 +460,7 @@ public class Home extends javax.swing.JFrame {
         jLabel61.setText("Date Of Birth");
 
         stuBirth.setBackground(java.awt.Color.white);
+        stuBirth.setDateFormatString("yyyy-MM-dd");
 
         jLabel62.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel62.setForeground(new java.awt.Color(0, 0, 0));
@@ -473,6 +482,11 @@ public class Home extends javax.swing.JFrame {
 
         stuPhone.setBackground(java.awt.Color.white);
         stuPhone.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        stuPhone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                stuPhoneKeyTyped(evt);
+            }
+        });
 
         jLabel65.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel65.setForeground(new java.awt.Color(0, 0, 0));
@@ -658,17 +672,22 @@ public class Home extends javax.swing.JFrame {
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabelImage1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(imagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jButton10.setBackground(new java.awt.Color(102, 255, 255));
-        jButton10.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jButton10.setForeground(new java.awt.Color(0, 0, 0));
-        jButton10.setText("Browse");
+        browseImg.setBackground(new java.awt.Color(102, 255, 255));
+        browseImg.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        browseImg.setForeground(new java.awt.Color(0, 0, 0));
+        browseImg.setText("Browse");
+        browseImg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseImgActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
@@ -685,7 +704,7 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(jLabel12))
                     .addGroup(jPanel14Layout.createSequentialGroup()
                         .addGap(36, 36, 36)
-                        .addComponent(jButton10)))
+                        .addComponent(browseImg)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -698,7 +717,7 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(jPanel14Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addGap(56, 56, 56)
-                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(browseImg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 105, Short.MAX_VALUE))
                     .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -774,13 +793,13 @@ public class Home extends javax.swing.JFrame {
         jButton4.setForeground(new java.awt.Color(0, 0, 0));
         jButton4.setText("Update");
 
-        jButton9.setBackground(new java.awt.Color(102, 255, 255));
-        jButton9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(0, 0, 0));
-        jButton9.setText("Add New");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        addNewBt.setBackground(new java.awt.Color(102, 255, 255));
+        addNewBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        addNewBt.setForeground(new java.awt.Color(0, 0, 0));
+        addNewBt.setText("Add New");
+        addNewBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                addNewBtActionPerformed(evt);
             }
         });
 
@@ -800,7 +819,7 @@ public class Home extends javax.swing.JFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addNewBt, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -817,7 +836,7 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(Clear, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(addNewBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -2397,8 +2416,70 @@ public class Home extends javax.swing.JFrame {
         stuAddress2.setText(null);
         stuBirthCer.setText(null);
         stuForm137.setText(null);
-        jLabelImage1.setIcon(null);
+        imagePanel.setIcon(null);
         StudentTable.clearSelection();
+        imagePath = null;
+    
+    }
+    public boolean isEmptyStudent(){
+        if(stuName.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Student name is missing" );
+            return false;
+        
+        
+        }
+         if(stuBirth.getDate() == null){
+            JOptionPane.showMessageDialog(this, "Student date of birth is missing" );
+            return false;
+        
+        
+        }
+         if(stuBirth.getDate().compareTo(new Date()) > 0){
+            JOptionPane.showMessageDialog(this, "No Student from the future are allowed");
+            return false;
+        
+        
+        }
+         if(stuEmail.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Student email is missing" );
+            return false;
+        }
+         if(!stuEmail.getText().matches("^.+@.+\\..+$")){
+            JOptionPane.showMessageDialog(this, "Invalid Email Address" );
+            return false;
+        }
+         if(stuPhone.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Student phone number is missing" );
+            return false;
+        }
+         if(stuPhone.getText().length() >= 15){
+            JOptionPane.showMessageDialog(this, "Phone number is to long" );
+            return false;
+        }
+         if(stuMotherName.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Student Mother Name is missing" );
+            return false;
+        }
+         if(stuFatherName.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Student Father Name is missing" );
+            return false;
+        }
+         if(stuAddress1.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Address Line 1 is missing" );
+            return false;
+        }
+         if(stuAddress2.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Address Line 2 is missing" );
+            return false;
+        }
+         if(stuBirthCer.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Birth Certificate path is missing" );
+            return false;
+        }
+         if(stuForm137.getText().isEmpty()){
+             JOptionPane.showMessageDialog(this, "Form 137 path is missing");
+         }
+         return true;
     
     }
     
@@ -2431,9 +2512,28 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton30ActionPerformed
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
+    private void addNewBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewBtActionPerformed
+       if( isEmptyStudent()){
+           int id = student.getMax();
+           String sname = stuName.getText();
+           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+           String date = dateFormat.format(stuBirth.getDate());
+           String gender = stuGender.getSelectedItem().toString();
+           String email = stuEmail.getText();
+           String phone = stuPhone.getText();
+           String motherName = stuMotherName.getText();
+           String fatherName = stuFatherName.getText();
+           String addressLine1 = stuAddress1.getText();
+           String addressLine2 = stuAddress2.getText();
+           String birthCer = stuBirthCer.getText();
+           String form137 = stuForm137.getText();
+           student.insert(id, sname, date, gender, email, phone, 
+                   motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
+           clearStudent();
+       
+       }
+       
+    }//GEN-LAST:event_addNewBtActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //qrScanTimer.stop();
@@ -2579,9 +2679,50 @@ public class Home extends javax.swing.JFrame {
        clearStudent();
     }//GEN-LAST:event_ClearActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void stuPhoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stuPhoneKeyTyped
+        if(!Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_stuPhoneKeyTyped
+
+    private void browseImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseImgActionPerformed
+       JFileChooser file = new JFileChooser();
+       file.setCurrentDirectory(new File(System.getProperty("user.home")));
+       FileNameExtensionFilter filter = new FileNameExtensionFilter("* image", "jpg", "gif", "png");
+       file.addChoosableFileFilter(filter);
+       int output = file.showSaveDialog(file);
+       if(output == JFileChooser.APPROVE_OPTION){
+           File selectFile = file.getSelectedFile();
+           String path = selectFile.getAbsolutePath();
+           imagePanel.setIcon(imageAdjust(path, null));
+           imagePath = path;
+           
+       
+       }else{
+           JOptionPane.showMessageDialog(this, "No image selected");
+       
+       }
+    }//GEN-LAST:event_browseImgActionPerformed
+       
+    
+    private ImageIcon imageAdjust(String path, byte[] pic){
+        ImageIcon myImage = null;
+        if(path != null){
+            myImage = new ImageIcon(path);
+            
+        
+        }else{
+            myImage = new ImageIcon(pic);
+            
+        
+        }
+        Image img = myImage.getImage();
+        Image newImage = img.getScaledInstance(imagePanel.getWidth(), imagePanel.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(newImage);
+        return icon;
+        
+    
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -2610,8 +2751,10 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton Clear;
     private javax.swing.JToggleButton StartWebcam;
     private javax.swing.JTable StudentTable;
+    private javax.swing.JButton addNewBt;
+    private javax.swing.JButton browseImg;
+    private javax.swing.JLabel imagePanel;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
@@ -2640,7 +2783,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox19;
     private javax.swing.JComboBox<String> jComboBox2;
@@ -2687,7 +2829,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabelImage1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
