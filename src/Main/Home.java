@@ -4,7 +4,6 @@
  */
 package Main;
 
-
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
@@ -12,23 +11,36 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.DecodeHintType;
+import com.google.zxing.EncodeHintType;
 import com.google.zxing.FormatException;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
+import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.NotFoundException;
+import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.GlobalHistogramBinarizer;
 import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeWriter;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import javax.naming.spi.DirStateFactory.Result;
 import javax.swing.ImageIcon;
@@ -46,30 +58,36 @@ import javax.swing.table.DefaultTableModel;
  * @author ADMIN
  */
 public class Home extends javax.swing.JFrame {
-    
-    
+
     Student student = new Student();
     int xx, xy;
     private DefaultTableModel model;
     private String imagePath;
-    
+    private int rowIndex;
+    int studentCount = 55;  
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Home.class.getName());
     public Webcam webcam;
     public WebcamPanel webcamPanel;
     public Timer qrScanTimer;
     public boolean isScanning = false;
+    private String birthCertificatePath;
+    private String form137Path;
+
     public Home() {
         this.setUndecorated(true);
         initComponents();
         init();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
+
         SwingUtilities.invokeLater(() -> {
-        initWebcam();
-    });
+            initWebcam();
+        });
+
     }
+
     private void initWebcam() {
-      webcam = Webcam.getDefault();
+        webcam = Webcam.getDefault();
         if (webcam == null) {
             JOptionPane.showMessageDialog(this, "No webcam detected");
             return;
@@ -84,81 +102,158 @@ public class Home extends javax.swing.JFrame {
         webPanel.setLayout(new BorderLayout());
         webPanel.add(webcamPanel, BorderLayout.CENTER);
         webcamPanel.start();
-        
+
         // Initialize QR scan timer (scans every 500ms)
         qrScanTimer = new Timer(500, e -> scanForQRCode());
     }
+
     private void scanForQRCode() {
         if (!isScanning && webcam != null && webcam.isOpen()) {
-        isScanning = true;
-        try {
-            BufferedImage image = webcam.getImage();
-            if (image != null) {
-                com.google.zxing.Result result = decodeQRCode(image);
-                if (result != null && result.getText() != null && !result.getText().isEmpty()) {
-                    qrScanTimer.stop();
-                    handleQRCodeResult(result.getText());
+            isScanning = true;
+            try {
+                BufferedImage image = webcam.getImage();
+                if (image != null) {
+                    com.google.zxing.Result result = decodeQRCode(image);
+                    if (result != null && result.getText() != null && !result.getText().isEmpty()) {
+                        qrScanTimer.stop();
+                        handleQRCodeResult(result.getText());
+                    }
                 }
+            } finally {
+                isScanning = false;
             }
-        } finally {
-            isScanning = false;
         }
     }
-    }
+
     private com.google.zxing.Result decodeQRCode(BufferedImage image) {
-         if (image == null) {
-        return null;
+        if (image == null) {
+            return null;
+        }
+
+        try {
+            LuminanceSource source = new BufferedImageLuminanceSource(image);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+            // Correct way to set hints
+            Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
+            hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
+            hints.put(DecodeHintType.POSSIBLE_FORMATS, Arrays.asList(BarcodeFormat.QR_CODE));
+
+            return new MultiFormatReader().decode(bitmap, hints);
+        } catch (NotFoundException e) {
+            return null; // No QR code found
+        } catch (Exception e) {
+            logger.log(java.util.logging.Level.WARNING, "QR decoding error", e);
+            return null;
+        }
     }
 
-    try {
-        LuminanceSource source = new BufferedImageLuminanceSource(image);
-        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-        
-        // Correct way to set hints
-        Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
-        hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
-        hints.put(DecodeHintType.POSSIBLE_FORMATS, Arrays.asList(BarcodeFormat.QR_CODE));
-        
-        return new MultiFormatReader().decode(bitmap, hints);
-    } catch (NotFoundException e) {
-        return null; // No QR code found
-    } catch (Exception e) {
-        logger.log(java.util.logging.Level.WARNING, "QR decoding error", e);
-        return null;
-    }
-    }
-    
     private void handleQRCodeResult(String qrText) {
-        // Here you can process the QR code text
-        // For example, populate student ID field if QR contains student ID
-        stuID.setText(qrText); // Assuming jTextField1 is for student ID
-        JOptionPane.showMessageDialog(this, "QR Code Scanned: " + qrText);
-        
+        // Split QR text by line
+        String[] lines = qrText.split("\n");
+        Map<String, String> dataMap = new HashMap<>();
+
+        for (String line : lines) {
+            if (line.contains(":")) {
+                String[] parts = line.split(":", 2);
+                if (parts.length == 2) {
+                    dataMap.put(parts[0].trim(), parts[1].trim());
+                }
+            }
+        }
+
+        // ✅ Fill textfields if data exists
+        stuID.setText(dataMap.getOrDefault("ID", ""));
+        stuName.setText(dataMap.getOrDefault("Name", ""));
+        try {
+            String birthdate = dataMap.get("Birthdate");
+            if (birthdate != null && !birthdate.isEmpty()) {
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                stuBirth.setDate(df.parse(birthdate));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Invalid date format in QR");
+        }
+        stuGender.setSelectedItem(dataMap.getOrDefault("Gender", ""));
+        stuEmail.setText(dataMap.getOrDefault("Email", ""));
+        stuPhone.setText(dataMap.getOrDefault("Phone", ""));
+        stuMotherName.setText(dataMap.getOrDefault("Mother", ""));
+        stuFatherName.setText(dataMap.getOrDefault("Father", ""));
+        stuAddress1.setText(dataMap.getOrDefault("Address 1", ""));
+        stuAddress2.setText(dataMap.getOrDefault("Address 2", ""));
+        stuBirthCer.setText(dataMap.getOrDefault("Birth Certificate", ""));
+        stuForm137.setText(dataMap.getOrDefault("Form 137", ""));
+
+        // PROBLEM IS HERE PLEASE CHECK PLEASE
+        String imgPath = dataMap.get("Image");
+        if (imgPath != null && !imgPath.isEmpty()) {
+            File imgFile = new File(imgPath);
+            if (imgFile.exists()) {
+                // Display image on the panel
+                imagePanel.setIcon(imageAdjust(imgPath, null));
+
+                // Store current image path
+                imagePath = imgPath;
+
+                // ✅ Also show the path in a textfield (or label)
+                imagePanel.setText(imgPath);
+            } else {
+                JOptionPane.showMessageDialog(this, "Image file not found at: " + imgPath);
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, "QR Code data loaded into form!");
+
         // Restart scanning after a delay
         Timer restartTimer = new Timer(2000, e -> {
             qrScanTimer.start();
-            ((Timer)e.getSource()).stop();
+            ((Timer) e.getSource()).stop();
         });
         restartTimer.setRepeats(false);
         restartTimer.start();
     }
-    
+
     private void startQRScanning() {
         if (webcam != null && !qrScanTimer.isRunning()) {
             qrScanTimer.start();
             JOptionPane.showMessageDialog(this, "QR Code scanning started");
         }
     }
-    
+
     private void stopQRScanning() {
         if (qrScanTimer != null && qrScanTimer.isRunning()) {
             qrScanTimer.stop();
         }
     }
 
+    private void generateQRCode(int studentId, String studentName, String qrContent) {
+        try {
+            int width = 300;   // bigger QR size since more data
+            int height = 300;
+            String fileType = "png";
 
+            // Folder where QR codes will be saved
+            File qrFolder = new File("qrcodes");
+            if (!qrFolder.exists()) {
+                qrFolder.mkdir();
+            }
 
+            // File path with student ID and name
+            File qrFile = new File(qrFolder, studentId + "_" + studentName.replaceAll("\\s+", "_") + ".png");
 
+            // Generate QR code
+            Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
+            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+            hints.put(EncodeHintType.MARGIN, 1); // reduce margin for more space
+
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(qrContent, BarcodeFormat.QR_CODE, width, height, hints);
+            MatrixToImageWriter.writeToPath(bitMatrix, fileType, qrFile.toPath());
+
+            JOptionPane.showMessageDialog(this, "QR Code generated and saved:\n" + qrFile.getAbsolutePath());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error generating QR Code: " + e.getMessage());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -198,8 +293,8 @@ public class Home extends javax.swing.JFrame {
         stuFatherName = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jButton21 = new javax.swing.JButton();
-        jButton22 = new javax.swing.JButton();
+        browseBirthCertificate = new javax.swing.JButton();
+        browseForm137 = new javax.swing.JButton();
         stuBirthCer = new javax.swing.JTextField();
         stuForm137 = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
@@ -214,7 +309,7 @@ public class Home extends javax.swing.JFrame {
         StartWebcam = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        updateBt = new javax.swing.JButton();
         addNewBt = new javax.swing.JButton();
         Clear = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
@@ -239,12 +334,12 @@ public class Home extends javax.swing.JFrame {
         jButton30 = new javax.swing.JButton();
         jTextField4 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox6 = new javax.swing.JComboBox<>();
+        stuGradeLevel = new javax.swing.JComboBox<>();
+        stuStrand = new javax.swing.JComboBox<>();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jComboBox19 = new javax.swing.JComboBox<>();
+        stuSection = new javax.swing.JComboBox<>();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
@@ -468,6 +563,11 @@ public class Home extends javax.swing.JFrame {
 
         stuGender.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
         stuGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        stuGender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuGenderActionPerformed(evt);
+            }
+        });
 
         jLabel63.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel63.setForeground(new java.awt.Color(0, 0, 0));
@@ -508,15 +608,25 @@ public class Home extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("Form 137");
 
-        jButton21.setBackground(new java.awt.Color(102, 255, 255));
-        jButton21.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        jButton21.setForeground(new java.awt.Color(0, 0, 0));
-        jButton21.setText("Browse");
+        browseBirthCertificate.setBackground(new java.awt.Color(102, 255, 255));
+        browseBirthCertificate.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        browseBirthCertificate.setForeground(new java.awt.Color(0, 0, 0));
+        browseBirthCertificate.setText("Browse");
+        browseBirthCertificate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseBirthCertificateActionPerformed(evt);
+            }
+        });
 
-        jButton22.setBackground(new java.awt.Color(102, 255, 255));
-        jButton22.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        jButton22.setForeground(new java.awt.Color(0, 0, 0));
-        jButton22.setText("Browse");
+        browseForm137.setBackground(new java.awt.Color(102, 255, 255));
+        browseForm137.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        browseForm137.setForeground(new java.awt.Color(0, 0, 0));
+        browseForm137.setText("Browse");
+        browseForm137.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseForm137ActionPerformed(evt);
+            }
+        });
 
         stuBirthCer.setBackground(java.awt.Color.white);
 
@@ -576,12 +686,12 @@ public class Home extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jButton21)
+                                .addComponent(browseBirthCertificate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(stuBirthCer))
                             .addComponent(stuAddress2, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jButton22)
+                                .addComponent(browseForm137)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(stuForm137)))))
                 .addContainerGap())
@@ -632,12 +742,12 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jButton21, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(browseBirthCertificate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(stuBirthCer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(browseForm137, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(stuForm137, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
@@ -788,10 +898,15 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(102, 255, 255));
-        jButton4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(0, 0, 0));
-        jButton4.setText("Update");
+        updateBt.setBackground(new java.awt.Color(102, 255, 255));
+        updateBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        updateBt.setForeground(new java.awt.Color(0, 0, 0));
+        updateBt.setText("Update");
+        updateBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtActionPerformed(evt);
+            }
+        });
 
         addNewBt.setBackground(new java.awt.Color(102, 255, 255));
         addNewBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -821,7 +936,7 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(addNewBt, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(updateBt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Clear, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
@@ -835,7 +950,7 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Clear, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(updateBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(addNewBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -939,15 +1054,20 @@ public class Home extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Student_ID", "Student_Name", "Date Of Birth", "Gender", "Email", "Phone Number", "Father Name", "Mother Name", "Address Line 1", "Address Line 2", "Image Path"
+                "Student_ID", "Student_Name", "Date Of Birth", "Gender", "Email", "Phone Number", "Father's Name", "Mother's Name", "Address Line 1", "Address Line 2", "Birth Cerificate", "Form137", "Image Path"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        StudentTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                StudentTableMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(StudentTable);
@@ -1095,9 +1215,19 @@ public class Home extends javax.swing.JFrame {
         jLabel19.setForeground(new java.awt.Color(0, 0, 0));
         jLabel19.setText("Student's ID");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        stuGradeLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11", "12" }));
+        stuGradeLevel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuGradeLevelActionPerformed(evt);
+            }
+        });
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        stuStrand.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STEM", "ABM", "HUMSS", "GAS", "TVL-ICT", "TVL-EIM", "TVL-HE" }));
+        stuStrand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuStrandActionPerformed(evt);
+            }
+        });
 
         jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(0, 0, 0));
@@ -1111,7 +1241,11 @@ public class Home extends javax.swing.JFrame {
         jLabel25.setForeground(new java.awt.Color(0, 0, 0));
         jLabel25.setText("Section");
 
-        jComboBox19.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        stuSection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuSectionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -1132,9 +1266,9 @@ public class Home extends javax.swing.JFrame {
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField4)
                             .addComponent(jTextField9)
-                            .addComponent(jComboBox19, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox6, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(stuSection, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(stuStrand, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(stuGradeLevel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6)))
                 .addContainerGap())
         );
@@ -1153,16 +1287,16 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(jLabel19))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stuGradeLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stuStrand, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel21))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox19, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stuSection, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -2390,21 +2524,23 @@ public class Home extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void init(){
-    
+    public void init() {
+
         tableViewStudent();
         stuID.setText(String.valueOf(student.getMax()));
     }
-    private void tableViewStudent(){
+
+    private void tableViewStudent() {
+        student.getStudentValue(StudentTable, "");
         model = (DefaultTableModel) StudentTable.getModel();
         StudentTable.setRowHeight(30);
         StudentTable.setShowGrid(true);
         StudentTable.setGridColor(Color.black);
         StudentTable.setBackground(Color.white);
     }
-    private void clearStudent(){
+
+    private void clearStudent() {
         stuID.setText(String.valueOf(student.getMax()));
-        stuID.setText(null);
         stuName.setText(null);
         stuBirth.setDate(null);
         stuGender.setSelectedIndex(0);
@@ -2419,72 +2555,74 @@ public class Home extends javax.swing.JFrame {
         imagePanel.setIcon(null);
         StudentTable.clearSelection();
         imagePath = null;
-    
+
     }
-    public boolean isEmptyStudent(){
-        if(stuName.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Student name is missing" );
+
+    public boolean isEmptyStudent() {
+        if (stuName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Student name is missing");
             return false;
-        
-        
+
         }
-         if(stuBirth.getDate() == null){
-            JOptionPane.showMessageDialog(this, "Student date of birth is missing" );
+        if (stuBirth.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Student date of birth is missing");
             return false;
-        
-        
+
         }
-         if(stuBirth.getDate().compareTo(new Date()) > 0){
+        if (stuBirth.getDate().compareTo(new Date()) > 0) {
             JOptionPane.showMessageDialog(this, "No Student from the future are allowed");
             return false;
-        
-        
+
         }
-         if(stuEmail.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Student email is missing" );
+        if (stuEmail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Student email is missing");
             return false;
         }
-         if(!stuEmail.getText().matches("^.+@.+\\..+$")){
-            JOptionPane.showMessageDialog(this, "Invalid Email Address" );
+        if (!stuEmail.getText().matches("^.+@.+\\..+$")) {
+            JOptionPane.showMessageDialog(this, "Invalid Email Address");
             return false;
         }
-         if(stuPhone.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Student phone number is missing" );
+        if (stuPhone.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Student phone number is missing");
             return false;
         }
-         if(stuPhone.getText().length() >= 15){
-            JOptionPane.showMessageDialog(this, "Phone number is to long" );
+        if (stuPhone.getText().length() >= 15) {
+            JOptionPane.showMessageDialog(this, "Phone number is to long");
             return false;
         }
-         if(stuMotherName.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Student Mother Name is missing" );
+        if (stuMotherName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Student Mother Name is missing");
             return false;
         }
-         if(stuFatherName.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Student Father Name is missing" );
+        if (stuFatherName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Student Father Name is missing");
             return false;
         }
-         if(stuAddress1.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Address Line 1 is missing" );
+        if (stuAddress1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Address Line 1 is missing");
             return false;
         }
-         if(stuAddress2.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Address Line 2 is missing" );
+        if (stuAddress2.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Address Line 2 is missing");
             return false;
         }
-         if(stuBirthCer.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Birth Certificate path is missing" );
+        if (stuBirthCer.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Birth Certificate path is missing");
             return false;
         }
-         if(stuForm137.getText().isEmpty()){
-             JOptionPane.showMessageDialog(this, "Form 137 path is missing");
-         }
-         return true;
-    
+        if (stuForm137.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Form 137 path is missing");
+            return false;
+        }
+        if (imagePath == null) {
+            JOptionPane.showMessageDialog(this, "Please add your image");
+            return false;
+        }
+        return true;
+
     }
-    
-    
-    
+
+
     private void jTextField20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField20ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField20ActionPerformed
@@ -2499,7 +2637,7 @@ public class Home extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
-        if(a == 0){
+        if (a == 0) {
             webcam.close();
             this.dispose();
             LoginFrame frame = new LoginFrame();
@@ -2513,40 +2651,71 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton30ActionPerformed
 
     private void addNewBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewBtActionPerformed
-       if( isEmptyStudent()){
-           int id = student.getMax();
-           String sname = stuName.getText();
-           SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-           String date = dateFormat.format(stuBirth.getDate());
-           String gender = stuGender.getSelectedItem().toString();
-           String email = stuEmail.getText();
-           String phone = stuPhone.getText();
-           String motherName = stuMotherName.getText();
-           String fatherName = stuFatherName.getText();
-           String addressLine1 = stuAddress1.getText();
-           String addressLine2 = stuAddress2.getText();
-           String birthCer = stuBirthCer.getText();
-           String form137 = stuForm137.getText();
-           student.insert(id, sname, date, gender, email, phone, 
-                   motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
-           clearStudent();
-       
-       }
-       
+        if (isEmptyStudent()) {
+            if (!student.isEmailExist(stuEmail.getText())) {
+                if (!student.isPhoneExist(stuPhone.getText())) {
+                    int id = student.getMax();
+                    String sname = stuName.getText();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String date = dateFormat.format(stuBirth.getDate());
+                    String gender = stuGender.getSelectedItem().toString();
+                    String email = stuEmail.getText();
+                    String phone = stuPhone.getText();
+                    String motherName = stuMotherName.getText();
+                    String fatherName = stuFatherName.getText();
+                    String addressLine1 = stuAddress1.getText();
+                    String addressLine2 = stuAddress2.getText();
+                    String birthCer = stuBirthCer.getText();
+                    String form137 = stuForm137.getText();
+                    student.insert(id, sname, date, gender, email, phone,
+                            motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
+
+                    String qrContent = "ID: " + id
+                            + "\nName: " + sname
+                            + "\nBirthdate: " + date
+                            + "\nGender: " + gender
+                            + "\nEmail: " + email
+                            + "\nPhone: " + phone
+                            + "\nMother: " + motherName
+                            + "\nFather: " + fatherName
+                            + "\nAddress 1: " + addressLine1
+                            + "\nAddress 2: " + addressLine2
+                            + "\nBirth Certificate: " + birthCer
+                            + "\nForm 137: " + form137
+                            + "\nImage: " + imagePath;
+
+                    // ✅ Generate QR code with all details
+                    generateQRCode(id, sname, qrContent);
+                    
+                    StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID","Student Name","Date of Birth","Gender","Email","Phone Number","Father's Name",
+                    "Mother's Name","Address Line 1", "Address Line 2", "Birth Certificate", "Form137","Image Path"}));
+                    student.getStudentValue(StudentTable, "");
+                    clearStudent();
+                } else {
+                    JOptionPane.showMessageDialog(this, "This phone number already exist");
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "This email already exist");
+            }
+
+        }
+
     }//GEN-LAST:event_addNewBtActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //qrScanTimer.stop();
-        
+
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
-        if(a == 0){
+        if (a == 0) {
             webcam.close();
             this.dispose();
             LoginFrame frame = new LoginFrame();
             frame.setVisible(true);
             frame.setLocationRelativeTo(null);
         }
-        
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -2598,7 +2767,7 @@ public class Home extends javax.swing.JFrame {
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         //LOGOUT
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
-        if(a == 0){
+        if (a == 0) {
             webcam.close();
             this.dispose();
             LoginFrame frame = new LoginFrame();
@@ -2612,9 +2781,9 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton41ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-       //LOGOUT
+        //LOGOUT
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
-        if(a == 0){
+        if (a == 0) {
             webcam.close();
             this.dispose();
             LoginFrame frame = new LoginFrame();
@@ -2638,7 +2807,7 @@ public class Home extends javax.swing.JFrame {
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         //LOGOUT
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
-        if(a == 0){
+        if (a == 0) {
             webcam.close();
             this.dispose();
             LoginFrame frame = new LoginFrame();
@@ -2654,7 +2823,7 @@ public class Home extends javax.swing.JFrame {
     private void jPanel3MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseDragged
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
-        this.setLocation(x - xx, y - xy); 
+        this.setLocation(x - xx, y - xy);
     }//GEN-LAST:event_jPanel3MouseDragged
 
     private void jPanel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MousePressed
@@ -2663,66 +2832,253 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel3MousePressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       for(double i = 0.1; i <= 1.0; i+=0.1){
-             String s = i+"";
-             float f = Float.valueOf(s);
-             this.setOpacity(f);
-           try {
-               Thread.sleep(40);
-           } catch (InterruptedException ex) {
-               System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-           }
-       }
+        for (double i = 0.1; i <= 1.0; i += 0.1) {
+            String s = i + "";
+            float f = Float.valueOf(s);
+            this.setOpacity(f);
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException ex) {
+                System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
     }//GEN-LAST:event_formWindowOpened
 
     private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
-       clearStudent();
+        clearStudent();
     }//GEN-LAST:event_ClearActionPerformed
 
     private void stuPhoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stuPhoneKeyTyped
-        if(!Character.isDigit(evt.getKeyChar())){
+        if (!Character.isDigit(evt.getKeyChar())) {
             evt.consume();
         }
     }//GEN-LAST:event_stuPhoneKeyTyped
 
     private void browseImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseImgActionPerformed
-       JFileChooser file = new JFileChooser();
-       file.setCurrentDirectory(new File(System.getProperty("user.home")));
-       FileNameExtensionFilter filter = new FileNameExtensionFilter("* image", "jpg", "gif", "png");
-       file.addChoosableFileFilter(filter);
-       int output = file.showSaveDialog(file);
-       if(output == JFileChooser.APPROVE_OPTION){
-           File selectFile = file.getSelectedFile();
-           String path = selectFile.getAbsolutePath();
-           imagePanel.setIcon(imageAdjust(path, null));
-           imagePath = path;
-           
-       
-       }else{
-           JOptionPane.showMessageDialog(this, "No image selected");
-       
-       }
+        JFileChooser file = new JFileChooser();
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("* image", "jpg", "gif", "png");
+        file.addChoosableFileFilter(filter);
+        int output = file.showSaveDialog(file);
+        if (output == JFileChooser.APPROVE_OPTION) {
+            File selectFile = file.getSelectedFile();
+            String path = selectFile.getAbsolutePath();
+            imagePanel.setIcon(imageAdjust(path, null));
+            imagePath = path;
+
+        } else {
+            JOptionPane.showMessageDialog(this, "No image selected");
+
+        }
     }//GEN-LAST:event_browseImgActionPerformed
-       
-    
-    private ImageIcon imageAdjust(String path, byte[] pic){
-        ImageIcon myImage = null;
-        if(path != null){
-            myImage = new ImageIcon(path);
+
+    private void browseBirthCertificateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBirthCertificateActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+        // PDF filter only
+        FileNameExtensionFilter pdfFilter = new FileNameExtensionFilter("PDF Documents", "pdf");
+        fileChooser.setFileFilter(pdfFilter);
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            birthCertificatePath = selectedFile.getAbsolutePath(); // keep full path
+            String pdfName = selectedFile.getName(); // only filename
+
+            // show only file name in textfield
+            stuBirthCer.setText(pdfName);
+
+            // make it look clickable
+            stuBirthCer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            // add mouse click event to open PDF
+            stuBirthCer.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    try {
+                        if (Desktop.isDesktopSupported() && birthCertificatePath != null) {
+                            Desktop.getDesktop().open(new File(birthCertificatePath));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Desktop not supported or path is null.");
+                        }
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Unable to open PDF: " + e.getMessage());
+                    }
+                }
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "No PDF selected");
+        }
+
+    }//GEN-LAST:event_browseBirthCertificateActionPerformed
+
+    private void browseForm137ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseForm137ActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+        // PDF filter only
+        FileNameExtensionFilter pdfFilter = new FileNameExtensionFilter("PDF Documents", "pdf");
+        fileChooser.setFileFilter(pdfFilter);
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            form137Path = selectedFile.getAbsolutePath(); // keep full path
+            String pdfName = selectedFile.getName(); // only filename
+
+            // show only file name in textfield
+            stuForm137.setText(pdfName);
+
+            // make it look clickable
+            stuForm137.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            // add mouse click event to open PDF
+            stuForm137.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    try {
+                        if (Desktop.isDesktopSupported() && form137Path != null) {
+                            Desktop.getDesktop().open(new File(form137Path));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Desktop not supported or path is null.");
+                        }
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Unable to open PDF: " + e.getMessage());
+                    }
+                }
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "No PDF selected");
+        }
+    }//GEN-LAST:event_browseForm137ActionPerformed
+
+    private void updateBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtActionPerformed
+        if (isEmptyStudent()) {
+            int id = Integer.parseInt(stuID.getText());
+            String sname = stuName.getText();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = dateFormat.format(stuBirth.getDate());
+            String gender = stuGender.getSelectedItem().toString();
+            String email = stuEmail.getText();
+            String phone = stuPhone.getText();
+            String motherName = stuMotherName.getText();
+            String fatherName = stuFatherName.getText();
+            String addressLine1 = stuAddress1.getText();
+            String addressLine2 = stuAddress2.getText();
+            String birthCer = stuBirthCer.getText();
+            String form137 = stuForm137.getText();
+            student.insert(id, sname, date, gender, email, phone,
+                    motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
+
+            String qrContent = "ID: " + id
+                    + "\nName: " + sname
+                    + "\nBirthdate: " + date
+                    + "\nGender: " + gender
+                    + "\nEmail: " + email
+                    + "\nPhone: " + phone
+                    + "\nMother: " + motherName
+                    + "\nFather: " + fatherName
+                    + "\nAddress 1: " + addressLine1
+                    + "\nAddress 2: " + addressLine2
+                    + "\nBirth Certificate: " + birthCer
+                    + "\nForm 137: " + form137
+                    + "\nImage: " + imagePath;
+
+            // ✅ Generate QR code with all details
+            generateQRCode(id, sname, qrContent);
+            
+            StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID","Student Name","Date of Birth","Gender","Email","Phone Number","Father's Name",
+                    "Mother's Name","Address Line 1", "Address Line 2", "Birth Certificate", "Form137","Image Path"}));
+                    student.getStudentValue(StudentTable, "");
+            clearStudent();
+
+        }
+    }//GEN-LAST:event_updateBtActionPerformed
+
+    private void StudentTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentTableMouseClicked
+         model = (DefaultTableModel) StudentTable.getModel();
+         rowIndex = StudentTable.getSelectedRow();
+         stuID.setText(model.getValueAt(rowIndex, 0).toString());
+         stuName.setText(model.getValueAt(rowIndex, 1).toString());
+        
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(model.getValueAt(rowIndex, 2).toString());
+            stuBirth.setDate(date);
+        } catch (ParseException ex) {
+            System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+        String gender = model.getValueAt(rowIndex, 3).toString();
+        if(gender.equals("Male")){
+            stuGender.setSelectedIndex(0);
             
         
         }else{
-            myImage = new ImageIcon(pic);
-            
+            stuGender.setSelectedIndex(1);
         
+        
+        }
+        stuEmail.setText(model.getValueAt(rowIndex, 4).toString());
+        stuPhone.setText(model.getValueAt(rowIndex, 5).toString());
+        stuFatherName.setText(model.getValueAt(rowIndex, 6).toString());
+        stuMotherName.setText(model.getValueAt(rowIndex, 7).toString());
+        stuAddress1.setText(model.getValueAt(rowIndex, 8).toString());
+        stuAddress2.setText(model.getValueAt(rowIndex, 9).toString());
+        stuBirthCer.setText(model.getValueAt(rowIndex, 10).toString());
+        stuForm137.setText(model.getValueAt(rowIndex, 11).toString());
+        String path = model.getValueAt(rowIndex, 12).toString();
+        imagePath = path;
+        imagePanel.setIcon(imageAdjust(path, null));//get image path and called image adjust method path to image
+    }//GEN-LAST:event_StudentTableMouseClicked
+
+    private void stuGradeLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeLevelActionPerformed
+        String gradeLevel = (String) stuGradeLevel.getSelectedItem();
+
+        // Clear previous strands
+        stuStrand.removeAllItems();  
+
+        if (gradeLevel.equals("11")) {
+            stuStrand.addItem("TVL-ICT");
+            stuStrand.addItem("TVL-HE");
+            stuStrand.addItem("TVL-EIM");
+        } else if (gradeLevel.equals("12")) {
+            stuStrand.addItem("TVL-ICT");
+            stuStrand.addItem("TVL-HE");
+            stuStrand.addItem("TVL-EIM");
+        }
+
+        System.out.println("Selected Grade Level: " + gradeLevel);
+    }//GEN-LAST:event_stuGradeLevelActionPerformed
+
+    private void stuStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuStrandActionPerformed
+        
+    }//GEN-LAST:event_stuStrandActionPerformed
+
+    private void stuSectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuSectionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stuSectionActionPerformed
+
+    private void stuGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stuGenderActionPerformed
+
+    private ImageIcon imageAdjust(String path, byte[] pic) {
+        ImageIcon myImage = null;
+        if (path != null) {
+            myImage = new ImageIcon(path);
+
+        } else {
+            myImage = new ImageIcon(pic);
+
         }
         Image img = myImage.getImage();
         Image newImage = img.getScaledInstance(imagePanel.getWidth(), imagePanel.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(newImage);
         return icon;
-        
-    
+
     }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -2740,8 +3096,6 @@ public class Home extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
-        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Home().setVisible(true));
@@ -2752,6 +3106,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JToggleButton StartWebcam;
     private javax.swing.JTable StudentTable;
     private javax.swing.JButton addNewBt;
+    private javax.swing.JButton browseBirthCertificate;
+    private javax.swing.JButton browseForm137;
     private javax.swing.JButton browseImg;
     private javax.swing.JLabel imagePanel;
     private javax.swing.JButton jButton1;
@@ -2765,8 +3121,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton29;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton30;
@@ -2775,7 +3129,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton38;
     private javax.swing.JButton jButton39;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton40;
     private javax.swing.JButton jButton41;
     private javax.swing.JButton jButton43;
@@ -2783,10 +3136,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox19;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2918,10 +3268,14 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField stuFatherName;
     private javax.swing.JTextField stuForm137;
     private javax.swing.JComboBox<String> stuGender;
+    private javax.swing.JComboBox<String> stuGradeLevel;
     private javax.swing.JTextField stuID;
     private javax.swing.JTextField stuMotherName;
     private javax.swing.JTextField stuName;
     private javax.swing.JTextField stuPhone;
+    private javax.swing.JComboBox<String> stuSection;
+    private javax.swing.JComboBox<String> stuStrand;
+    private javax.swing.JButton updateBt;
     private javax.swing.JPanel webPanel;
     // End of variables declaration//GEN-END:variables
 }
