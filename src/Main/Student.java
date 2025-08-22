@@ -1,6 +1,4 @@
-
 package Main;
-
 
 import java.sql.Connection;
 import db.MyConnection;
@@ -11,34 +9,35 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
 public class Student {
-    
+
     Connection con = MyConnection.getConnection();
     PreparedStatement ps;
-    
-    public int getMax(){
+
+    public int getMax() {
         int id = 0;
         Statement st;
-        
+
         try {
             st = con.createStatement();
             ResultSet rs = st.executeQuery("select max(id) from students");
-            while(rs.next()){
+            while (rs.next()) {
                 id = rs.getInt(1);
-            
+
             }
         } catch (SQLException ex) {
             System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return id + 1;
-        
-    
+
     }
+
     //insert data into student table
-    public void insert(int id, String sname, String date, String gender, String email, String phone, 
-            String motherName, String fatherName, String addressLine1, 
-            String addressLine2, String birthCer, String form137, String imagePath){
-        
+    public void insert(int id, String sname, String date, String gender, String email, String phone,
+            String motherName, String fatherName, String addressLine1,
+            String addressLine2, String birthCer, String form137, String imagePath) {
+
         String sql = "insert into students values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = con.prepareStatement(sql);
@@ -55,65 +54,79 @@ public class Student {
             ps.setString(11, birthCer);
             ps.setString(12, form137);
             ps.setString(13, imagePath);
-            
-            
-            if(ps.executeUpdate() > 0){
+
+            if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "New Student added successfully");
-            
-            
+
             }
         } catch (SQLException ex) {
             System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        
-        
-    
-    
+
     }
+
     //check if student gmail account already exist
-    public boolean isEmailExist(String email){
+    public boolean isEmailExist(String email) {
         try {
             ps = con.prepareStatement("select * from students where email = ?");
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return true;
-            
+
             }
         } catch (SQLException ex) {
             System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return false;
-        
+
     }
+
     //check if student phone number already exist
-    public boolean isPhoneExist(String phone){
+    public boolean isPhoneExist(String phone) {
         try {
             ps = con.prepareStatement("select * from students where phone_number = ?");
             ps.setString(1, phone);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return true;
-            
+
             }
         } catch (SQLException ex) {
             System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return false;
-        
+
     }
-    
+
+    //check if student phone number already exist
+    public boolean isidExist(int id) {
+        try {
+            ps = con.prepareStatement("select * from students where id = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
+
+    }
+
     //get all student values from database student table
-    public void getStudentValue(JTable table, String searchValue){
+    public void getStudentValue(JTable table, String searchValue) {
         String sql = "select * from students where concat(name,email,phone_number) like ? order by id desc";
-       
+
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, "%"+searchValue+"%");
+            ps.setString(1, "%" + searchValue + "%");
             ResultSet rs = ps.executeQuery();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             Object[] row;
-            while(rs.next()){
+            while (rs.next()) {
                 row = new Object[13];
                 row[0] = rs.getInt(1);
                 row[1] = rs.getString(2);
@@ -129,12 +142,63 @@ public class Student {
                 row[11] = rs.getString(12);
                 row[12] = rs.getString(13);
                 model.addRow(row);
-                
-            
+
             }
         } catch (SQLException ex) {
             System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-    
+
+    }
+
+    public void update(int id, String sname, String date, String gender, String email, String phone,
+            String motherName, String fatherName, String addressLine1,
+            String addressLine2, String birthCer, String form137, String imagePath) {
+
+        String sql = "update students set name=?,date_of_birth=?,gender=?,email=?,phone_number=?,mother_name=?,"
+                + "father_name=?,address1=?,address2=?,birth_certificate=?,form_137=?,image_path=? where id=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, sname);
+            ps.setString(2, date);
+            ps.setString(3, gender);
+            ps.setString(4, email);
+            ps.setString(5, phone);
+            ps.setString(6, motherName);
+            ps.setString(7, fatherName);
+            ps.setString(8, addressLine1);
+            ps.setString(9, addressLine2);
+            ps.setString(10, birthCer);
+            ps.setString(11, form137);
+            ps.setString(12, imagePath);
+            ps.setInt(13, id);
+
+            if (ps.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Student data updated successfully ");
+
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+
+    }
+
+    //student data delete
+    public void delete(int id) {
+        int yesOrNo = JOptionPane.showConfirmDialog(null, "Strand and scores record will also be deleted",
+                "Student Delete", JOptionPane.OK_CANCEL_OPTION, 0);
+        if (yesOrNo == JOptionPane.OK_OPTION) {
+            try {
+                ps = con.prepareStatement("delete from students where id = ?");
+                ps.setInt(1, id);
+                if (ps.executeUpdate() > 0) {
+                    JOptionPane.showMessageDialog(null, "Student data deleted successfully ");
+
+                }
+            } catch (SQLException ex) {
+                System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+
+        }
+
     }
 }

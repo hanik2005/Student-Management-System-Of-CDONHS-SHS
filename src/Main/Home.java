@@ -31,10 +31,12 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -48,6 +50,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -64,7 +67,7 @@ public class Home extends javax.swing.JFrame {
     private DefaultTableModel model;
     private String imagePath;
     private int rowIndex;
-    int studentCount = 55;  
+    int studentCount = 55;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Home.class.getName());
     public Webcam webcam;
@@ -83,6 +86,7 @@ public class Home extends javax.swing.JFrame {
         SwingUtilities.invokeLater(() -> {
             initWebcam();
         });
+        //webcam.close(); //this is a just a experiment care to erase in the future or not
 
     }
 
@@ -102,6 +106,7 @@ public class Home extends javax.swing.JFrame {
         webPanel.setLayout(new BorderLayout());
         webPanel.add(webcamPanel, BorderLayout.CENTER);
         webcamPanel.start();
+        //webcam.close(); //this is a just a experiment care to erase in the future or not
 
         // Initialize QR scan timer (scans every 500ms)
         qrScanTimer = new Timer(500, e -> scanForQRCode());
@@ -315,15 +320,15 @@ public class Home extends javax.swing.JFrame {
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        searchField1 = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        stuSearchField_1 = new javax.swing.JTextField();
+        searchBt_1 = new javax.swing.JButton();
+        stuRefresh_1 = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         StudentTable = new javax.swing.JTable();
         jPanel13 = new javax.swing.JPanel();
-        jButton12 = new javax.swing.JButton();
-        jButton17 = new javax.swing.JButton();
+        delBt = new javax.swing.JButton();
+        stuPrint_1 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jTextField9 = new javax.swing.JTextField();
@@ -1008,17 +1013,27 @@ public class Home extends javax.swing.JFrame {
         jLabel15.setForeground(new java.awt.Color(0, 0, 0));
         jLabel15.setText("Search Student");
 
-        searchField1.setBackground(new java.awt.Color(255, 255, 255));
+        stuSearchField_1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton5.setBackground(new java.awt.Color(153, 255, 204));
-        jButton5.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setText("Search");
+        searchBt_1.setBackground(new java.awt.Color(153, 255, 204));
+        searchBt_1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        searchBt_1.setForeground(new java.awt.Color(0, 0, 0));
+        searchBt_1.setText("Search");
+        searchBt_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBt_1ActionPerformed(evt);
+            }
+        });
 
-        jButton6.setBackground(new java.awt.Color(153, 255, 204));
-        jButton6.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(0, 0, 0));
-        jButton6.setText("Refresh");
+        stuRefresh_1.setBackground(new java.awt.Color(153, 255, 204));
+        stuRefresh_1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        stuRefresh_1.setForeground(new java.awt.Color(0, 0, 0));
+        stuRefresh_1.setText("Refresh");
+        stuRefresh_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuRefresh_1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -1028,11 +1043,11 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 687, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuSearchField_1, javax.swing.GroupLayout.PREFERRED_SIZE, 687, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchBt_1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuRefresh_1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(110, 110, 110))
         );
         jPanel11Layout.setVerticalGroup(
@@ -1041,9 +1056,9 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                    .addComponent(searchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stuSearchField_1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchBt_1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stuRefresh_1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -1075,15 +1090,25 @@ public class Home extends javax.swing.JFrame {
         jPanel13.setBackground(new java.awt.Color(153, 255, 255));
         jPanel13.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 204, 204), 4, true));
 
-        jButton12.setBackground(new java.awt.Color(102, 255, 255));
-        jButton12.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton12.setForeground(new java.awt.Color(0, 0, 0));
-        jButton12.setText("Delete");
+        delBt.setBackground(new java.awt.Color(102, 255, 255));
+        delBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        delBt.setForeground(new java.awt.Color(0, 0, 0));
+        delBt.setText("Delete");
+        delBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delBtActionPerformed(evt);
+            }
+        });
 
-        jButton17.setBackground(new java.awt.Color(102, 255, 255));
-        jButton17.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton17.setForeground(new java.awt.Color(0, 0, 0));
-        jButton17.setText("Print");
+        stuPrint_1.setBackground(new java.awt.Color(102, 255, 255));
+        stuPrint_1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        stuPrint_1.setForeground(new java.awt.Color(0, 0, 0));
+        stuPrint_1.setText("Print");
+        stuPrint_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuPrint_1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -1091,9 +1116,9 @@ public class Home extends javax.swing.JFrame {
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
                 .addContainerGap(368, Short.MAX_VALUE)
-                .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuPrint_1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(delBt, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(504, 504, 504))
         );
         jPanel13Layout.setVerticalGroup(
@@ -1101,8 +1126,8 @@ public class Home extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(delBt, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stuPrint_1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1155,6 +1180,7 @@ public class Home extends javax.swing.JFrame {
         jPanel7.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
         jPanel7.setForeground(new java.awt.Color(0, 0, 0));
 
+        jTextField9.setBackground(new java.awt.Color(255, 255, 255));
         jTextField9.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
 
         jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
@@ -1169,6 +1195,7 @@ public class Home extends javax.swing.JFrame {
         jLabel66.setForeground(new java.awt.Color(0, 0, 0));
         jLabel66.setText("Student's ID");
 
+        jTextField3.setBackground(new java.awt.Color(255, 255, 255));
         jTextField3.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
 
         jButton30.setBackground(new java.awt.Color(153, 255, 204));
@@ -1209,12 +1236,14 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jTextField4.setBackground(new java.awt.Color(255, 255, 255));
         jTextField4.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
 
         jLabel19.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(0, 0, 0));
         jLabel19.setText("Student's ID");
 
+        stuGradeLevel.setBackground(new java.awt.Color(255, 255, 255));
         stuGradeLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11", "12" }));
         stuGradeLevel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1222,6 +1251,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        stuStrand.setBackground(new java.awt.Color(255, 255, 255));
         stuStrand.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "STEM", "ABM", "HUMSS", "GAS", "TVL-ICT", "TVL-EIM", "TVL-HE" }));
         stuStrand.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1241,6 +1271,7 @@ public class Home extends javax.swing.JFrame {
         jLabel25.setForeground(new java.awt.Color(0, 0, 0));
         jLabel25.setText("Section");
 
+        stuSection.setBackground(new java.awt.Color(255, 255, 255));
         stuSection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stuSectionActionPerformed(evt);
@@ -1533,7 +1564,9 @@ public class Home extends javax.swing.JFrame {
         jLabel67.setForeground(new java.awt.Color(0, 0, 0));
         jLabel67.setText("Student's ID");
 
+        jTextField5.setBackground(new java.awt.Color(255, 255, 255));
         jTextField5.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        jTextField5.setForeground(new java.awt.Color(0, 0, 0));
 
         jButton32.setBackground(new java.awt.Color(153, 255, 204));
         jButton32.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
@@ -1549,7 +1582,9 @@ public class Home extends javax.swing.JFrame {
         jLabel68.setForeground(new java.awt.Color(0, 0, 0));
         jLabel68.setText("Grade Level");
 
+        jTextField12.setBackground(new java.awt.Color(255, 255, 255));
         jTextField12.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        jTextField12.setForeground(new java.awt.Color(0, 0, 0));
         jTextField12.setPreferredSize(new java.awt.Dimension(77, 30));
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
@@ -1592,13 +1627,17 @@ public class Home extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(0, 0, 0));
         jLabel23.setText("ID");
 
+        jTextField10.setBackground(new java.awt.Color(255, 255, 255));
         jTextField10.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField10.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel24.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 0, 0));
         jLabel24.setText("Student's ID");
 
+        jTextField11.setBackground(new java.awt.Color(255, 255, 255));
         jTextField11.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField11.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel26.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(0, 0, 0));
@@ -1612,37 +1651,53 @@ public class Home extends javax.swing.JFrame {
         jLabel28.setForeground(new java.awt.Color(0, 0, 0));
         jLabel28.setText("Section");
 
+        jTextField13.setBackground(new java.awt.Color(255, 255, 255));
         jTextField13.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField13.setForeground(new java.awt.Color(0, 0, 0));
 
+        jTextField14.setBackground(new java.awt.Color(255, 255, 255));
         jTextField14.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField14.setForeground(new java.awt.Color(0, 0, 0));
 
+        jTextField15.setBackground(new java.awt.Color(255, 255, 255));
         jTextField15.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField15.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel30.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(0, 0, 0));
         jLabel30.setText("Subject 1");
 
+        jTextField16.setBackground(new java.awt.Color(255, 255, 255));
         jTextField16.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField16.setForeground(new java.awt.Color(0, 0, 0));
 
+        jTextField17.setBackground(new java.awt.Color(255, 255, 255));
         jTextField17.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField17.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel31.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(0, 0, 0));
         jLabel31.setText("Subject2");
 
+        jTextField18.setBackground(new java.awt.Color(255, 255, 255));
         jTextField18.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField18.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel32.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(0, 0, 0));
         jLabel32.setText("Subject 3");
 
+        jTextField19.setBackground(new java.awt.Color(255, 255, 255));
         jTextField19.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField19.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel33.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(0, 0, 0));
         jLabel33.setText("Subject 4");
 
+        jTextField20.setBackground(new java.awt.Color(255, 255, 255));
         jTextField20.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField20.setForeground(new java.awt.Color(0, 0, 0));
         jTextField20.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField20ActionPerformed(evt);
@@ -1653,27 +1708,39 @@ public class Home extends javax.swing.JFrame {
         jLabel34.setForeground(new java.awt.Color(0, 0, 0));
         jLabel34.setText("Subject 5");
 
+        jTextField21.setBackground(new java.awt.Color(255, 255, 255));
         jTextField21.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jTextField21.setForeground(new java.awt.Color(0, 0, 0));
         jTextField21.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField21.setText("0.0");
 
+        jTextField22.setBackground(new java.awt.Color(255, 255, 255));
         jTextField22.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jTextField22.setForeground(new java.awt.Color(0, 0, 0));
         jTextField22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField22.setText("0.0");
 
+        jTextField23.setBackground(new java.awt.Color(255, 255, 255));
         jTextField23.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jTextField23.setForeground(new java.awt.Color(0, 0, 0));
         jTextField23.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField23.setText("0.0");
 
+        jTextField24.setBackground(new java.awt.Color(255, 255, 255));
         jTextField24.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jTextField24.setForeground(new java.awt.Color(0, 0, 0));
         jTextField24.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField24.setText("0.0");
 
+        jTextField36.setBackground(new java.awt.Color(255, 255, 255));
         jTextField36.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jTextField36.setForeground(new java.awt.Color(0, 0, 0));
         jTextField36.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField36.setText("0.0");
 
+        jTextField37.setBackground(new java.awt.Color(255, 255, 255));
         jTextField37.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jTextField37.setForeground(new java.awt.Color(0, 0, 0));
         jTextField37.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField37.setText("0.0");
 
@@ -1859,9 +1926,13 @@ public class Home extends javax.swing.JFrame {
         jLabel36.setForeground(new java.awt.Color(0, 0, 0));
         jLabel36.setText("Subject 6");
 
+        jTextField25.setBackground(new java.awt.Color(255, 255, 255));
         jTextField25.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField25.setForeground(new java.awt.Color(0, 0, 0));
 
+        jTextField38.setBackground(new java.awt.Color(255, 255, 255));
         jTextField38.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jTextField38.setForeground(new java.awt.Color(0, 0, 0));
         jTextField38.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField38.setText("0.0");
         jTextField38.addActionListener(new java.awt.event.ActionListener() {
@@ -1874,9 +1945,13 @@ public class Home extends javax.swing.JFrame {
         jLabel37.setForeground(new java.awt.Color(0, 0, 0));
         jLabel37.setText("Subject 7");
 
+        jTextField26.setBackground(new java.awt.Color(255, 255, 255));
         jTextField26.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField26.setForeground(new java.awt.Color(0, 0, 0));
 
+        jTextField27.setBackground(new java.awt.Color(255, 255, 255));
         jTextField27.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jTextField27.setForeground(new java.awt.Color(0, 0, 0));
         jTextField27.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField27.setText("0.0");
 
@@ -1884,14 +1959,18 @@ public class Home extends javax.swing.JFrame {
         jLabel38.setForeground(new java.awt.Color(0, 0, 0));
         jLabel38.setText("Subject 8");
 
+        jTextField28.setBackground(new java.awt.Color(255, 255, 255));
         jTextField28.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        jTextField28.setForeground(new java.awt.Color(0, 0, 0));
         jTextField28.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField28ActionPerformed(evt);
             }
         });
 
+        jTextField39.setBackground(new java.awt.Color(255, 255, 255));
         jTextField39.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jTextField39.setForeground(new java.awt.Color(0, 0, 0));
         jTextField39.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField39.setText("0.0");
 
@@ -1899,6 +1978,8 @@ public class Home extends javax.swing.JFrame {
         jLabel39.setForeground(new java.awt.Color(0, 0, 0));
         jLabel39.setText("Quarter");
 
+        jComboBox2.setBackground(new java.awt.Color(255, 255, 255));
+        jComboBox2.setForeground(new java.awt.Color(0, 0, 0));
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel43Layout = new javax.swing.GroupLayout(jPanel43);
@@ -2065,6 +2146,8 @@ public class Home extends javax.swing.JFrame {
         jLabel35.setForeground(new java.awt.Color(0, 0, 0));
         jLabel35.setText("Search Student");
 
+        searchField4.setBackground(new java.awt.Color(255, 255, 255));
+
         jButton38.setBackground(new java.awt.Color(153, 255, 204));
         jButton38.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jButton38.setForeground(new java.awt.Color(0, 0, 0));
@@ -2223,6 +2306,7 @@ public class Home extends javax.swing.JFrame {
         jLabel69.setForeground(new java.awt.Color(0, 0, 0));
         jLabel69.setText("Student's ID");
 
+        jTextField29.setBackground(new java.awt.Color(255, 255, 255));
         jTextField29.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
 
         jButton33.setBackground(new java.awt.Color(153, 255, 204));
@@ -2686,9 +2770,9 @@ public class Home extends javax.swing.JFrame {
 
                     // ✅ Generate QR code with all details
                     generateQRCode(id, sname, qrContent);
-                    
-                    StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID","Student Name","Date of Birth","Gender","Email","Phone Number","Father's Name",
-                    "Mother's Name","Address Line 1", "Address Line 2", "Birth Certificate", "Form137","Image Path"}));
+
+                    StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+                        "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
                     student.getStudentValue(StudentTable, "");
                     clearStudent();
                 } else {
@@ -2956,68 +3040,105 @@ public class Home extends javax.swing.JFrame {
     private void updateBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtActionPerformed
         if (isEmptyStudent()) {
             int id = Integer.parseInt(stuID.getText());
-            String sname = stuName.getText();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String date = dateFormat.format(stuBirth.getDate());
-            String gender = stuGender.getSelectedItem().toString();
-            String email = stuEmail.getText();
-            String phone = stuPhone.getText();
-            String motherName = stuMotherName.getText();
-            String fatherName = stuFatherName.getText();
-            String addressLine1 = stuAddress1.getText();
-            String addressLine2 = stuAddress2.getText();
-            String birthCer = stuBirthCer.getText();
-            String form137 = stuForm137.getText();
-            student.insert(id, sname, date, gender, email, phone,
-                    motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
+            if (student.isidExist(id)) {
+                if (!check()) {
+                    String sname = stuName.getText();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String date = dateFormat.format(stuBirth.getDate());
+                    String gender = stuGender.getSelectedItem().toString();
+                    String email = stuEmail.getText();
+                    String phone = stuPhone.getText();
+                    String motherName = stuMotherName.getText();
+                    String fatherName = stuFatherName.getText();
+                    String addressLine1 = stuAddress1.getText();
+                    String addressLine2 = stuAddress2.getText();
+                    String birthCer = stuBirthCer.getText();
+                    String form137 = stuForm137.getText();
+                    student.update(id, sname, date, gender, email, phone,
+                            motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
 
-            String qrContent = "ID: " + id
-                    + "\nName: " + sname
-                    + "\nBirthdate: " + date
-                    + "\nGender: " + gender
-                    + "\nEmail: " + email
-                    + "\nPhone: " + phone
-                    + "\nMother: " + motherName
-                    + "\nFather: " + fatherName
-                    + "\nAddress 1: " + addressLine1
-                    + "\nAddress 2: " + addressLine2
-                    + "\nBirth Certificate: " + birthCer
-                    + "\nForm 137: " + form137
-                    + "\nImage: " + imagePath;
+                    String qrContent = "ID: " + id
+                            + "\nName: " + sname
+                            + "\nBirthdate: " + date
+                            + "\nGender: " + gender
+                            + "\nEmail: " + email
+                            + "\nPhone: " + phone
+                            + "\nMother: " + motherName
+                            + "\nFather: " + fatherName
+                            + "\nAddress 1: " + addressLine1
+                            + "\nAddress 2: " + addressLine2
+                            + "\nBirth Certificate: " + birthCer
+                            + "\nForm 137: " + form137
+                            + "\nImage: " + imagePath;
 
-            // ✅ Generate QR code with all details
-            generateQRCode(id, sname, qrContent);
-            
-            StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID","Student Name","Date of Birth","Gender","Email","Phone Number","Father's Name",
-                    "Mother's Name","Address Line 1", "Address Line 2", "Birth Certificate", "Form137","Image Path"}));
+                    // ✅ Generate QR code with all details
+                    generateQRCode(id, sname, qrContent);
+
+                    StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+                        "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
                     student.getStudentValue(StudentTable, "");
-            clearStudent();
+                    clearStudent();
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "student id doesn't exist");
+
+            }
 
         }
     }//GEN-LAST:event_updateBtActionPerformed
 
+    public boolean check() {
+        String newEmail = stuEmail.getText();
+        String newPhone = stuPhone.getText();
+        String oldEmail = model.getValueAt(rowIndex, 4).toString();
+        String oldPhone = model.getValueAt(rowIndex, 5).toString();
+        if (newEmail.equals(oldEmail) && newPhone.equals(oldPhone)) {
+            return false;
+
+        } else {
+            if (!newEmail.equals(oldEmail)) {
+                boolean x = student.isEmailExist(newEmail);
+                if (x) {
+                    JOptionPane.showMessageDialog(this, "the email already exist");
+
+                }
+                return x;
+            }
+            if (!newPhone.equals(oldPhone)) {
+                boolean x = student.isPhoneExist(newPhone);
+                if (x) {
+                    JOptionPane.showMessageDialog(this, "the phone number already exist");
+
+                }
+                return x;
+            }
+//         
+        }
+        return false;
+
+    }
     private void StudentTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentTableMouseClicked
-         model = (DefaultTableModel) StudentTable.getModel();
-         rowIndex = StudentTable.getSelectedRow();
-         stuID.setText(model.getValueAt(rowIndex, 0).toString());
-         stuName.setText(model.getValueAt(rowIndex, 1).toString());
-        
+        model = (DefaultTableModel) StudentTable.getModel();
+        rowIndex = StudentTable.getSelectedRow();
+        stuID.setText(model.getValueAt(rowIndex, 0).toString());
+        stuName.setText(model.getValueAt(rowIndex, 1).toString());
+
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(model.getValueAt(rowIndex, 2).toString());
             stuBirth.setDate(date);
         } catch (ParseException ex) {
             System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        
+
         String gender = model.getValueAt(rowIndex, 3).toString();
-        if(gender.equals("Male")){
+        if (gender.equals("Male")) {
             stuGender.setSelectedIndex(0);
-            
-        
-        }else{
+
+        } else {
             stuGender.setSelectedIndex(1);
-        
-        
+
         }
         stuEmail.setText(model.getValueAt(rowIndex, 4).toString());
         stuPhone.setText(model.getValueAt(rowIndex, 5).toString());
@@ -3036,7 +3157,7 @@ public class Home extends javax.swing.JFrame {
         String gradeLevel = (String) stuGradeLevel.getSelectedItem();
 
         // Clear previous strands
-        stuStrand.removeAllItems();  
+        stuStrand.removeAllItems();
 
         if (gradeLevel.equals("11")) {
             stuStrand.addItem("TVL-ICT");
@@ -3052,7 +3173,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_stuGradeLevelActionPerformed
 
     private void stuStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuStrandActionPerformed
-        
+
     }//GEN-LAST:event_stuStrandActionPerformed
 
     private void stuSectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuSectionActionPerformed
@@ -3063,11 +3184,53 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_stuGenderActionPerformed
 
+    private void delBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBtActionPerformed
+        int id = Integer.parseInt(stuID.getText());
+        if (student.isidExist(id)) {
+            student.delete(id);
+            StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+                "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
+            student.getStudentValue(StudentTable, "");
+            clearStudent();
+
+        } else {
+            JOptionPane.showMessageDialog(this, "the student doesn't exist");
+        }
+    }//GEN-LAST:event_delBtActionPerformed
+
+    private void searchBt_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBt_1ActionPerformed
+        if (stuSearchField_1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a student id in the search field");
+
+        } else {
+            StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+                "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
+            student.getStudentValue(StudentTable, stuSearchField_1.getText());
+
+        }
+    }//GEN-LAST:event_searchBt_1ActionPerformed
+
+    private void stuRefresh_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuRefresh_1ActionPerformed
+        StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+            "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
+        student.getStudentValue(StudentTable, "");
+        stuSearchField_1.setText(null);
+    }//GEN-LAST:event_stuRefresh_1ActionPerformed
+
+    private void stuPrint_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuPrint_1ActionPerformed
+        try {
+            MessageFormat header = new MessageFormat("Students Information");
+            MessageFormat footer = new MessageFormat("Page(0,number,integer)");
+            StudentTable.print(JTable.PrintMode.FIT_WIDTH,header,footer);
+        } catch (PrinterException ex) {
+            System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }//GEN-LAST:event_stuPrint_1ActionPerformed
+
     private ImageIcon imageAdjust(String path, byte[] pic) {
         ImageIcon myImage = null;
         if (path != null) {
             myImage = new ImageIcon(path);
-
         } else {
             myImage = new ImageIcon(pic);
 
@@ -3109,14 +3272,13 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton browseBirthCertificate;
     private javax.swing.JButton browseForm137;
     private javax.swing.JButton browseImg;
+    private javax.swing.JButton delBt;
     private javax.swing.JLabel imagePanel;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
@@ -3132,8 +3294,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton40;
     private javax.swing.JButton jButton41;
     private javax.swing.JButton jButton43;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JComboBox<String> jComboBox2;
@@ -3257,7 +3417,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField9;
-    private javax.swing.JTextField searchField1;
+    private javax.swing.JButton searchBt_1;
     private javax.swing.JTextField searchField2;
     private javax.swing.JTextField searchField4;
     private javax.swing.JTextField stuAddress1;
@@ -3273,6 +3433,9 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField stuMotherName;
     private javax.swing.JTextField stuName;
     private javax.swing.JTextField stuPhone;
+    private javax.swing.JButton stuPrint_1;
+    private javax.swing.JButton stuRefresh_1;
+    private javax.swing.JTextField stuSearchField_1;
     private javax.swing.JComboBox<String> stuSection;
     private javax.swing.JComboBox<String> stuStrand;
     private javax.swing.JButton updateBt;
