@@ -1,201 +1,208 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Main;
 
-import java.util.*;
-/**
- *
- * @author ADMIN
- */
+import java.sql.Connection;
+import db.MyConnection;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 public class Strand {
-     // Options for your combo boxes
-    public static final String[] GRADE_LEVELS = {"Grade 11", "Grade 12"};
-    public static final String[] STRANDS = {
-        "STEM", "ABM", "HUMSS", "GAS",
-        "TVL-ICT", "TVL-HE", "TVL-EIM"
-    };
-    public static final String[] SECTIONS = {"Section A", "Section B", "Section C"};
 
-    // Subjects: Map<Strand, Map<Grade, List<Subjects>>>
-    private static final Map<String, Map<Integer, List<String>>> strandSubjects = new HashMap<>();
+    Connection con = MyConnection.getConnection();
+    PreparedStatement ps;
 
-    static {
-        // --- STEM ---
-        Map<Integer, List<String>> stem = new HashMap<>();
-        stem.put(11, Arrays.asList(
-                "General Mathematics",
-                "Earth Science",
-                "Oral Communication",
-                "Reading and Writing",
-                "Komunikasyon at Pananaliksik",
-                "Empowerment Technologies",
-                "21st Century Literature",
-                "Physical Education & Health"
-        ));
-        stem.put(12, Arrays.asList(
-                "Pre-Calculus",
-                "Basic Calculus",
-                "Physics 1",
-                "Physics 2",
-                "Practical Research 2",
-                "Contemporary Philippine Arts",
-                "Media & Information Literacy",
-                "PE & Health"
-        ));
-        strandSubjects.put("STEM", stem);
-
-        // --- ABM ---
-        Map<Integer, List<String>> abm = new HashMap<>();
-        abm.put(11, Arrays.asList(
-                "Business Mathematics",
-                "Fundamentals of Accountancy, Business & Management 1",
-                "Oral Communication",
-                "Komunikasyon at Pananaliksik",
-                "Reading and Writing",
-                "21st Century Literature",
-                "Physical Education & Health",
-                "Empowerment Technologies"
-        ));
-        abm.put(12, Arrays.asList(
-                "Applied Economics",
-                "Business Ethics & Social Responsibility",
-                "Fundamentals of Accountancy, Business & Management 2",
-                "Business Finance",
-                "Organization & Management",
-                "Practical Research 2",
-                "Contemporary Philippine Arts",
-                "PE & Health"
-        ));
-        strandSubjects.put("ABM", abm);
-
-        // --- HUMSS ---
-        Map<Integer, List<String>> humss = new HashMap<>();
-        humss.put(11, Arrays.asList(
-                "Creative Writing",
-                "Introduction to Philosophy of the Human Person",
-                "Oral Communication",
-                "Komunikasyon at Pananaliksik",
-                "Reading and Writing",
-                "21st Century Literature",
-                "Physical Education & Health",
-                "Empowerment Technologies"
-        ));
-        humss.put(12, Arrays.asList(
-                "Creative Nonfiction",
-                "Disciplines and Ideas in Social Sciences",
-                "Disciplines and Ideas in Applied Social Sciences",
-                "Community Engagement, Solidarity and Citizenship",
-                "Philippine Politics & Governance",
-                "Trends, Networks & Critical Thinking",
-                "Practical Research 2",
-                "PE & Health"
-        ));
-        strandSubjects.put("HUMSS", humss);
-
-        // --- GAS ---
-        Map<Integer, List<String>> gas = new HashMap<>();
-        gas.put(11, Arrays.asList(
-                "General Mathematics",
-                "Earth Science",
-                "Oral Communication",
-                "Komunikasyon at Pananaliksik",
-                "Reading and Writing",
-                "21st Century Literature",
-                "Physical Education & Health",
-                "Empowerment Technologies"
-        ));
-        gas.put(12, Arrays.asList(
-                "Humanities 1",
-                "Social Science 1",
-                "Humanities 2",
-                "Social Science 2",
-                "Applied Economics",
-                "Practical Research 2",
-                "Contemporary Philippine Arts",
-                "PE & Health"
-        ));
-        strandSubjects.put("GAS", gas);
-
-        // --- TVL-ICT ---
-        Map<Integer, List<String>> tvlICT = new HashMap<>();
-        tvlICT.put(11, Arrays.asList(
-                "Computer Systems Servicing 1",
-                "Computer Programming 1",
-                "Oral Communication",
-                "Komunikasyon at Pananaliksik",
-                "Reading and Writing",
-                "21st Century Literature",
-                "Physical Education & Health",
-                "Empowerment Technologies"
-        ));
-        tvlICT.put(12, Arrays.asList(
-                "Computer Systems Servicing 2",
-                "Computer Programming 2",
-                "Work Immersion",
-                "Practical Research 2",
-                "Media & Information Literacy",
-                "Contemporary Philippine Arts",
-                "Entrepreneurship",
-                "PE & Health"
-        ));
-        strandSubjects.put("TVL-ICT", tvlICT);
-
-        // --- TVL-HE (Home Economics) ---
-        Map<Integer, List<String>> tvlHE = new HashMap<>();
-        tvlHE.put(11, Arrays.asList(
-                "Cookery 1",
-                "Bread & Pastry Production 1",
-                "Oral Communication",
-                "Komunikasyon at Pananaliksik",
-                "Reading and Writing",
-                "21st Century Literature",
-                "Physical Education & Health",
-                "Empowerment Technologies"
-        ));
-        tvlHE.put(12, Arrays.asList(
-                "Cookery 2",
-                "Bread & Pastry Production 2",
-                "Housekeeping",
-                "Work Immersion",
-                "Practical Research 2",
-                "Contemporary Philippine Arts",
-                "Entrepreneurship",
-                "PE & Health"
-        ));
-        strandSubjects.put("TVL-HE", tvlHE);
-
-        // --- TVL-EIM (Electrical Installation & Maintenance) ---
-        Map<Integer, List<String>> tvlEIM = new HashMap<>();
-        tvlEIM.put(11, Arrays.asList(
-                "Electrical Installation & Maintenance 1",
-                "Basic Electricity",
-                "Oral Communication",
-                "Komunikasyon at Pananaliksik",
-                "Reading and Writing",
-                "21st Century Literature",
-                "Physical Education & Health",
-                "Empowerment Technologies"
-        ));
-        tvlEIM.put(12, Arrays.asList(
-                "Electrical Installation & Maintenance 2",
-                "Advanced Electrical Works",
-                "Work Immersion",
-                "Practical Research 2",
-                "Contemporary Philippine Arts",
-                "Entrepreneurship",
-                "Media & Information Literacy",
-                "PE & Health"
-        ));
-        strandSubjects.put("TVL-EIM", tvlEIM);
+    // Get next available ID
+    public int getMax() {
+        int id = 0;
+        Statement st;
+        try {
+            st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT MAX(id) FROM strand");
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return id + 1;
     }
 
-    // Method to get subjects
-    public static List<String> getSubjects(String strand, int grade) {
-        if (strandSubjects.containsKey(strand)) {
-            return strandSubjects.get(strand).getOrDefault(grade, new ArrayList<>());
+    public boolean getId(int id) {
+        try {
+            ps = con.prepareStatement("select * from students where id= ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Home.stuStrandId.setText(String.valueOf(rs.getInt(1)));
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Student Id doesnt exist");
+
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        return new ArrayList<>();
+
+        return false;
+    }
+
+    // Insert new strand
+    public void insert(int id, int sid, String gradeLevel, String strandName, String section) {
+        String sql = "INSERT INTO strand VALUES(?,?,?,?,?)";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.setInt(2, sid);
+            ps.setInt(3, Integer.parseInt(gradeLevel));
+            ps.setString(4, strandName);
+            ps.setString(5, section);
+
+            if (ps.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "New Strand added successfully");
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
+
+    public boolean hasSameGradeAndStrand(int studentId, String gradeLevel, String strandName) {
+        String sql = "SELECT * FROM strand WHERE student_id = ? AND grade_level = ? AND strand = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ps.setInt(2, Integer.parseInt(gradeLevel));
+            ps.setString(3, strandName);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); // true if record exists
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
+    }
+     public boolean alreadyExistGradeAndStrand(int studentId, String gradeLevel, String strandName) {
+        String sql = "SELECT * FROM strand WHERE student_id = ? AND grade_level = ? OR strand = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ps.setInt(2, Integer.parseInt(gradeLevel));
+            ps.setString(3, strandName);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); // true if record exists
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
+    }
+    public boolean gradeLevelAlreadyExist(int studentId, String gradeLevel) {
+        String sql = "SELECT * FROM strand WHERE student_id = ? AND grade_level = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ps.setInt(2, Integer.parseInt(gradeLevel)); // ✅ Convert to int
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); // true if record exists
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
+    }
+    public boolean strandAlreadyExist(int studentId, String strandName) {
+        String sql = "SELECT * FROM strand WHERE student_id = ? AND strand = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ps.setString(2, strandName);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); // true if record exists
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
+    }
+    // Fetch all strands and show in JTable
+    public void getStrandValue(JTable table, String searchValue) {
+        String sql = "SELECT * FROM strand WHERE CONCAT(id,student_id,grade_level,strand,section) LIKE ? ORDER BY id DESC";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + searchValue + "%");
+            ResultSet rs = ps.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            Object[] row;
+            while (rs.next()) {
+                row = new Object[5];
+                row[0] = rs.getInt(1);
+                row[1] = rs.getString(2);
+                row[2] = rs.getString(3);
+                row[3] = rs.getString(4);
+                row[4] = rs.getString(5);
+                model.addRow(row);
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
+
+    // Update strand details
+    public void update(int id, String gradeLevel, String strandName, String section) {
+        String sql = "UPDATE strand SET grade_level=?, strand_name=?, section=? WHERE id=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, gradeLevel);
+            ps.setString(2, strandName);
+            ps.setString(3, section);
+            ps.setInt(4, id);
+
+            if (ps.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Strand data updated successfully");
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
+
+    // Delete strand record
+    public void delete(int id) {
+        int yesOrNo = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this strand?", "Delete Strand", JOptionPane.OK_CANCEL_OPTION, 0);
+        if (yesOrNo == JOptionPane.OK_OPTION) {
+            try {
+                ps = con.prepareStatement("DELETE FROM strand WHERE id=?");
+                ps.setInt(1, id);
+                if (ps.executeUpdate() > 0) {
+                    JOptionPane.showMessageDialog(null, "Strand deleted successfully");
+                }
+            } catch (SQLException ex) {
+                System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+    }
+
+    public String getNextSection(String gradeLevel, String strandName) {
+        String section = "A";
+        String sql = "SELECT COUNT(*) FROM strand WHERE grade_level=? AND strand=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, gradeLevel);
+            ps.setString(2, strandName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                int index = count / 50;
+
+                // Convert index to letters (Excel-style: A, B, ..., Z, AA, AB...)
+                StringBuilder sb = new StringBuilder();
+                while (index >= 0) {
+                    sb.insert(0, (char) ('A' + (index % 26)));
+                    index = index / 26 - 1;
+                }
+                section = sb.toString();
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return section;
     }
 }
