@@ -2,10 +2,13 @@ package Main;
 
 import java.sql.Connection;
 import db.MyConnection;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -50,31 +53,63 @@ public class Strand {
         return false;
     }
 
-    // Insert new strand
-    public void insert(int id, int sid, String gradeLevel, String strandName, String section) {
-        String sql = "INSERT INTO strand VALUES(?,?,?,?,?)";
+//    // Insert new strand
+//    public void insert(int id, int sid, String gradeLevel, String strandName, String section) {
+//        String sql = "INSERT INTO strand VALUES(?,?,?,?,?)";
+//        try {
+//            ps = con.prepareStatement(sql);
+//            ps.setInt(1, id);
+//            ps.setInt(2, sid);
+//            ps.setInt(3, Integer.parseInt(gradeLevel));
+//            ps.setString(4, strandName);
+//            ps.setString(5, section);
+//
+//            if (ps.executeUpdate() > 0) {
+//                JOptionPane.showMessageDialog(null, "New Strand added successfully");
+//            }
+//        } catch (SQLException ex) {
+//            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+//        }
+//    }
+
+    public void insert(int id, int sid, int gradeLevel, String strandName, String section) {
+        // Fetch the subjects for the given grade level and strand
+        List<String> subjects = Subject.getSubjects(gradeLevel, strandName);
+
+        if (subjects.size() < 8) {
+            JOptionPane.showMessageDialog(null, "Not enough subjects for this strand and grade level!");
+            return;
+        }
+
+        String sql = "INSERT INTO strand (id, student_id, grade_level, strand, section, subject_1, subject_2, subject_3, subject_4, subject_5, subject_6, subject_7, subject_8) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.setInt(2, sid);
-            ps.setInt(3, Integer.parseInt(gradeLevel));
+            ps.setInt(3, gradeLevel);
             ps.setString(4, strandName);
             ps.setString(5, section);
 
+            // Insert 8 subjects
+            for (int i = 0; i < 8; i++) {
+                ps.setString(6 + i, subjects.get(i));
+            }
+
             if (ps.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "New Strand added successfully");
+                JOptionPane.showMessageDialog(null, "New Strand and Subjects added successfully");
             }
         } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+             System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
 
-    public boolean hasSameGradeAndStrand(int studentId, String gradeLevel, String strandName) {
+    public boolean hasSameGradeAndStrand(int studentId, int gradeLevel, String strandName) {
         String sql = "SELECT * FROM strand WHERE student_id = ? AND grade_level = ? AND strand = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, studentId);
-            ps.setInt(2, Integer.parseInt(gradeLevel));
+            ps.setInt(2, gradeLevel);
             ps.setString(3, strandName);
             ResultSet rs = ps.executeQuery();
             return rs.next(); // true if record exists
@@ -83,7 +118,8 @@ public class Strand {
         }
         return false;
     }
-     public boolean alreadyExistGradeAndStrand(int studentId, String gradeLevel, String strandName) {
+
+    public boolean alreadyExistGradeAndStrand(int studentId, String gradeLevel, String strandName) {
         String sql = "SELECT * FROM strand WHERE student_id = ? AND grade_level = ? OR strand = ?";
         try {
             ps = con.prepareStatement(sql);
@@ -97,6 +133,7 @@ public class Strand {
         }
         return false;
     }
+
     public boolean gradeLevelAlreadyExist(int studentId, String gradeLevel) {
         String sql = "SELECT * FROM strand WHERE student_id = ? AND grade_level = ?";
         try {
@@ -110,6 +147,7 @@ public class Strand {
         }
         return false;
     }
+
     public boolean strandAlreadyExist(int studentId, String strandName) {
         String sql = "SELECT * FROM strand WHERE student_id = ? AND strand = ?";
         try {
@@ -123,6 +161,7 @@ public class Strand {
         }
         return false;
     }
+
     // Fetch all strands and show in JTable
     public void getStrandValue(JTable table, String searchValue) {
         String sql = "SELECT * FROM strand WHERE CONCAT(id,student_id,grade_level,strand,section) LIKE ? ORDER BY id DESC";
