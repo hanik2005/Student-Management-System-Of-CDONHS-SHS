@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 25, 2025 at 11:48 AM
+-- Generation Time: Aug 26, 2025 at 11:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,29 +28,38 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `grade` (
-  `Id` int(10) NOT NULL,
+  `id` int(10) NOT NULL,
   `student_id` int(10) NOT NULL,
   `grade_level` int(2) NOT NULL,
   `strand_name` varchar(30) NOT NULL,
   `section_name` varchar(5) NOT NULL,
-  `subject_1` varchar(30) NOT NULL,
-  `sub_grade1` double(3,2) NOT NULL,
-  `subject_2` varchar(30) NOT NULL,
-  `sub_grade2` double(3,2) NOT NULL,
-  `subject_3` varchar(30) NOT NULL,
-  `sub_grade3` double(3,2) NOT NULL,
-  `subject_4` varchar(30) NOT NULL,
-  `sub_grade4` double(3,2) NOT NULL,
-  `subject_5` varchar(30) NOT NULL,
-  `sub_grade5` double(3,2) NOT NULL,
-  `subject_6` varchar(30) NOT NULL,
-  `sub_grade6` double(3,2) NOT NULL,
-  `subject_7` varchar(30) NOT NULL,
-  `sub_grade7` double(3,2) NOT NULL,
-  `subject_8` varchar(30) NOT NULL,
-  `sub_grade8` double(3,2) NOT NULL,
-  `quarter` int(1) NOT NULL
+  `subject_1` varchar(50) NOT NULL,
+  `sub_grade1` decimal(5,2) NOT NULL,
+  `subject_2` varchar(50) NOT NULL,
+  `sub_grade2` decimal(5,2) NOT NULL,
+  `subject_3` varchar(50) NOT NULL,
+  `sub_grade3` decimal(5,2) NOT NULL,
+  `subject_4` varchar(50) NOT NULL,
+  `sub_grade4` decimal(5,2) NOT NULL,
+  `subject_5` varchar(50) NOT NULL,
+  `sub_grade5` decimal(5,2) NOT NULL,
+  `subject_6` varchar(50) NOT NULL,
+  `sub_grade6` decimal(5,2) NOT NULL,
+  `subject_7` varchar(50) NOT NULL,
+  `sub_grade7` decimal(5,2) NOT NULL,
+  `subject_8` varchar(50) NOT NULL,
+  `sub_grade8` decimal(5,2) NOT NULL,
+  `quarter` int(1) NOT NULL,
+  `Average` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `grade`
+--
+
+INSERT INTO `grade` (`id`, `student_id`, `grade_level`, `strand_name`, `section_name`, `subject_1`, `sub_grade1`, `subject_2`, `sub_grade2`, `subject_3`, `sub_grade3`, `subject_4`, `sub_grade4`, `subject_5`, `sub_grade5`, `subject_6`, `sub_grade6`, `subject_7`, `sub_grade7`, `subject_8`, `sub_grade8`, `quarter`, `Average`) VALUES
+(1, 1, 11, 'STEM', 'A', 'Oral Communication', 91.12, 'Komunikasyon at Pananaliksik', 89.13, 'General Mathematics', 99.50, 'Earth and Life Science', 97.40, 'Understanding Culture, Society and Politics', 92.10, 'Pre-Calculus', 91.10, 'Basic Calculus', 81.20, 'Chemistry 1', 82.10, 1, 90.46),
+(2, 2, 11, 'TVL-HE', 'A', 'Oral Communication', 90.00, 'Komunikasyon at Pananaliksik', 90.00, 'General Mathematics', 90.00, 'Statistics and Probability', 97.00, 'Understanding Culture, Society and Politics', 80.00, 'Cookery 1', 86.00, 'Cookery 2', 81.00, 'Bread and Pastry Production', 87.00, 1, 87.63);
 
 -- --------------------------------------------------------
 
@@ -73,6 +82,14 @@ CREATE TABLE `strand` (
   `subject_7` varchar(50) NOT NULL,
   `subject_8` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `strand`
+--
+
+INSERT INTO `strand` (`id`, `student_id`, `grade_level`, `strand`, `section`, `subject_1`, `subject_2`, `subject_3`, `subject_4`, `subject_5`, `subject_6`, `subject_7`, `subject_8`) VALUES
+(1, 1, 11, 'STEM', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Earth and Life Science', 'Understanding Culture, Society and Politics', 'Pre-Calculus', 'Basic Calculus', 'Chemistry 1'),
+(2, 2, 11, 'TVL-HE', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Statistics and Probability', 'Understanding Culture, Society and Politics', 'Cookery 1', 'Cookery 2', 'Bread and Pastry Production');
 
 -- --------------------------------------------------------
 
@@ -108,7 +125,8 @@ INSERT INTO `students` (`Id`, `name`, `date_of_birth`, `gender`, `email`, `phone
 (5, 'Randy Clarito', '2025-08-07', 'Male', 'joker@gmail.com', '09944719534', 'mama randy', 'Papa randy', 'dasssdaddad', 'dadadadasadad', 'FELISILDA_&_CLARITO.pdf', 'Scholar_csr.pdf', 'D:\\PICTURES\\Narita_Taishin.png'),
 (7, 'Student', '2025-08-01', 'Male', 'jdhsadhajdh@gmail.com', '09944719534', 'maama', 'paapa', 'hasgdhagdhagda', 'dhagdasgdsagsajhd', 'CLARITO, NICK CHARLES D..pdf', 'Scholar_csr_FELISILDA.pdf', 'D:\\PICTURES\\pic_3.jpg'),
 (8, 'Andrea Bagtong', '2014-05-24', 'Male', 'Andrea@gmail.com', '09944719529313', 'gadfgadfagdgahd', 'dashdjdhakjd', 'dadasdadad', 'dadasda', 'Scholar_csr_FELISILDA.pdf', 'Scholar_csr.pdf', 'D:\\PICTURES\\GRADES_SECOND_SEMESTER.jpg'),
-(9, 'Maria Cristina ', '2009-08-14', 'Male', 'dhsahdsadhjadk@gmail.com', '099724827348', 'dhajdhsahdsajdhasjdha', 'hdajdhadhajdha', 'dasdsafdfadafgdgda', 'djhagdadgagdashdgahdgajd', 'CLARITO, NICK CHARLES D. – 2003–Present.pdf', 'Scholar_csr.pdf', 'D:\\PICTURES\\pic_3.jpg');
+(9, 'Maria Cristina ', '2009-08-14', 'Male', 'dhsahdsadhjadk@gmail.com', '099724827348', 'dhajdhsahdsajdhasjdha', 'hdajdhadhajdha', 'dasdsafdfadafgdgda', 'djhagdadgagdashdgahdgajd', 'CLARITO, NICK CHARLES D. – 2003–Present.pdf', 'Scholar_csr.pdf', 'D:\\PICTURES\\pic_3.jpg'),
+(10, 'Harbbey', '2017-08-12', 'Male', 'harbbey@gmail.com', '0994284724', 'papar', 'mama', 'lot100', 'lot500', 'dsadd', 'dasdda', 'D:\\PICTURES\\boy_pick_down_2.png');
 
 --
 -- Indexes for dumped tables
@@ -118,7 +136,7 @@ INSERT INTO `students` (`Id`, `name`, `date_of_birth`, `gender`, `email`, `phone
 -- Indexes for table `grade`
 --
 ALTER TABLE `grade`
-  ADD PRIMARY KEY (`Id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `strand`

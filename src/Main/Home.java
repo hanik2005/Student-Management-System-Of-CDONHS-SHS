@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.text.MessageFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -69,7 +70,7 @@ public class Home extends javax.swing.JFrame {
     private DefaultTableModel model;
     private String imagePath;
     private int rowIndex;
-    int studentCount = 55;
+    NumberFormat nf = NumberFormat.getInstance();
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Home.class.getName());
     public Webcam webcam;
@@ -398,7 +399,7 @@ public class Home extends javax.swing.JFrame {
         jPanel23 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
-        jButton43 = new javax.swing.JButton();
+        stuGradeManageSave = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         stuGradeManageClearBt = new javax.swing.JButton();
         jPanel43 = new javax.swing.JPanel();
@@ -1932,13 +1933,13 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        jButton43.setBackground(new java.awt.Color(102, 255, 255));
-        jButton43.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton43.setForeground(new java.awt.Color(0, 0, 0));
-        jButton43.setText("Save");
-        jButton43.addActionListener(new java.awt.event.ActionListener() {
+        stuGradeManageSave.setBackground(new java.awt.Color(102, 255, 255));
+        stuGradeManageSave.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        stuGradeManageSave.setForeground(new java.awt.Color(0, 0, 0));
+        stuGradeManageSave.setText("Save");
+        stuGradeManageSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton43ActionPerformed(evt);
+                stuGradeManageSaveActionPerformed(evt);
             }
         });
 
@@ -1963,7 +1964,7 @@ public class Home extends javax.swing.JFrame {
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton43, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuGradeManageSave, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1979,7 +1980,7 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(jButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton43, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(stuGradeManageSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(stuGradeManageClearBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -2175,11 +2176,11 @@ public class Home extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Student_ID", "Grade Level", "Strand", "Section", "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5", "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter"
+                "ID", "Student_ID", "Grade Level", "Strand", "Section", "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5", "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -2671,6 +2672,7 @@ public class Home extends javax.swing.JFrame {
 
         tableViewStudent();
         tableViewStrand();
+        tableViewGrades();
         stuID.setText(String.valueOf(student.getMax()));
         strandId.setText(String.valueOf(strand.getMax()));
         idGradeManage.setText(String.valueOf(grade.getMax()));
@@ -2692,6 +2694,14 @@ public class Home extends javax.swing.JFrame {
         StudentTrackTable.setShowGrid(true);
         StudentTrackTable.setGridColor(Color.black);
         StudentTrackTable.setBackground(Color.white);
+    }
+     private void tableViewGrades() {
+        grade.getGradeValue(StudentGradeManagementTable, "");
+        model = (DefaultTableModel) StudentGradeManagementTable.getModel();
+        StudentGradeManagementTable.setRowHeight(30);
+        StudentGradeManagementTable.setShowGrid(true);
+        StudentGradeManagementTable.setGridColor(Color.black);
+        StudentGradeManagementTable.setBackground(Color.white);
     }
 
     private void clearStudent() {
@@ -2723,7 +2733,8 @@ public class Home extends javax.swing.JFrame {
         stuStrandSearchField.setText(null);
 
     }
-    private void clearGradeManage(){
+
+    private void clearGradeManage() {
         idGradeManage.setText(String.valueOf(grade.getMax()));
         stuGradeIDSearchField.setText(null);
         stuGradeManageGradeLevelSearchField.setSelectedIndex(0);
@@ -2750,7 +2761,7 @@ public class Home extends javax.swing.JFrame {
         subScore7.setText("0.0");
         subScore8.setText("0.0");
         StudentGradeManagementTable.clearSelection();
-    
+
     }
 
     public boolean isEmptyStudent() {
@@ -2825,7 +2836,7 @@ public class Home extends javax.swing.JFrame {
     private void stuGradeManageSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSearchButtonActionPerformed
         if (stuGradeIDSearchField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Student id is missing");
-        }else{
+        } else {
             int sid = Integer.parseInt(stuGradeIDSearchField.getText());
             int gradeLevel = Integer.parseInt(stuGradeManageGradeLevelSearchField.getSelectedItem().toString());
             grade.getDetails(sid, gradeLevel);
@@ -2841,14 +2852,16 @@ public class Home extends javax.swing.JFrame {
             int gradeLevel = Integer.parseInt(stuGradeLevel.getSelectedItem().toString());
             String strandSelect = stuStrand.getSelectedItem().toString();
             String sectionSelect = stuSection.getSelectedItem().toString();
+
             if (strand.hasSameGradeAndStrand(sid, gradeLevel, strandSelect)) {
-                JOptionPane.showMessageDialog(this, "This student already enrolled in" + gradeLevel + "-" + strandSelect);
-                //return;
-            } //            }else if (strand.gradeLevelAlreadyExist(sid, gradeLevel)) {
-            //                JOptionPane.showMessageDialog(this, "You have already enrolled a grade level");
-            //            }else if(strand.strandAlreadyExist(sid, strandSelect)){
-            //                JOptionPane.showMessageDialog(this, "You have already enrolled a strand");
-            //THIS ONLY TESTING PURPOSES
+                JOptionPane.showMessageDialog(this, "This student already enrolled in " + gradeLevel + "-" + strandSelect);
+                return;
+            }
+
+            if (strand.isStudentAlreadyEnrolled(sid)) {
+                JOptionPane.showMessageDialog(this, "this Student is already enrolled in " + gradeLevel + "-" + strandSelect);
+                return;
+            } //THIS ONLY TESTING PURPOSES
             else {
                 strand.insert(id, sid, gradeLevel, strandSelect, sectionSelect);
                 StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
@@ -3023,10 +3036,76 @@ public class Home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
-    private void jButton43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton43ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton43ActionPerformed
+    private void stuGradeManageSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSaveActionPerformed
+        if (!stuGradeManageID.getText().isEmpty()) {
+            if (!grade.isidExist(Integer.parseInt(idGradeManage.getText()))) {
+                int sid = Integer.parseInt(stuGradeManageID.getText());
+                int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
+                String strand = stuGradeManageStrand.getText();
+                String section = stuGradeManageSection.getText();
+                if (!grade.isSidGradeLevelStrandExist(sid, gradeLevel, strand, section)) {
+                    if (isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
+                            && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
+                            && isNumeric(subScore6.getText()) && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText())) {
+                        int id = grade.getMax();
 
+                        String subject1 = stuGradeManageSub1.getText();
+                        String subject2 = stuGradeManageSub2.getText();
+                        String subject3 = stuGradeManageSub3.getText();
+                        String subject4 = stuGradeManageSub4.getText();
+                        String subject5 = stuGradeManageSub5.getText();
+                        String subject6 = stuGradeManageSub6.getText();
+                        String subject7 = stuGradeManageSub7.getText();
+                        String subject8 = stuGradeManageSub8.getText();
+                        int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
+
+                        double subGrade1 = Double.parseDouble(subScore1.getText());
+                        double subGrade2 = Double.parseDouble(subScore2.getText());
+                        double subGrade3 = Double.parseDouble(subScore3.getText());
+                        double subGrade4 = Double.parseDouble(subScore4.getText());
+                        double subGrade5 = Double.parseDouble(subScore5.getText());
+                        double subGrade6 = Double.parseDouble(subScore6.getText());
+                        double subGrade7 = Double.parseDouble(subScore7.getText());
+                        double subGrade8 = Double.parseDouble(subScore8.getText());
+                        double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4 + subGrade5
+                                + subGrade6 + subGrade7 + subGrade8) / 8;
+                        average = Math.round(average * 100.0) / 100.0; // rounds to 2 decimals
+
+                        grade.insert(id, sid, gradeLevel, strand, section, subject1, subject2, subject3, subject4, subject5, subject6, subject7,
+                                subject8, subGrade1, subGrade2, subGrade3, subGrade4, subGrade5, subGrade6, subGrade7, subGrade8, quarter, Double.parseDouble(nf.format(average)));
+
+                        StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section", 
+                            "Subject 1", "Score 1","Subject 2", "Score 2","Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5", 
+                            "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+                          grade.getGradeValue(StudentGradeManagementTable, "");
+                          clearGradeManage();
+
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "GradeLevel" + gradeLevel
+                            + "strand" + strand + "section" + section + "Students Grades has already added");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Grade id already exist");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No student is selected");
+        }
+    }//GEN-LAST:event_stuGradeManageSaveActionPerformed
+
+    private boolean isNumeric(String s) {
+        if (s == null || s.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Input cannot be empty!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        try {
+            Double.parseDouble(s);
+            return true; // Valid number
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid number (e.g., 98.0 or 51.1)", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return false; // Not valid
+        }
+    }
     private void stuGradeManageSub8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSub8ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_stuGradeManageSub8ActionPerformed
@@ -3404,7 +3483,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_stuRefresh_2ActionPerformed
 
     private void stuPrint_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuPrint_2ActionPerformed
-         try {
+        try {
             MessageFormat header = new MessageFormat("All Strand Student Information");
             MessageFormat footer = new MessageFormat("Page{0,number,integer}");
             StudentTrackTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
@@ -3414,7 +3493,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_stuPrint_2ActionPerformed
 
     private void stuGradeIDSearchFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stuGradeIDSearchFieldKeyTyped
-         if (!Character.isDigit(evt.getKeyChar())) {
+        if (!Character.isDigit(evt.getKeyChar())) {
             evt.consume();
         }
     }//GEN-LAST:event_stuGradeIDSearchFieldKeyTyped
@@ -3428,7 +3507,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_strandIdActionPerformed
 
     private void stuGradeIDSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeIDSearchFieldActionPerformed
-      
+
     }//GEN-LAST:event_stuGradeIDSearchFieldActionPerformed
 
     private void stuGradeManageClearBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageClearBtActionPerformed
@@ -3496,7 +3575,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton38;
     private javax.swing.JButton jButton39;
     private javax.swing.JButton jButton41;
-    private javax.swing.JButton jButton43;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
@@ -3608,6 +3686,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> stuGradeManageGradeLevelSearchField;
     public static javax.swing.JTextField stuGradeManageID;
     private javax.swing.JComboBox<String> stuGradeManageQuarter;
+    private javax.swing.JButton stuGradeManageSave;
     private javax.swing.JButton stuGradeManageSearchButton;
     public static javax.swing.JTextField stuGradeManageSection;
     public static javax.swing.JTextField stuGradeManageStrand;

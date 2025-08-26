@@ -71,7 +71,6 @@ public class Strand {
 //            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
 //        }
 //    }
-
     public void insert(int id, int sid, int gradeLevel, String strandName, String section) {
         // Fetch the subjects for the given grade level and strand
         List<String> subjects = Subject.getSubjects(gradeLevel, strandName);
@@ -100,7 +99,7 @@ public class Strand {
                 JOptionPane.showMessageDialog(null, "New Strand and Subjects added successfully");
             }
         } catch (SQLException ex) {
-             System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
 
@@ -119,13 +118,11 @@ public class Strand {
         return false;
     }
 
-    public boolean alreadyExistGradeAndStrand(int studentId, String gradeLevel, String strandName) {
-        String sql = "SELECT * FROM strand WHERE student_id = ? AND grade_level = ? OR strand = ?";
+    public boolean isStudentAlreadyEnrolled(int studentId) {
+        String sql = "SELECT * FROM strand WHERE student_id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, studentId);
-            ps.setInt(2, Integer.parseInt(gradeLevel));
-            ps.setString(3, strandName);
             ResultSet rs = ps.executeQuery();
             return rs.next(); // true if record exists
         } catch (SQLException ex) {
@@ -134,33 +131,6 @@ public class Strand {
         return false;
     }
 
-    public boolean gradeLevelAlreadyExist(int studentId, String gradeLevel) {
-        String sql = "SELECT * FROM strand WHERE student_id = ? AND grade_level = ?";
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, studentId);
-            ps.setInt(2, Integer.parseInt(gradeLevel)); // ✅ Convert to int
-            ResultSet rs = ps.executeQuery();
-            return rs.next(); // true if record exists
-        } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        return false;
-    }
-
-    public boolean strandAlreadyExist(int studentId, String strandName) {
-        String sql = "SELECT * FROM strand WHERE student_id = ? AND strand = ?";
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, studentId);
-            ps.setString(2, strandName);
-            ResultSet rs = ps.executeQuery();
-            return rs.next(); // true if record exists
-        } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        return false;
-    }
 
     // Fetch all strands and show in JTable
     public void getStrandValue(JTable table, String searchValue) {

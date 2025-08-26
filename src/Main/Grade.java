@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -81,5 +83,123 @@ public class Grade {
         }
 
         return false;
+    }
+
+    //check student id already exist
+    public boolean isidExist(int id) {
+        try {
+            ps = con.prepareStatement("select * from grade where id = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
+
+    }
+
+    //check whether the student id or gradeLevel number exist or not 
+    public boolean isSidGradeLevelStrandExist(int id, int gradeLevel, String strand, String section) {
+        try {
+            ps = con.prepareStatement("select * from grade where student_id = ?"
+                    + " and grade_level = ? and strand_name = ? and section_name = ?");
+            ps.setInt(1, id);
+            ps.setInt(2, gradeLevel);
+            ps.setString(3, strand);
+            ps.setString(4, section);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
+
+    }
+
+    // Insert new Grade
+    public void insert(int id, int sid, int gradeLevel, String strandName, String section, String subject1, String subject2, String subject3, String subject4,
+            String subject5, String subject6, String subject7, String subject8, double subGrade1, double subGrade2, double subGrade3, double subGrade4, double subGrade5, double subGrade6,
+            double subGrade7, double subGrade8, int quarter, double average) {
+        String sql = "INSERT INTO grade VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.setInt(2, sid);
+            ps.setInt(3, gradeLevel);
+            ps.setString(4, strandName);
+            ps.setString(5, section);
+            ps.setString(6, subject1);
+            ps.setDouble(7, subGrade1);
+            ps.setString(8, subject2);
+            ps.setDouble(9, subGrade2);
+            ps.setString(10, subject3);
+            ps.setDouble(11, subGrade3);
+            ps.setString(12, subject4);
+            ps.setDouble(13, subGrade4);
+            ps.setString(14, subject5);
+            ps.setDouble(15, subGrade5);
+            ps.setString(16, subject6);
+            ps.setDouble(17, subGrade6);
+            ps.setString(18, subject7);
+            ps.setDouble(19, subGrade7);
+            ps.setString(20, subject8);
+            ps.setDouble(21, subGrade8);
+            ps.setInt(22, quarter);
+            ps.setDouble(23, average);
+
+            if (ps.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Score added successfully");
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
+    // Fetch all grade and show in JTable
+    public void getGradeValue(JTable table, String searchValue) {
+        String sql = "SELECT * FROM grade WHERE CONCAT(id,student_id,grade_level,strand_name,section_name) LIKE ? ORDER BY id DESC";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + searchValue + "%");
+            ResultSet rs = ps.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            Object[] row;
+            while (rs.next()) {
+                row = new Object[23];
+                row[0] = rs.getInt(1);
+                row[1] = rs.getInt(2);
+                row[2] = rs.getInt(3);
+                row[3] = rs.getString(4);
+                row[4] = rs.getString(5);
+                row[5] = rs.getString(6);//1
+                row[6] = rs.getDouble(7);
+                row[7] = rs.getString(8);//2
+                row[8] = rs.getDouble(9);
+                row[9] = rs.getString(10);//3
+                row[10] = rs.getDouble(11);
+                row[11] = rs.getString(12);//4
+                row[12] = rs.getDouble(13);
+                row[13] = rs.getString(14);//5
+                row[14] = rs.getDouble(15);
+                row[15] = rs.getString(16);//6
+                row[16] = rs.getDouble(17);
+                row[17] = rs.getString(18);//7
+                row[18] = rs.getDouble(19);
+                row[19] = rs.getString(20);//8
+                row[20] = rs.getDouble(21);
+                row[21] = rs.getInt(22);//1
+                row[22] = rs.getDouble(23);
+                //row[6] = rs.getString(5);
+                model.addRow(row);
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
 }
