@@ -400,7 +400,7 @@ public class Home extends javax.swing.JFrame {
         jPanel19 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
         stuGradeManageSave = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        stuGradeManageUpdateBt = new javax.swing.JButton();
         stuGradeManageClearBt = new javax.swing.JButton();
         jPanel43 = new javax.swing.JPanel();
         jLabel36 = new javax.swing.JLabel();
@@ -422,12 +422,12 @@ public class Home extends javax.swing.JFrame {
         StudentGradeManagementTable = new javax.swing.JTable();
         jPanel41 = new javax.swing.JPanel();
         jLabel35 = new javax.swing.JLabel();
-        searchField4 = new javax.swing.JTextField();
-        jButton38 = new javax.swing.JButton();
-        jButton39 = new javax.swing.JButton();
+        stuGradeManageSearchStuField = new javax.swing.JTextField();
+        stuGradeManageSearchTableBt = new javax.swing.JButton();
+        stuGradeManageRefreshTable = new javax.swing.JButton();
         jPanel42 = new javax.swing.JPanel();
         jButton13 = new javax.swing.JButton();
-        jButton41 = new javax.swing.JButton();
+        stuGradeManagePrint = new javax.swing.JButton();
         jPanel25 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         jPanel29 = new javax.swing.JPanel();
@@ -1943,10 +1943,15 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        jButton8.setBackground(new java.awt.Color(102, 255, 255));
-        jButton8.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(0, 0, 0));
-        jButton8.setText("Update");
+        stuGradeManageUpdateBt.setBackground(new java.awt.Color(102, 255, 255));
+        stuGradeManageUpdateBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        stuGradeManageUpdateBt.setForeground(new java.awt.Color(0, 0, 0));
+        stuGradeManageUpdateBt.setText("Update");
+        stuGradeManageUpdateBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuGradeManageUpdateBtActionPerformed(evt);
+            }
+        });
 
         stuGradeManageClearBt.setBackground(new java.awt.Color(102, 255, 255));
         stuGradeManageClearBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -1966,7 +1971,7 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(stuGradeManageSave, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuGradeManageUpdateBt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(stuGradeManageClearBt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
@@ -1978,7 +1983,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel19Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                    .addComponent(stuGradeManageUpdateBt, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(jButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(stuGradeManageSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(stuGradeManageClearBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -2188,6 +2193,11 @@ public class Home extends javax.swing.JFrame {
             }
         });
         StudentGradeManagementTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        StudentGradeManagementTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                StudentGradeManagementTableMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(StudentGradeManagementTable);
 
         javax.swing.GroupLayout jPanel40Layout = new javax.swing.GroupLayout(jPanel40);
@@ -2214,17 +2224,27 @@ public class Home extends javax.swing.JFrame {
         jLabel35.setForeground(new java.awt.Color(0, 0, 0));
         jLabel35.setText("Search Student");
 
-        searchField4.setBackground(new java.awt.Color(255, 255, 255));
+        stuGradeManageSearchStuField.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton38.setBackground(new java.awt.Color(153, 255, 204));
-        jButton38.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jButton38.setForeground(new java.awt.Color(0, 0, 0));
-        jButton38.setText("Search");
+        stuGradeManageSearchTableBt.setBackground(new java.awt.Color(153, 255, 204));
+        stuGradeManageSearchTableBt.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        stuGradeManageSearchTableBt.setForeground(new java.awt.Color(0, 0, 0));
+        stuGradeManageSearchTableBt.setText("Search");
+        stuGradeManageSearchTableBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuGradeManageSearchTableBtActionPerformed(evt);
+            }
+        });
 
-        jButton39.setBackground(new java.awt.Color(153, 255, 204));
-        jButton39.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jButton39.setForeground(new java.awt.Color(0, 0, 0));
-        jButton39.setText("Refresh");
+        stuGradeManageRefreshTable.setBackground(new java.awt.Color(153, 255, 204));
+        stuGradeManageRefreshTable.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        stuGradeManageRefreshTable.setForeground(new java.awt.Color(0, 0, 0));
+        stuGradeManageRefreshTable.setText("Refresh");
+        stuGradeManageRefreshTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuGradeManageRefreshTableActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel41Layout = new javax.swing.GroupLayout(jPanel41);
         jPanel41.setLayout(jPanel41Layout);
@@ -2234,11 +2254,11 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel35)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchField4, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuGradeManageSearchStuField, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton38, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuGradeManageSearchTableBt, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton39, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuGradeManageRefreshTable, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel41Layout.setVerticalGroup(
@@ -2246,10 +2266,10 @@ public class Home extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel41Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searchField4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stuGradeManageSearchStuField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton38)
-                    .addComponent(jButton39))
+                    .addComponent(stuGradeManageSearchTableBt)
+                    .addComponent(stuGradeManageRefreshTable))
                 .addGap(16, 16, 16))
         );
 
@@ -2266,13 +2286,13 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        jButton41.setBackground(new java.awt.Color(102, 255, 255));
-        jButton41.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton41.setForeground(new java.awt.Color(0, 0, 0));
-        jButton41.setText("Print");
-        jButton41.addActionListener(new java.awt.event.ActionListener() {
+        stuGradeManagePrint.setBackground(new java.awt.Color(102, 255, 255));
+        stuGradeManagePrint.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        stuGradeManagePrint.setForeground(new java.awt.Color(0, 0, 0));
+        stuGradeManagePrint.setText("Print");
+        stuGradeManagePrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton41ActionPerformed(evt);
+                stuGradeManagePrintActionPerformed(evt);
             }
         });
 
@@ -2282,7 +2302,7 @@ public class Home extends javax.swing.JFrame {
             jPanel42Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel42Layout.createSequentialGroup()
                 .addContainerGap(438, Short.MAX_VALUE)
-                .addComponent(jButton41, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuGradeManagePrint, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
                 .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(509, 509, 509))
@@ -2292,7 +2312,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel42Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel42Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton41, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                    .addComponent(stuGradeManagePrint, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -2350,7 +2370,7 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Score Table", jPanel28);
+        jTabbedPane1.addTab("Grade Table", jPanel28);
 
         jPanel24.setBackground(new java.awt.Color(102, 255, 255));
 
@@ -2695,7 +2715,8 @@ public class Home extends javax.swing.JFrame {
         StudentTrackTable.setGridColor(Color.black);
         StudentTrackTable.setBackground(Color.white);
     }
-     private void tableViewGrades() {
+
+    private void tableViewGrades() {
         grade.getGradeValue(StudentGradeManagementTable, "");
         model = (DefaultTableModel) StudentGradeManagementTable.getModel();
         StudentGradeManagementTable.setRowHeight(30);
@@ -3020,9 +3041,15 @@ public class Home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton13ActionPerformed
 
-    private void jButton41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton41ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton41ActionPerformed
+    private void stuGradeManagePrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManagePrintActionPerformed
+        try {
+            MessageFormat header = new MessageFormat("Students Grade Information");
+            MessageFormat footer = new MessageFormat("Page{0,number,integer}");
+            StudentGradeManagementTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+        } catch (PrinterException ex) {
+            System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }//GEN-LAST:event_stuGradeManagePrintActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         //LOGOUT
@@ -3074,11 +3101,11 @@ public class Home extends javax.swing.JFrame {
                         grade.insert(id, sid, gradeLevel, strand, section, subject1, subject2, subject3, subject4, subject5, subject6, subject7,
                                 subject8, subGrade1, subGrade2, subGrade3, subGrade4, subGrade5, subGrade6, subGrade7, subGrade8, quarter, Double.parseDouble(nf.format(average)));
 
-                        StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section", 
-                            "Subject 1", "Score 1","Subject 2", "Score 2","Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5", 
+                        StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
+                            "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
                             "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
-                          grade.getGradeValue(StudentGradeManagementTable, "");
-                          clearGradeManage();
+                        grade.getGradeValue(StudentGradeManagementTable, "");
+                        clearGradeManage();
 
                     }
                 } else {
@@ -3102,6 +3129,7 @@ public class Home extends javax.swing.JFrame {
             Double.parseDouble(s);
             return true; // Valid number
         } catch (NumberFormatException e) {
+            System.out.println("wrong");
             JOptionPane.showMessageDialog(this, "Please enter a valid number (e.g., 98.0 or 51.1)", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return false; // Not valid
         }
@@ -3428,7 +3456,7 @@ public class Home extends javax.swing.JFrame {
 
     private void searchBt_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBt_1ActionPerformed
         if (stuSearchField_1.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a student id in the search field");
+            JOptionPane.showMessageDialog(this, "Search field is empty");
 
         } else {
             StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
@@ -3467,7 +3495,7 @@ public class Home extends javax.swing.JFrame {
 
     private void stuSearchBt_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuSearchBt_2ActionPerformed
         if (stuSearchField_2.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a student id in the search field");
+            JOptionPane.showMessageDialog(this, "Search field is empty");
 
         } else {
             StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
@@ -3513,6 +3541,101 @@ public class Home extends javax.swing.JFrame {
     private void stuGradeManageClearBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageClearBtActionPerformed
         clearGradeManage();
     }//GEN-LAST:event_stuGradeManageClearBtActionPerformed
+
+    private void StudentGradeManagementTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentGradeManagementTableMouseClicked
+        model = (DefaultTableModel) StudentGradeManagementTable.getModel();
+        rowIndex = StudentGradeManagementTable.getSelectedRow();
+        idGradeManage.setText(model.getValueAt(rowIndex, 0).toString());
+        stuGradeManageID.setText(model.getValueAt(rowIndex, 1).toString());
+        stuGradeManageGradeLevel.setText(model.getValueAt(rowIndex, 2).toString());
+        stuGradeManageStrand.setText(model.getValueAt(rowIndex, 3).toString());
+        stuGradeManageSection.setText(model.getValueAt(rowIndex, 4).toString());
+        stuGradeManageSub1.setText(model.getValueAt(rowIndex, 5).toString());//1
+        subScore1.setText(model.getValueAt(rowIndex, 6).toString());
+        stuGradeManageSub2.setText(model.getValueAt(rowIndex, 7).toString());//2
+        subScore2.setText(model.getValueAt(rowIndex, 8).toString());
+        stuGradeManageSub3.setText(model.getValueAt(rowIndex, 9).toString());//3
+        subScore3.setText(model.getValueAt(rowIndex, 10).toString());
+        stuGradeManageSub4.setText(model.getValueAt(rowIndex, 11).toString());//4
+        subScore4.setText(model.getValueAt(rowIndex, 12).toString());
+        stuGradeManageSub5.setText(model.getValueAt(rowIndex, 13).toString());//5
+        subScore5.setText(model.getValueAt(rowIndex, 14).toString());
+        stuGradeManageSub6.setText(model.getValueAt(rowIndex, 15).toString());//6
+        subScore6.setText(model.getValueAt(rowIndex, 16).toString());
+        stuGradeManageSub7.setText(model.getValueAt(rowIndex, 17).toString());//7
+        subScore7.setText(model.getValueAt(rowIndex, 18).toString());
+        stuGradeManageSub8.setText(model.getValueAt(rowIndex, 19).toString());//8
+        subScore8.setText(model.getValueAt(rowIndex, 20).toString());
+        String quarter = model.getValueAt(rowIndex, 21).toString();
+        if (quarter.equals("1")) {
+            stuGradeManageQuarter.setSelectedIndex(0);
+
+        } else if (quarter.equals("2")) {
+            stuGradeManageQuarter.setSelectedIndex(1);
+
+        } else if (quarter.equals("3")) {
+            stuGradeManageQuarter.setSelectedIndex(2);
+
+        } else {
+            stuGradeManageQuarter.setSelectedIndex(3);
+        }
+
+    }//GEN-LAST:event_StudentGradeManagementTableMouseClicked
+
+    private void stuGradeManageUpdateBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageUpdateBtActionPerformed
+        int id = Integer.parseInt(idGradeManage.getText());
+        if (grade.isidExist(id)) {
+            if (isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
+                    && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
+                    && isNumeric(subScore6.getText()) && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText())) {
+                int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
+                double subGrade1 = Double.parseDouble(subScore1.getText());
+                double subGrade2 = Double.parseDouble(subScore2.getText());
+                double subGrade3 = Double.parseDouble(subScore3.getText());
+                double subGrade4 = Double.parseDouble(subScore4.getText());
+                double subGrade5 = Double.parseDouble(subScore5.getText());
+                double subGrade6 = Double.parseDouble(subScore6.getText());
+                double subGrade7 = Double.parseDouble(subScore7.getText());
+                double subGrade8 = Double.parseDouble(subScore8.getText());
+                double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4 + subGrade5
+                        + subGrade6 + subGrade7 + subGrade8) / 8;
+                average = Math.round(average * 100.0) / 100.0; // rounds to 2 decimals
+                grade.update(id, subGrade1, subGrade2, subGrade3, subGrade4, subGrade5,
+                        subGrade6, subGrade7, subGrade8, quarter, Double.parseDouble(nf.format(average)));
+                StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
+                    "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
+                    "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+                grade.getGradeValue(StudentGradeManagementTable, "");
+                clearGradeManage();
+
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Grade id doesnt exist or wrong input");
+
+        }
+    }//GEN-LAST:event_stuGradeManageUpdateBtActionPerformed
+
+    private void stuGradeManageSearchTableBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSearchTableBtActionPerformed
+        if (stuGradeManageSearchStuField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Search field is empty");
+
+        } else {
+            StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
+                "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
+                "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+            grade.getGradeValue(StudentGradeManagementTable, stuGradeManageSearchStuField.getText());
+
+        }
+    }//GEN-LAST:event_stuGradeManageSearchTableBtActionPerformed
+
+    private void stuGradeManageRefreshTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageRefreshTableActionPerformed
+        StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
+            "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
+            "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+        grade.getGradeValue(StudentGradeManagementTable, "");
+        stuGradeManageSearchStuField.setText(null);
+    }//GEN-LAST:event_stuGradeManageRefreshTableActionPerformed
 
     private ImageIcon imageAdjust(String path, byte[] pic) {
         ImageIcon myImage = null;
@@ -3572,11 +3695,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton33;
-    private javax.swing.JButton jButton38;
-    private javax.swing.JButton jButton39;
-    private javax.swing.JButton jButton41;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -3669,7 +3788,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTable jTable6;
     private javax.swing.JTextField jTextField29;
     private javax.swing.JButton searchBt_1;
-    private javax.swing.JTextField searchField4;
     private javax.swing.JTextField strandId;
     private javax.swing.JTextField stuAddress1;
     private javax.swing.JTextField stuAddress2;
@@ -3685,9 +3803,13 @@ public class Home extends javax.swing.JFrame {
     public static javax.swing.JTextField stuGradeManageGradeLevel;
     private javax.swing.JComboBox<String> stuGradeManageGradeLevelSearchField;
     public static javax.swing.JTextField stuGradeManageID;
+    private javax.swing.JButton stuGradeManagePrint;
     private javax.swing.JComboBox<String> stuGradeManageQuarter;
+    private javax.swing.JButton stuGradeManageRefreshTable;
     private javax.swing.JButton stuGradeManageSave;
     private javax.swing.JButton stuGradeManageSearchButton;
+    private javax.swing.JTextField stuGradeManageSearchStuField;
+    private javax.swing.JButton stuGradeManageSearchTableBt;
     public static javax.swing.JTextField stuGradeManageSection;
     public static javax.swing.JTextField stuGradeManageStrand;
     public static javax.swing.JTextField stuGradeManageSub1;
@@ -3698,6 +3820,7 @@ public class Home extends javax.swing.JFrame {
     public static javax.swing.JTextField stuGradeManageSub6;
     public static javax.swing.JTextField stuGradeManageSub7;
     public static javax.swing.JTextField stuGradeManageSub8;
+    private javax.swing.JButton stuGradeManageUpdateBt;
     private javax.swing.JTextField stuID;
     private javax.swing.JTextField stuMotherName;
     private javax.swing.JTextField stuName;

@@ -2963,7 +2963,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="stuGradeManageSave" min="-2" pref="181" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  <Component id="jButton8" min="-2" pref="188" max="-2" attributes="0"/>
+                                  <Component id="stuGradeManageUpdateBt" min="-2" pref="188" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="stuGradeManageClearBt" min="-2" pref="188" max="-2" attributes="0"/>
                                   <EmptySpace pref="11" max="32767" attributes="0"/>
@@ -2977,7 +2977,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="jButton8" alignment="1" pref="55" max="32767" attributes="0"/>
+                                      <Component id="stuGradeManageUpdateBt" alignment="1" pref="55" max="32767" attributes="0"/>
                                       <Component id="jButton7" alignment="0" max="32767" attributes="0"/>
                                       <Component id="stuGradeManageSave" alignment="0" max="32767" attributes="0"/>
                                       <Component id="stuGradeManageClearBt" alignment="1" max="32767" attributes="0"/>
@@ -3022,7 +3022,7 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stuGradeManageSaveActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="jButton8">
+                        <Component class="javax.swing.JButton" name="stuGradeManageUpdateBt">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="ff" green="ff" red="66" type="rgb"/>
@@ -3035,6 +3035,9 @@
                             </Property>
                             <Property name="text" type="java.lang.String" value="Update"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stuGradeManageUpdateBtActionPerformed"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="stuGradeManageClearBt">
                           <Properties>
@@ -3327,8 +3330,8 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Score Table">
-                    <Property name="tabTitle" type="java.lang.String" value="Score Table"/>
+                  <JTabbedPaneConstraints tabName="Grade Table">
+                    <Property name="tabTitle" type="java.lang.String" value="Grade Table"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -3624,6 +3627,9 @@
                                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                                     </Property>
                                   </Properties>
+                                  <Events>
+                                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="StudentGradeManagementTableMouseClicked"/>
+                                  </Events>
                                 </Component>
                               </SubComponents>
                             </Container>
@@ -3650,11 +3656,11 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel35" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="searchField4" min="-2" pref="350" max="-2" attributes="0"/>
+                                      <Component id="stuGradeManageSearchStuField" min="-2" pref="350" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jButton38" min="-2" pref="158" max="-2" attributes="0"/>
+                                      <Component id="stuGradeManageSearchTableBt" min="-2" pref="158" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jButton39" min="-2" pref="147" max="-2" attributes="0"/>
+                                      <Component id="stuGradeManageRefreshTable" min="-2" pref="147" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -3664,10 +3670,10 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="searchField4" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                                          <Component id="stuGradeManageSearchStuField" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                                           <Component id="jLabel35" alignment="3" max="32767" attributes="0"/>
-                                          <Component id="jButton38" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jButton39" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="stuGradeManageSearchTableBt" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="stuGradeManageRefreshTable" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                                   </Group>
@@ -3686,14 +3692,14 @@
                                 <Property name="text" type="java.lang.String" value="Search Student"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JTextField" name="searchField4">
+                            <Component class="javax.swing.JTextField" name="stuGradeManageSearchStuField">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                                 </Property>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JButton" name="jButton38">
+                            <Component class="javax.swing.JButton" name="stuGradeManageSearchTableBt">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                                   <Color blue="cc" green="ff" red="99" type="rgb"/>
@@ -3706,8 +3712,11 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Search"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stuGradeManageSearchTableBtActionPerformed"/>
+                              </Events>
                             </Component>
-                            <Component class="javax.swing.JButton" name="jButton39">
+                            <Component class="javax.swing.JButton" name="stuGradeManageRefreshTable">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                                   <Color blue="cc" green="ff" red="99" type="rgb"/>
@@ -3720,6 +3729,9 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Refresh"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stuGradeManageRefreshTableActionPerformed"/>
+                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -3742,7 +3754,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace pref="438" max="32767" attributes="0"/>
-                                      <Component id="jButton41" min="-2" pref="157" max="-2" attributes="0"/>
+                                      <Component id="stuGradeManagePrint" min="-2" pref="157" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                                       <Component id="jButton13" min="-2" pref="165" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="509" max="-2" attributes="0"/>
@@ -3754,7 +3766,7 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jButton41" pref="48" max="32767" attributes="0"/>
+                                          <Component id="stuGradeManagePrint" pref="48" max="32767" attributes="0"/>
                                           <Component id="jButton13" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
@@ -3780,7 +3792,7 @@
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton13ActionPerformed"/>
                               </Events>
                             </Component>
-                            <Component class="javax.swing.JButton" name="jButton41">
+                            <Component class="javax.swing.JButton" name="stuGradeManagePrint">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                                   <Color blue="ff" green="ff" red="66" type="rgb"/>
@@ -3794,7 +3806,7 @@
                                 <Property name="text" type="java.lang.String" value="Print"/>
                               </Properties>
                               <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton41ActionPerformed"/>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stuGradeManagePrintActionPerformed"/>
                               </Events>
                             </Component>
                           </SubComponents>

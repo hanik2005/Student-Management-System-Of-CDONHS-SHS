@@ -161,6 +161,34 @@ public class Grade {
             System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
+    public void update(int id, double subGrade1, double subGrade2, double subGrade3, double subGrade4, 
+            double subGrade5, double subGrade6, double subGrade7, double subGrade8, int quarter, double average) {
+
+        String sql = "update grade set sub_grade1=?, sub_grade2=?, sub_grade3=?, sub_grade4=?, sub_grade5=?, sub_grade6=?, sub_grade7=?, "
+                + "sub_grade8=?, quarter=?, Average=? where id=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setDouble(1, subGrade1);
+            ps.setDouble(2, subGrade2);
+            ps.setDouble(3, subGrade3);
+            ps.setDouble(4, subGrade4);
+            ps.setDouble(5, subGrade5);
+            ps.setDouble(6, subGrade6);
+            ps.setDouble(7, subGrade7);
+            ps.setDouble(8, subGrade8);
+            ps.setInt(9, quarter);
+            ps.setDouble(10, average);
+            ps.setInt(11, id);
+
+            if (ps.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Grade Student data updated successfully ");
+
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+
+    }
     // Fetch all grade and show in JTable
     public void getGradeValue(JTable table, String searchValue) {
         String sql = "SELECT * FROM grade WHERE CONCAT(id,student_id,grade_level,strand_name,section_name) LIKE ? ORDER BY id DESC";
