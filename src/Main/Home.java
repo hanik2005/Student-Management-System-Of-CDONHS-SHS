@@ -66,6 +66,8 @@ public class Home extends javax.swing.JFrame {
     Student student = new Student();
     Strand strand = new Strand();
     Grade grade = new Grade();
+    MarksSheet marksSheet = new MarksSheet();
+
     int xx, xy;
     private DefaultTableModel model;
     private String imagePath;
@@ -433,18 +435,18 @@ public class Home extends javax.swing.JFrame {
         jPanel29 = new javax.swing.JPanel();
         jPanel38 = new javax.swing.JPanel();
         jLabel69 = new javax.swing.JLabel();
-        jTextField29 = new javax.swing.JTextField();
-        jButton33 = new javax.swing.JButton();
+        stuMarksSearchField = new javax.swing.JTextField();
+        stuMarksSearchBt = new javax.swing.JButton();
         jPanel34 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        Final_Average = new javax.swing.JLabel();
         jPanel30 = new javax.swing.JPanel();
         jPanel31 = new javax.swing.JPanel();
         jPanel32 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable6 = new javax.swing.JTable();
+        StudentMarksSheetTable = new javax.swing.JTable();
         jPanel33 = new javax.swing.JPanel();
         jButton18 = new javax.swing.JButton();
-        jButton19 = new javax.swing.JButton();
+        stuMarksClearBt = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -2386,16 +2388,16 @@ public class Home extends javax.swing.JFrame {
         jLabel69.setForeground(new java.awt.Color(0, 0, 0));
         jLabel69.setText("Student's ID");
 
-        jTextField29.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField29.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        stuMarksSearchField.setBackground(new java.awt.Color(255, 255, 255));
+        stuMarksSearchField.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
 
-        jButton33.setBackground(new java.awt.Color(153, 255, 204));
-        jButton33.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        jButton33.setForeground(new java.awt.Color(0, 0, 0));
-        jButton33.setText("Search");
-        jButton33.addActionListener(new java.awt.event.ActionListener() {
+        stuMarksSearchBt.setBackground(new java.awt.Color(153, 255, 204));
+        stuMarksSearchBt.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        stuMarksSearchBt.setForeground(new java.awt.Color(0, 0, 0));
+        stuMarksSearchBt.setText("Search");
+        stuMarksSearchBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton33ActionPerformed(evt);
+                stuMarksSearchBtActionPerformed(evt);
             }
         });
 
@@ -2410,9 +2412,9 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(jLabel69)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel38Layout.createSequentialGroup()
-                        .addComponent(jTextField29, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(stuMarksSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton33, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)))
+                        .addComponent(stuMarksSearchBt, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel38Layout.setVerticalGroup(
@@ -2422,8 +2424,8 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jLabel69)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton33, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                    .addComponent(jTextField29))
+                    .addComponent(stuMarksSearchBt, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                    .addComponent(stuMarksSearchField))
                 .addContainerGap())
         );
 
@@ -2431,10 +2433,10 @@ public class Home extends javax.swing.JFrame {
         jPanel34.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
         jPanel34.setForeground(new java.awt.Color(0, 0, 0));
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 32)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("CGPA: 0.0");
+        Final_Average.setFont(new java.awt.Font("Times New Roman", 1, 32)); // NOI18N
+        Final_Average.setForeground(new java.awt.Color(0, 0, 0));
+        Final_Average.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Final_Average.setText("G.A. : 0.0");
 
         javax.swing.GroupLayout jPanel34Layout = new javax.swing.GroupLayout(jPanel34);
         jPanel34.setLayout(jPanel34Layout);
@@ -2442,14 +2444,14 @@ public class Home extends javax.swing.JFrame {
             jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel34Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Final_Average, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel34Layout.setVerticalGroup(
             jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel34Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                .addComponent(Final_Average, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -2483,24 +2485,24 @@ public class Home extends javax.swing.JFrame {
         jPanel32.setBackground(new java.awt.Color(153, 255, 204));
         jPanel32.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
 
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+        StudentMarksSheetTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Student_ID", "Grade Level", "Strand", "Section", "Quarter 1", "Score 1", "Quarter 2", "Score 2", "Quarter 3", "Score 3", "Quarter 4", "Score 4"
+                "ID", "Student_ID", "Grade Level", "Strand", "Section", "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average", "Final_Average"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable6.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jScrollPane6.setViewportView(jTable6);
+        StudentMarksSheetTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jScrollPane6.setViewportView(StudentMarksSheetTable);
 
         javax.swing.GroupLayout jPanel32Layout = new javax.swing.GroupLayout(jPanel32);
         jPanel32.setLayout(jPanel32Layout);
@@ -2549,15 +2551,25 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        jButton19.setBackground(new java.awt.Color(102, 255, 255));
-        jButton19.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton19.setForeground(new java.awt.Color(0, 0, 0));
-        jButton19.setText("Clear");
+        stuMarksClearBt.setBackground(new java.awt.Color(102, 255, 255));
+        stuMarksClearBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        stuMarksClearBt.setForeground(new java.awt.Color(0, 0, 0));
+        stuMarksClearBt.setText("Clear");
+        stuMarksClearBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuMarksClearBtActionPerformed(evt);
+            }
+        });
 
         jButton20.setBackground(new java.awt.Color(102, 255, 255));
         jButton20.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton20.setForeground(new java.awt.Color(0, 0, 0));
         jButton20.setText("Print");
+        jButton20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton20ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
         jPanel33.setLayout(jPanel33Layout);
@@ -2565,7 +2577,7 @@ public class Home extends javax.swing.JFrame {
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel33Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuMarksClearBt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -2577,7 +2589,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel33Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(stuMarksClearBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(9, Short.MAX_VALUE))
@@ -2693,6 +2705,7 @@ public class Home extends javax.swing.JFrame {
         tableViewStudent();
         tableViewStrand();
         tableViewGrades();
+        tableViewFinalGrade();
         stuID.setText(String.valueOf(student.getMax()));
         strandId.setText(String.valueOf(strand.getMax()));
         idGradeManage.setText(String.valueOf(grade.getMax()));
@@ -2723,6 +2736,14 @@ public class Home extends javax.swing.JFrame {
         StudentGradeManagementTable.setShowGrid(true);
         StudentGradeManagementTable.setGridColor(Color.black);
         StudentGradeManagementTable.setBackground(Color.white);
+    }
+
+    private void tableViewFinalGrade() {
+        model = (DefaultTableModel) StudentMarksSheetTable.getModel();
+        StudentMarksSheetTable.setRowHeight(30);
+        StudentMarksSheetTable.setShowGrid(true);
+        StudentMarksSheetTable.setGridColor(Color.black);
+        StudentMarksSheetTable.setBackground(Color.white);
     }
 
     private void clearStudent() {
@@ -3065,60 +3086,87 @@ public class Home extends javax.swing.JFrame {
 
     private void stuGradeManageSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSaveActionPerformed
         if (!stuGradeManageID.getText().isEmpty()) {
-            if (!grade.isidExist(Integer.parseInt(idGradeManage.getText()))) {
-                int sid = Integer.parseInt(stuGradeManageID.getText());
-                int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
-                String strand = stuGradeManageStrand.getText();
-                String section = stuGradeManageSection.getText();
-                if (!grade.isSidGradeLevelStrandExist(sid, gradeLevel, strand, section)) {
-                    if (isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
-                            && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
-                            && isNumeric(subScore6.getText()) && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText())) {
-                        int id = grade.getMax();
+            //if (!grade.isidExist(Integer.parseInt(idGradeManage.getText()))) {
+            int sid = Integer.parseInt(stuGradeManageID.getText());
+            int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
+            String strand = stuGradeManageStrand.getText();
+            String section = stuGradeManageSection.getText();
+            int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
+            if (!grade.isSidGradeLevelStrandQuarterExist(sid, gradeLevel, strand, section, quarter)) {
+                if (isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
+                        && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
+                        && isNumeric(subScore6.getText()) && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText())) {
+                    int id = grade.getMax();
 
-                        String subject1 = stuGradeManageSub1.getText();
-                        String subject2 = stuGradeManageSub2.getText();
-                        String subject3 = stuGradeManageSub3.getText();
-                        String subject4 = stuGradeManageSub4.getText();
-                        String subject5 = stuGradeManageSub5.getText();
-                        String subject6 = stuGradeManageSub6.getText();
-                        String subject7 = stuGradeManageSub7.getText();
-                        String subject8 = stuGradeManageSub8.getText();
-                        int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
+                    String subject1 = stuGradeManageSub1.getText();
+                    String subject2 = stuGradeManageSub2.getText();
+                    String subject3 = stuGradeManageSub3.getText();
+                    String subject4 = stuGradeManageSub4.getText();
+                    String subject5 = stuGradeManageSub5.getText();
+                    String subject6 = stuGradeManageSub6.getText();
+                    String subject7 = stuGradeManageSub7.getText();
+                    String subject8 = stuGradeManageSub8.getText();
 
-                        double subGrade1 = Double.parseDouble(subScore1.getText());
-                        double subGrade2 = Double.parseDouble(subScore2.getText());
-                        double subGrade3 = Double.parseDouble(subScore3.getText());
-                        double subGrade4 = Double.parseDouble(subScore4.getText());
-                        double subGrade5 = Double.parseDouble(subScore5.getText());
-                        double subGrade6 = Double.parseDouble(subScore6.getText());
-                        double subGrade7 = Double.parseDouble(subScore7.getText());
-                        double subGrade8 = Double.parseDouble(subScore8.getText());
-                        double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4 + subGrade5
-                                + subGrade6 + subGrade7 + subGrade8) / 8;
-                        average = Math.round(average * 100.0) / 100.0; // rounds to 2 decimals
+                    double subGrade1 = Double.parseDouble(subScore1.getText());
+                    double subGrade2 = Double.parseDouble(subScore2.getText());
+                    double subGrade3 = Double.parseDouble(subScore3.getText());
+                    double subGrade4 = Double.parseDouble(subScore4.getText());
+                    double subGrade5 = Double.parseDouble(subScore5.getText());
+                    double subGrade6 = Double.parseDouble(subScore6.getText());
+                    double subGrade7 = Double.parseDouble(subScore7.getText());
+                    double subGrade8 = Double.parseDouble(subScore8.getText());
+                    double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4 + subGrade5
+                            + subGrade6 + subGrade7 + subGrade8) / 8;
+                    average = Math.round(average * 100.0) / 100.0; // rounds to 2 decimals
 
-                        grade.insert(id, sid, gradeLevel, strand, section, subject1, subject2, subject3, subject4, subject5, subject6, subject7,
-                                subject8, subGrade1, subGrade2, subGrade3, subGrade4, subGrade5, subGrade6, subGrade7, subGrade8, quarter, Double.parseDouble(nf.format(average)));
+                    grade.insert(id, sid, gradeLevel, strand, section, subject1, subject2, subject3, subject4, subject5, subject6, subject7,
+                            subject8, subGrade1, subGrade2, subGrade3, subGrade4, subGrade5, subGrade6, subGrade7, subGrade8, quarter, Double.parseDouble(nf.format(average)));
 
-                        StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
-                            "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
-                            "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
-                        grade.getGradeValue(StudentGradeManagementTable, "");
-                        clearGradeManage();
+                    insertUpdateMarkSheet(quarter, average, sid, gradeLevel, strand, section);
 
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "GradeLevel" + gradeLevel
-                            + "strand" + strand + "section" + section + "Students Grades has already added");
+                    StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
+                        "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
+                        "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+                    grade.getGradeValue(StudentGradeManagementTable, "");
+                    clearGradeManage();
+
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Grade id already exist");
+                JOptionPane.showMessageDialog(this, "GradeLevel" + gradeLevel
+                        + "strand" + strand + "section" + section + "Students Grades has already added");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "No student is selected");
+            JOptionPane.showMessageDialog(this, "Grade id already exist");
         }
+        //} else {
+        //JOptionPane.showMessageDialog(this, "No student is selected");
+        //}
     }//GEN-LAST:event_stuGradeManageSaveActionPerformed
+
+    public void insertUpdateMarkSheet(int quarter, double average, int sid, int gradeLevel, String strand, String section) {
+        
+        int marksId = marksSheet.getMax();
+            double q1 = 0, q2 = 0, q3 = 0, q4 = 0;
+            if (quarter == 1) {
+                q1 = average;
+            } else if (quarter == 2) {
+                q2 = average;
+            } else if (quarter == 3) {
+                q3 = average;
+            } else if (quarter == 4) {
+                q4 = average;
+            }
+             double finalAverage = (q1 + q2 + q3 + q4 ) / 4;
+        
+        if (marksSheet.isSidGradeLevelStrandQuarterExist(sid, gradeLevel, strand, section)) {
+            marksSheet.updateQuarter(sid, gradeLevel, strand, section, quarter, average, finalAverage);
+        } else {
+            
+
+            marksSheet.insert(marksId, sid, gradeLevel, strand, section, q1, q2, q3, q4, finalAverage);
+        }
+
+    }
 
     private boolean isNumeric(String s) {
         if (s == null || s.trim().isEmpty()) {
@@ -3154,9 +3202,23 @@ public class Home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton18ActionPerformed
 
-    private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton33ActionPerformed
+    private void stuMarksSearchBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuMarksSearchBtActionPerformed
+        if (stuMarksSearchField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter the student id field");
+        } else {
+            int sid = Integer.parseInt(stuMarksSearchField.getText());
+            if (marksSheet.isidExist(sid)) {
+                StudentMarksSheetTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
+                    "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average", "Average"}));
+                marksSheet.getFinalGradeValue(StudentMarksSheetTable, sid);
+                String GA = String.valueOf(String.format("%.2f", marksSheet.getGeneralAverage(sid)));
+                Final_Average.setText("G.A. : " + GA);
+            } else {
+                JOptionPane.showMessageDialog(this, "No Grades Found");
+            }
+
+        }
+    }//GEN-LAST:event_stuMarksSearchBtActionPerformed
 
     private void jPanel3MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseDragged
         int x = evt.getXOnScreen();
@@ -3597,6 +3659,10 @@ public class Home extends javax.swing.JFrame {
                 double subGrade6 = Double.parseDouble(subScore6.getText());
                 double subGrade7 = Double.parseDouble(subScore7.getText());
                 double subGrade8 = Double.parseDouble(subScore8.getText());
+                int sid = Integer.parseInt(stuGradeManageID.getText());
+                int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
+                String strand = stuGradeManageStrand.getText();
+                String section = stuGradeManageSection.getText();
                 double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4 + subGrade5
                         + subGrade6 + subGrade7 + subGrade8) / 8;
                 average = Math.round(average * 100.0) / 100.0; // rounds to 2 decimals
@@ -3605,6 +3671,7 @@ public class Home extends javax.swing.JFrame {
                 StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
                     "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
                     "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+                insertUpdateMarkSheet(quarter, average, sid, gradeLevel, strand, section);
                 grade.getGradeValue(StudentGradeManagementTable, "");
                 clearGradeManage();
 
@@ -3636,6 +3703,24 @@ public class Home extends javax.swing.JFrame {
         grade.getGradeValue(StudentGradeManagementTable, "");
         stuGradeManageSearchStuField.setText(null);
     }//GEN-LAST:event_stuGradeManageRefreshTableActionPerformed
+
+    private void stuMarksClearBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuMarksClearBtActionPerformed
+        stuMarksSearchField.setText(null);
+        Final_Average.setText("G.A. : 0.0");
+        StudentMarksSheetTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
+            "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average", "Average"}));
+        
+    }//GEN-LAST:event_stuMarksClearBtActionPerformed
+
+    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+        try {
+            MessageFormat header = new MessageFormat("Student Final Grade Information of" + stuMarksSearchField.getText());
+            MessageFormat footer = new MessageFormat("Page{0,number,integer}");
+            StudentMarksSheetTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+        } catch (PrinterException ex) {
+            System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }//GEN-LAST:event_jButton20ActionPerformed
 
     private ImageIcon imageAdjust(String path, byte[] pic) {
         ImageIcon myImage = null;
@@ -3676,8 +3761,10 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Clear;
+    private javax.swing.JLabel Final_Average;
     private javax.swing.JToggleButton StartWebcam;
     private javax.swing.JTable StudentGradeManagementTable;
+    private javax.swing.JTable StudentMarksSheetTable;
     private javax.swing.JTable StudentTable;
     private javax.swing.JTable StudentTrackTable;
     private javax.swing.JButton addNewBt;
@@ -3690,11 +3777,9 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -3727,7 +3812,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel61;
     private javax.swing.JLabel jLabel62;
     private javax.swing.JLabel jLabel63;
@@ -3785,8 +3869,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable6;
-    private javax.swing.JTextField jTextField29;
     private javax.swing.JButton searchBt_1;
     private javax.swing.JTextField strandId;
     private javax.swing.JTextField stuAddress1;
@@ -3822,6 +3904,9 @@ public class Home extends javax.swing.JFrame {
     public static javax.swing.JTextField stuGradeManageSub8;
     private javax.swing.JButton stuGradeManageUpdateBt;
     private javax.swing.JTextField stuID;
+    private javax.swing.JButton stuMarksClearBt;
+    private javax.swing.JButton stuMarksSearchBt;
+    private javax.swing.JTextField stuMarksSearchField;
     private javax.swing.JTextField stuMotherName;
     private javax.swing.JTextField stuName;
     private javax.swing.JTextField stuPhone;

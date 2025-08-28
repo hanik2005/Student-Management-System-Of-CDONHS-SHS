@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 26, 2025 at 11:00 AM
+-- Generation Time: Aug 28, 2025 at 06:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `cdonhs_shs_database`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `final_grade`
+--
+
+CREATE TABLE `final_grade` (
+  `id` int(10) NOT NULL,
+  `student_id` int(10) NOT NULL,
+  `grade_level` int(2) NOT NULL,
+  `strand_name` varchar(30) NOT NULL,
+  `section_name` varchar(3) NOT NULL,
+  `quarter_1_average` decimal(5,2) DEFAULT NULL,
+  `quarter_2_average` decimal(5,2) DEFAULT NULL,
+  `quarter_3_average` decimal(5,2) DEFAULT NULL,
+  `quarter_4_average` decimal(5,2) DEFAULT NULL,
+  `final_average` decimal(5,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `final_grade`
+--
+
+INSERT INTO `final_grade` (`id`, `student_id`, `grade_level`, `strand_name`, `section_name`, `quarter_1_average`, `quarter_2_average`, `quarter_3_average`, `quarter_4_average`, `final_average`) VALUES
+(1, 1, 11, 'STEM', 'A', 89.50, 86.88, 90.75, 93.50, 22.00),
+(2, 2, 11, 'TVL-HE', 'A', 23.13, 15.38, 0.00, 0.00, 23.13),
+(3, 3, 12, 'TVL-EIM', 'A', 77.38, 19.25, 0.00, 0.00, 77.38),
+(4, 4, 11, 'GAS', 'A', 11.50, 90.00, 28.88, 0.00, 7.22);
 
 -- --------------------------------------------------------
 
@@ -58,8 +87,17 @@ CREATE TABLE `grade` (
 --
 
 INSERT INTO `grade` (`id`, `student_id`, `grade_level`, `strand_name`, `section_name`, `subject_1`, `sub_grade1`, `subject_2`, `sub_grade2`, `subject_3`, `sub_grade3`, `subject_4`, `sub_grade4`, `subject_5`, `sub_grade5`, `subject_6`, `sub_grade6`, `subject_7`, `sub_grade7`, `subject_8`, `sub_grade8`, `quarter`, `Average`) VALUES
-(1, 1, 11, 'STEM', 'A', 'Oral Communication', 91.12, 'Komunikasyon at Pananaliksik', 89.13, 'General Mathematics', 99.50, 'Earth and Life Science', 97.40, 'Understanding Culture, Society and Politics', 92.10, 'Pre-Calculus', 91.10, 'Basic Calculus', 81.20, 'Chemistry 1', 82.10, 1, 90.46),
-(2, 2, 11, 'TVL-HE', 'A', 'Oral Communication', 90.00, 'Komunikasyon at Pananaliksik', 90.00, 'General Mathematics', 90.00, 'Statistics and Probability', 97.00, 'Understanding Culture, Society and Politics', 80.00, 'Cookery 1', 86.00, 'Cookery 2', 81.00, 'Bread and Pastry Production', 87.00, 1, 87.63);
+(1, 1, 11, 'STEM', 'A', 'Oral Communication', 89.00, 'Komunikasyon at Pananaliksik', 87.00, 'General Mathematics', 90.00, 'Earth and Life Science', 69.00, 'Understanding Culture, Society and Politics', 89.00, 'Pre-Calculus', 98.00, 'Basic Calculus', 95.00, 'Chemistry 1', 99.00, 1, 89.50),
+(2, 2, 11, 'TVL-HE', 'A', 'Oral Communication', 93.00, 'Komunikasyon at Pananaliksik', 92.00, 'General Mathematics', 0.00, 'Statistics and Probability', 0.00, 'Understanding Culture, Society and Politics', 0.00, 'Cookery 1', 0.00, 'Cookery 2', 0.00, 'Bread and Pastry Production', 0.00, 1, 23.13),
+(3, 2, 11, 'TVL-HE', 'A', 'Oral Communication', 32.00, 'Komunikasyon at Pananaliksik', 91.00, 'General Mathematics', 0.00, 'Statistics and Probability', 0.00, 'Understanding Culture, Society and Politics', 0.00, 'Cookery 1', 0.00, 'Cookery 2', 0.00, 'Bread and Pastry Production', 0.00, 2, 15.38),
+(4, 1, 11, 'STEM', 'A', 'Oral Communication', 88.00, 'Komunikasyon at Pananaliksik', 88.00, 'General Mathematics', 88.00, 'Earth and Life Science', 88.00, 'Understanding Culture, Society and Politics', 88.00, 'Pre-Calculus', 77.00, 'Basic Calculus', 90.00, 'Chemistry 1', 88.00, 2, 86.88),
+(5, 1, 11, 'STEM', 'A', 'Oral Communication', 99.00, 'Komunikasyon at Pananaliksik', 99.00, 'General Mathematics', 88.00, 'Earth and Life Science', 88.00, 'Understanding Culture, Society and Politics', 88.00, 'Pre-Calculus', 88.00, 'Basic Calculus', 88.00, 'Chemistry 1', 88.00, 3, 90.75),
+(6, 1, 11, 'STEM', 'A', 'Oral Communication', 99.00, 'Komunikasyon at Pananaliksik', 88.00, 'General Mathematics', 88.00, 'Earth and Life Science', 88.00, 'Understanding Culture, Society and Politics', 88.00, 'Pre-Calculus', 99.00, 'Basic Calculus', 99.00, 'Chemistry 1', 99.00, 4, 93.50),
+(7, 3, 12, 'TVL-EIM', 'A', 'Reading and Writing', 33.00, '21st Century Literature', 77.00, 'Contemporary Philippine Arts', 78.00, 'Media and Information Literacy', 76.00, 'Electrical Installation 4', 89.00, 'EIM Project', 89.00, 'Practical Research 1', 88.00, 'Empowerment Technologies', 89.00, 1, 77.38),
+(8, 3, 12, 'TVL-EIM', 'A', 'Reading and Writing', 77.00, '21st Century Literature', 77.00, 'Contemporary Philippine Arts', 0.00, 'Media and Information Literacy', 0.00, 'Electrical Installation 4', 0.00, 'EIM Project', 0.00, 'Practical Research 1', 0.00, 'Empowerment Technologies', 0.00, 2, 19.25),
+(9, 4, 11, 'GAS', 'A', 'Oral Communication', 92.00, 'Komunikasyon at Pananaliksik', 0.00, 'General Mathematics', 0.00, 'Statistics and Probability', 0.00, 'Understanding Culture, Society and Politics', 0.00, 'Humanities 1', 0.00, 'Applied Economics', 0.00, 'Organization and Management', 0.00, 1, 11.50),
+(10, 4, 11, 'GAS', 'A', 'Oral Communication', 93.00, 'Komunikasyon at Pananaliksik', 89.00, 'General Mathematics', 87.00, 'Statistics and Probability', 66.00, 'Understanding Culture, Society and Politics', 88.00, 'Humanities 1', 99.00, 'Applied Economics', 99.00, 'Organization and Management', 99.00, 2, 90.00),
+(11, 4, 11, 'GAS', 'A', 'Oral Communication', 77.00, 'Komunikasyon at Pananaliksik', 77.00, 'General Mathematics', 77.00, 'Statistics and Probability', 0.00, 'Understanding Culture, Society and Politics', 0.00, 'Humanities 1', 0.00, 'Applied Economics', 0.00, 'Organization and Management', 0.00, 3, 28.88);
 
 -- --------------------------------------------------------
 
@@ -89,7 +127,9 @@ CREATE TABLE `strand` (
 
 INSERT INTO `strand` (`id`, `student_id`, `grade_level`, `strand`, `section`, `subject_1`, `subject_2`, `subject_3`, `subject_4`, `subject_5`, `subject_6`, `subject_7`, `subject_8`) VALUES
 (1, 1, 11, 'STEM', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Earth and Life Science', 'Understanding Culture, Society and Politics', 'Pre-Calculus', 'Basic Calculus', 'Chemistry 1'),
-(2, 2, 11, 'TVL-HE', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Statistics and Probability', 'Understanding Culture, Society and Politics', 'Cookery 1', 'Cookery 2', 'Bread and Pastry Production');
+(2, 2, 11, 'TVL-HE', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Statistics and Probability', 'Understanding Culture, Society and Politics', 'Cookery 1', 'Cookery 2', 'Bread and Pastry Production'),
+(3, 3, 12, 'TVL-EIM', 'A', 'Reading and Writing', '21st Century Literature', 'Contemporary Philippine Arts', 'Media and Information Literacy', 'Electrical Installation 4', 'EIM Project', 'Practical Research 1', 'Empowerment Technologies'),
+(4, 4, 11, 'GAS', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Statistics and Probability', 'Understanding Culture, Society and Politics', 'Humanities 1', 'Applied Economics', 'Organization and Management');
 
 -- --------------------------------------------------------
 
@@ -131,6 +171,12 @@ INSERT INTO `students` (`Id`, `name`, `date_of_birth`, `gender`, `email`, `phone
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `final_grade`
+--
+ALTER TABLE `final_grade`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `grade`

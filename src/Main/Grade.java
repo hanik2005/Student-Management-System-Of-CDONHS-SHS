@@ -102,25 +102,24 @@ public class Grade {
 
     }
 
-    //check whether the student id or gradeLevel number exist or not 
-    public boolean isSidGradeLevelStrandExist(int id, int gradeLevel, String strand, String section) {
+    public boolean isSidGradeLevelStrandQuarterExist(int id, int gradeLevel, String strand, String section, int quarter) {
         try {
-            ps = con.prepareStatement("select * from grade where student_id = ?"
-                    + " and grade_level = ? and strand_name = ? and section_name = ?");
+            ps = con.prepareStatement("SELECT * FROM grade WHERE student_id = ?"
+                    + " AND grade_level = ? AND strand_name = ? AND section_name = ? AND quarter = ?");
             ps.setInt(1, id);
             ps.setInt(2, gradeLevel);
             ps.setString(3, strand);
             ps.setString(4, section);
+            ps.setInt(5, quarter);
+
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return true;
-
+                return true; // found a record with same sid, grade level, strand, section, and quarter
             }
         } catch (SQLException ex) {
             System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return false;
-
     }
 
     // Insert new Grade
@@ -161,7 +160,8 @@ public class Grade {
             System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
-    public void update(int id, double subGrade1, double subGrade2, double subGrade3, double subGrade4, 
+
+    public void update(int id, double subGrade1, double subGrade2, double subGrade3, double subGrade4,
             double subGrade5, double subGrade6, double subGrade7, double subGrade8, int quarter, double average) {
 
         String sql = "update grade set sub_grade1=?, sub_grade2=?, sub_grade3=?, sub_grade4=?, sub_grade5=?, sub_grade6=?, sub_grade7=?, "
@@ -189,6 +189,7 @@ public class Grade {
         }
 
     }
+
     // Fetch all grade and show in JTable
     public void getGradeValue(JTable table, String searchValue) {
         String sql = "SELECT * FROM grade WHERE CONCAT(id,student_id,grade_level,strand_name,section_name) LIKE ? ORDER BY id DESC";
