@@ -184,6 +184,33 @@ public class MarksSheet {
         return false;
     }
 
+    public double[] getQuarters(int sid, int gradeLevel, String strand, String section) {
+        double[] quarters = new double[4]; // q1, q2, q3, q4
+
+        String sql = "SELECT quarter_1_average, quarter_2_average, quarter_3_average, quarter_4_average "
+                + "FROM final_grade WHERE student_id=? AND grade_level=? AND strand_name=? AND section_name=?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, sid);
+            ps.setInt(2, gradeLevel);
+            ps.setString(3, strand);
+            ps.setString(4, section);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    quarters[0] = rs.getDouble("quarter_1_average");
+                    quarters[1] = rs.getDouble("quarter_2_average");
+                    quarters[2] = rs.getDouble("quarter_3_average");
+                    quarters[3] = rs.getDouble("quarter_4_average");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return quarters;
+    }
+
     public double getGeneralAverage(int sid) {
         double generalAverage = 0.0;
         String sql = "SELECT quarter_1_average, quarter_2_average, quarter_3_average, quarter_4_average "

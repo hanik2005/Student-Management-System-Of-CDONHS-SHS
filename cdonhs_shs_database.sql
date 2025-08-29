@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2025 at 06:23 PM
+-- Generation Time: Aug 29, 2025 at 03:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,7 +48,8 @@ INSERT INTO `final_grade` (`id`, `student_id`, `grade_level`, `strand_name`, `se
 (1, 1, 11, 'STEM', 'A', 89.50, 86.88, 90.75, 93.50, 22.00),
 (2, 2, 11, 'TVL-HE', 'A', 23.13, 15.38, 0.00, 0.00, 23.13),
 (3, 3, 12, 'TVL-EIM', 'A', 77.38, 19.25, 0.00, 0.00, 77.38),
-(4, 4, 11, 'GAS', 'A', 11.50, 90.00, 28.88, 0.00, 7.22);
+(4, 4, 11, 'GAS', 'A', 11.50, 90.00, 28.88, 0.00, 7.22),
+(5, 5, 11, 'ABM', 'A', 23.00, 34.88, 0.00, 0.00, 14.47);
 
 -- --------------------------------------------------------
 
@@ -97,7 +98,9 @@ INSERT INTO `grade` (`id`, `student_id`, `grade_level`, `strand_name`, `section_
 (8, 3, 12, 'TVL-EIM', 'A', 'Reading and Writing', 77.00, '21st Century Literature', 77.00, 'Contemporary Philippine Arts', 0.00, 'Media and Information Literacy', 0.00, 'Electrical Installation 4', 0.00, 'EIM Project', 0.00, 'Practical Research 1', 0.00, 'Empowerment Technologies', 0.00, 2, 19.25),
 (9, 4, 11, 'GAS', 'A', 'Oral Communication', 92.00, 'Komunikasyon at Pananaliksik', 0.00, 'General Mathematics', 0.00, 'Statistics and Probability', 0.00, 'Understanding Culture, Society and Politics', 0.00, 'Humanities 1', 0.00, 'Applied Economics', 0.00, 'Organization and Management', 0.00, 1, 11.50),
 (10, 4, 11, 'GAS', 'A', 'Oral Communication', 93.00, 'Komunikasyon at Pananaliksik', 89.00, 'General Mathematics', 87.00, 'Statistics and Probability', 66.00, 'Understanding Culture, Society and Politics', 88.00, 'Humanities 1', 99.00, 'Applied Economics', 99.00, 'Organization and Management', 99.00, 2, 90.00),
-(11, 4, 11, 'GAS', 'A', 'Oral Communication', 77.00, 'Komunikasyon at Pananaliksik', 77.00, 'General Mathematics', 77.00, 'Statistics and Probability', 0.00, 'Understanding Culture, Society and Politics', 0.00, 'Humanities 1', 0.00, 'Applied Economics', 0.00, 'Organization and Management', 0.00, 3, 28.88);
+(11, 4, 11, 'GAS', 'A', 'Oral Communication', 77.00, 'Komunikasyon at Pananaliksik', 77.00, 'General Mathematics', 77.00, 'Statistics and Probability', 0.00, 'Understanding Culture, Society and Politics', 0.00, 'Humanities 1', 0.00, 'Applied Economics', 0.00, 'Organization and Management', 0.00, 3, 28.88),
+(12, 5, 11, 'ABM', 'A', 'Oral Communication', 92.00, 'Komunikasyon at Pananaliksik', 92.00, 'General Mathematics', 0.00, 'Statistics and Probability', 0.00, 'Understanding Culture, Society and Politics', 0.00, 'Business Math', 0.00, 'Fundamentals of Accountancy 1', 0.00, 'Organization and Management', 0.00, 1, 23.00),
+(13, 5, 11, 'ABM', 'A', 'Oral Communication', 92.00, 'Komunikasyon at Pananaliksik', 93.00, 'General Mathematics', 94.00, 'Statistics and Probability', 0.00, 'Understanding Culture, Society and Politics', 0.00, 'Business Math', 0.00, 'Fundamentals of Accountancy 1', 0.00, 'Organization and Management', 0.00, 2, 34.88);
 
 -- --------------------------------------------------------
 
@@ -129,7 +132,8 @@ INSERT INTO `strand` (`id`, `student_id`, `grade_level`, `strand`, `section`, `s
 (1, 1, 11, 'STEM', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Earth and Life Science', 'Understanding Culture, Society and Politics', 'Pre-Calculus', 'Basic Calculus', 'Chemistry 1'),
 (2, 2, 11, 'TVL-HE', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Statistics and Probability', 'Understanding Culture, Society and Politics', 'Cookery 1', 'Cookery 2', 'Bread and Pastry Production'),
 (3, 3, 12, 'TVL-EIM', 'A', 'Reading and Writing', '21st Century Literature', 'Contemporary Philippine Arts', 'Media and Information Literacy', 'Electrical Installation 4', 'EIM Project', 'Practical Research 1', 'Empowerment Technologies'),
-(4, 4, 11, 'GAS', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Statistics and Probability', 'Understanding Culture, Society and Politics', 'Humanities 1', 'Applied Economics', 'Organization and Management');
+(4, 4, 11, 'GAS', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Statistics and Probability', 'Understanding Culture, Society and Politics', 'Humanities 1', 'Applied Economics', 'Organization and Management'),
+(5, 5, 11, 'ABM', 'A', 'Oral Communication', 'Komunikasyon at Pananaliksik', 'General Mathematics', 'Statistics and Probability', 'Understanding Culture, Society and Politics', 'Business Math', 'Fundamentals of Accountancy 1', 'Organization and Management');
 
 -- --------------------------------------------------------
 
@@ -168,6 +172,26 @@ INSERT INTO `students` (`Id`, `name`, `date_of_birth`, `gender`, `email`, `phone
 (9, 'Maria Cristina ', '2009-08-14', 'Male', 'dhsahdsadhjadk@gmail.com', '099724827348', 'dhajdhsahdsajdhasjdha', 'hdajdhadhajdha', 'dasdsafdfadafgdgda', 'djhagdadgagdashdgahdgajd', 'CLARITO, NICK CHARLES D. – 2003–Present.pdf', 'Scholar_csr.pdf', 'D:\\PICTURES\\pic_3.jpg'),
 (10, 'Harbbey', '2017-08-12', 'Male', 'harbbey@gmail.com', '0994284724', 'papar', 'mama', 'lot100', 'lot500', 'dsadd', 'dasdda', 'D:\\PICTURES\\boy_pick_down_2.png');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `Id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `type` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`Id`, `user_id`, `password`, `type`) VALUES
+(0, 1, '123', 'Admin');
+
 --
 -- Indexes for dumped tables
 --
@@ -194,6 +218,12 @@ ALTER TABLE `strand`
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
+  ADD PRIMARY KEY (`Id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
   ADD PRIMARY KEY (`Id`);
 COMMIT;
 

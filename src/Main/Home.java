@@ -278,6 +278,8 @@ public class Home extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
+        txtTime = new javax.swing.JLabel();
+        txtDate = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -478,7 +480,12 @@ public class Home extends javax.swing.JFrame {
         jLabel1.setText("STUDENT MANAGEMENT SYSTEM");
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo_resized_50x50.jpg"))); // NOI18N
-        jLabel17.setText("jLabel17");
+
+        txtTime.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        txtTime.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtDate.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        txtDate.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -488,18 +495,24 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 793, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtDate, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE))
+                .addGap(144, 144, 144)
+                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel17)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
+                        .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -1003,7 +1016,7 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Student", jPanel2);
@@ -1593,7 +1606,7 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 328, Short.MAX_VALUE)))
+                        .addGap(0, 342, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -2161,7 +2174,7 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Grade Management", jPanel21);
@@ -2215,7 +2228,7 @@ public class Home extends javax.swing.JFrame {
             jPanel40Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel40Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -2355,7 +2368,7 @@ public class Home extends javax.swing.JFrame {
             jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel26Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -2654,7 +2667,7 @@ public class Home extends javax.swing.JFrame {
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 653, Short.MAX_VALUE)
+            .addGap(0, 660, Short.MAX_VALUE)
             .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel25Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -2681,7 +2694,7 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 681, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -2702,6 +2715,8 @@ public class Home extends javax.swing.JFrame {
 
     public void init() {
 
+        setTime();
+        setDate();
         tableViewStudent();
         tableViewStrand();
         tableViewGrades();
@@ -3144,8 +3159,31 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_stuGradeManageSaveActionPerformed
 
     public void insertUpdateMarkSheet(int quarter, double average, int sid, int gradeLevel, String strand, String section) {
-        
-        int marksId = marksSheet.getMax();
+        if (marksSheet.isSidGradeLevelStrandQuarterExist(sid, gradeLevel, strand, section)) {
+            // 1. Get existing quarter values from DB
+            double[] quarters = marksSheet.getQuarters(sid, gradeLevel, strand, section);
+            // quarters[0] = q1, quarters[1] = q2, quarters[2] = q3, quarters[3] = q4
+
+            // 2. Update the correct quarter
+            if (quarter == 1) {
+                quarters[0] = average;
+            } else if (quarter == 2) {
+                quarters[1] = average;
+            } else if (quarter == 3) {
+                quarters[2] = average;
+            } else if (quarter == 4) {
+                quarters[3] = average;
+            }
+
+            // 3. Recalculate final average
+            double finalAverage = (quarters[0] + quarters[1] + quarters[2] + quarters[3]) / 4.0;
+
+            // 4. Update DB with one quarter and final average
+            marksSheet.updateQuarter(sid, gradeLevel, strand, section, quarter, average, finalAverage);
+
+        } else {
+            // Insert new record if not exists
+            int marksId = marksSheet.getMax();
             double q1 = 0, q2 = 0, q3 = 0, q4 = 0;
             if (quarter == 1) {
                 q1 = average;
@@ -3156,12 +3194,8 @@ public class Home extends javax.swing.JFrame {
             } else if (quarter == 4) {
                 q4 = average;
             }
-             double finalAverage = (q1 + q2 + q3 + q4 ) / 4;
-        
-        if (marksSheet.isSidGradeLevelStrandQuarterExist(sid, gradeLevel, strand, section)) {
-            marksSheet.updateQuarter(sid, gradeLevel, strand, section, quarter, average, finalAverage);
-        } else {
-            
+
+            double finalAverage = (q1 + q2 + q3 + q4) / 4.0;
 
             marksSheet.insert(marksId, sid, gradeLevel, strand, section, q1, q2, q3, q4, finalAverage);
         }
@@ -3709,7 +3743,7 @@ public class Home extends javax.swing.JFrame {
         Final_Average.setText("G.A. : 0.0");
         StudentMarksSheetTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
             "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average", "Average"}));
-        
+
     }//GEN-LAST:event_stuMarksClearBtActionPerformed
 
     private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
@@ -3735,6 +3769,22 @@ public class Home extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon(newImage);
         return icon;
 
+    }
+
+    public void setTime() {
+        javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
+            java.util.Date date = new java.util.Date();
+            java.text.SimpleDateFormat tf = new java.text.SimpleDateFormat("hh:mm:ss a");
+            txtTime.setText(tf.format(date));
+        });
+        timer.start();
+    }
+
+    public void setDate() {
+        java.util.Date date = new java.util.Date();
+        // EEEE = full day name (e.g., Thursday)
+        java.text.SimpleDateFormat df = new java.text.SimpleDateFormat("EEEE, MMMM dd, yyyy");
+        txtDate.setText(df.format(date));
     }
 
     public static void main(String args[]) {
@@ -3932,6 +3982,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField subScore6;
     private javax.swing.JTextField subScore7;
     private javax.swing.JTextField subScore8;
+    private javax.swing.JLabel txtDate;
+    private javax.swing.JLabel txtTime;
     private javax.swing.JButton updateBt;
     private javax.swing.JPanel webPanel;
     // End of variables declaration//GEN-END:variables
