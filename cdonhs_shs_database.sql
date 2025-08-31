@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 29, 2025 at 03:48 PM
+-- Generation Time: Aug 31, 2025 at 04:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -143,11 +143,13 @@ INSERT INTO `strand` (`id`, `student_id`, `grade_level`, `strand`, `section`, `s
 
 CREATE TABLE `students` (
   `Id` int(10) NOT NULL,
-  `name` varchar(50) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
   `date_of_birth` date NOT NULL,
   `gender` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `phone_number` varchar(50) NOT NULL,
+  `phone_number` varchar(20) NOT NULL,
   `mother_name` varchar(50) NOT NULL,
   `father_name` varchar(50) NOT NULL,
   `address1` varchar(50) NOT NULL,
@@ -161,16 +163,9 @@ CREATE TABLE `students` (
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`Id`, `name`, `date_of_birth`, `gender`, `email`, `phone_number`, `mother_name`, `father_name`, `address1`, `address2`, `birth_certificate`, `form_137`, `image_path`) VALUES
-(1, 'Nick Charles D. Clarito', '2005-08-20', 'Male', 'nidu.clarito@gmail.com', '09944719534', 'dasdadlkaldkald', 'ndassjhdahd', 'dasndajdajd', 'sajdsahdakhdak', 'dadadada', 'dadadsdad', 'D:\\PICTURES\\anime-moon-landscape.jpg'),
-(2, 'Andry D. Clarito', '2004-08-13', 'Male', 'andryclarito@gmail.com', '099944719534', 'Maria Cristina D. Clarito', 'Randy A. Clarito', 'Blk 4 Buena Macasandig Cagayan De Oro City', 'Magsaysay', 'D:\\DOCUMENTATION\\FELISILDA_&_CLARITO.pdf', 'D:\\DOCUMENTATION\\Group 1 - Client Interview Submission (1).pdf', 'D:\\PICTURES\\anime-moon-landscape.jpg'),
-(3, 'Harvey D. Clarito', '2025-08-12', 'Male', 'dadads@gmail.com', '083829389', 'Papap', 'mama', 'djadjaldajdkasdjkad', 'Father', 'CLARITO, NICK CHARLES D..pdf', 'Scholar_csr_FELISILDA.pdf', 'D:\\PICTURES\\boy_pick_down_1.png'),
-(4, 'Miss Cristina ', '2025-08-03', 'Male', 'dahdgsadsdhsshkk@gmail.com', '09943746376434', 'jfjahfshfjhfahfkajfh', 'jhfasjfjfhafhajf', 'hfajffkfbabfaffafaf', 'hfsafhafgahgfhsgfkafk', 'Scholar_csr_FELISILDA.pdf', 'SAINT VINCENT DE PAUL CHAPEL.pdf', 'D:\\PICTURES\\pic.jpg'),
-(5, 'Randy Clarito', '2025-08-07', 'Male', 'joker@gmail.com', '09944719534', 'mama randy', 'Papa randy', 'dasssdaddad', 'dadadadasadad', 'FELISILDA_&_CLARITO.pdf', 'Scholar_csr.pdf', 'D:\\PICTURES\\Narita_Taishin.png'),
-(7, 'Student', '2025-08-01', 'Male', 'jdhsadhajdh@gmail.com', '09944719534', 'maama', 'paapa', 'hasgdhagdhagda', 'dhagdasgdsagsajhd', 'CLARITO, NICK CHARLES D..pdf', 'Scholar_csr_FELISILDA.pdf', 'D:\\PICTURES\\pic_3.jpg'),
-(8, 'Andrea Bagtong', '2014-05-24', 'Male', 'Andrea@gmail.com', '09944719529313', 'gadfgadfagdgahd', 'dashdjdhakjd', 'dadasdadad', 'dadasda', 'Scholar_csr_FELISILDA.pdf', 'Scholar_csr.pdf', 'D:\\PICTURES\\GRADES_SECOND_SEMESTER.jpg'),
-(9, 'Maria Cristina ', '2009-08-14', 'Male', 'dhsahdsadhjadk@gmail.com', '099724827348', 'dhajdhsahdsajdhasjdha', 'hdajdhadhajdha', 'dasdsafdfadafgdgda', 'djhagdadgagdashdgahdgajd', 'CLARITO, NICK CHARLES D. – 2003–Present.pdf', 'Scholar_csr.pdf', 'D:\\PICTURES\\pic_3.jpg'),
-(10, 'Harbbey', '2017-08-12', 'Male', 'harbbey@gmail.com', '0994284724', 'papar', 'mama', 'lot100', 'lot500', 'dsadd', 'dasdda', 'D:\\PICTURES\\boy_pick_down_2.png');
+INSERT INTO `students` (`Id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `gender`, `email`, `phone_number`, `mother_name`, `father_name`, `address1`, `address2`, `birth_certificate`, `form_137`, `image_path`) VALUES
+(1, 'Nick Charles', 'Durangparang', 'Claritoy', '2005-08-20', 'Male', 'nick@gmail.com', '09944719534', 'papa', 'mama', 'dsadsad', 'dasdasdsa', 'dasdsada', 'dsdsdzzzzss', 'D:\\PICTURES\\anime-moon-landscape.jpg'),
+(2, 'Andry', 'Dur', 'Clarito', '2020-08-08', 'Male', 'dadsad@gmail.com', '099483434', 'dadsad', 'dasdad', 'dadad', 'adad', 'adadafasf', 'dsgdsgg', 'D:\\PICTURES\\boy_pick_right_2.png');
 
 -- --------------------------------------------------------
 
@@ -190,7 +185,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`Id`, `user_id`, `password`, `type`) VALUES
-(0, 1, '123', 'Admin');
+(0, 1, '123', 'Admin'),
+(1, 1, 'clarito20050820', 'Student'),
+(2, 2, 'clarito20200808', 'Student');
 
 --
 -- Indexes for dumped tables
