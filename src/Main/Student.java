@@ -34,26 +34,28 @@ public class Student {
     }
 
     //insert data into student table
-    public void insert(int id, String sname, String date, String gender, String email, String phone,
+    public void insert(int id, String fname, String midName, String lastName, String date, String gender, String email, String phone,
             String motherName, String fatherName, String addressLine1,
             String addressLine2, String birthCer, String form137, String imagePath) {
 
-        String sql = "insert into students values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into students values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
-            ps.setString(2, sname);
-            ps.setString(3, date);
-            ps.setString(4, gender);
-            ps.setString(5, email);
-            ps.setString(6, phone);
-            ps.setString(7, motherName);
-            ps.setString(8, fatherName);
-            ps.setString(9, addressLine1);
-            ps.setString(10, addressLine2);
-            ps.setString(11, birthCer);
-            ps.setString(12, form137);
-            ps.setString(13, imagePath);
+            ps.setString(2, fname);
+            ps.setString(3, midName);
+            ps.setString(4, lastName);
+            ps.setString(5, date);
+            ps.setString(6, gender);
+            ps.setString(7, email);
+            ps.setString(8, phone);
+            ps.setString(9, motherName);
+            ps.setString(10, fatherName);
+            ps.setString(11, addressLine1);
+            ps.setString(12, addressLine2);
+            ps.setString(13, birthCer);
+            ps.setString(14, form137);
+            ps.setString(15, imagePath);
 
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "New Student added successfully");
@@ -65,38 +67,30 @@ public class Student {
 
     }
 
-    //check if student gmail account already exist
-    public boolean isEmailExist(String email) {
+    public boolean isEmailExist(String email, int excludeId) {
         try {
-            ps = con.prepareStatement("select * from students where email = ?");
+            ps = con.prepareStatement("SELECT * FROM students WHERE email = ? AND id <> ?");
             ps.setString(1, email);
+            ps.setInt(2, excludeId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return true;
-
-            }
+            return rs.next();
         } catch (SQLException ex) {
             System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return false;
-
     }
 
-    //check if student phone number already exist
-    public boolean isPhoneExist(String phone) {
+    public boolean isPhoneExist(String phone, int excludeId) {
         try {
-            ps = con.prepareStatement("select * from students where phone_number = ?");
+            ps = con.prepareStatement("SELECT * FROM students WHERE phone_number = ? AND id <> ?");
             ps.setString(1, phone);
+            ps.setInt(2, excludeId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return true;
-
-            }
+            return rs.next();
         } catch (SQLException ex) {
             System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return false;
-
     }
 
     //check if student phone number already exist
@@ -118,7 +112,7 @@ public class Student {
 
     //get all student values from database student table
     public void getStudentValue(JTable table, String searchValue) {
-        String sql = "select * from students where concat(name,email,phone_number) like ? order by id desc";
+        String sql = "select * from students where concat(first_name,middle_name,last_name,email,phone_number) like ? order by id desc";
 
         try {
             ps = con.prepareStatement(sql);
@@ -127,7 +121,7 @@ public class Student {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             Object[] row;
             while (rs.next()) {
-                row = new Object[13];
+                row = new Object[15];
                 row[0] = rs.getInt(1);
                 row[1] = rs.getString(2);
                 row[2] = rs.getString(3);
@@ -141,6 +135,8 @@ public class Student {
                 row[10] = rs.getString(11);
                 row[11] = rs.getString(12);
                 row[12] = rs.getString(13);
+                row[13] = rs.getString(14);
+                row[14] = rs.getString(15);
                 model.addRow(row);
 
             }
@@ -150,27 +146,29 @@ public class Student {
 
     }
 
-    public void update(int id, String sname, String date, String gender, String email, String phone,
+    public void update(int id, String fname, String midName, String lname, String date, String gender, String email, String phone,
             String motherName, String fatherName, String addressLine1,
             String addressLine2, String birthCer, String form137, String imagePath) {
 
-        String sql = "update students set name=?,date_of_birth=?,gender=?,email=?,phone_number=?,mother_name=?,"
+        String sql = "update students set first_name=?,middle_name=?,last_name=?,date_of_birth=?,gender=?,email=?,phone_number=?,mother_name=?,"
                 + "father_name=?,address1=?,address2=?,birth_certificate=?,form_137=?,image_path=? where id=?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, sname);
-            ps.setString(2, date);
-            ps.setString(3, gender);
-            ps.setString(4, email);
-            ps.setString(5, phone);
-            ps.setString(6, motherName);
-            ps.setString(7, fatherName);
-            ps.setString(8, addressLine1);
-            ps.setString(9, addressLine2);
-            ps.setString(10, birthCer);
-            ps.setString(11, form137);
-            ps.setString(12, imagePath);
-            ps.setInt(13, id);
+            ps.setString(1, fname);
+            ps.setString(2, midName);
+            ps.setString(3, lname);
+            ps.setString(4, date);
+            ps.setString(5, gender);
+            ps.setString(6, email);
+            ps.setString(7, phone);
+            ps.setString(8, motherName);
+            ps.setString(9, fatherName);
+            ps.setString(10, addressLine1);
+            ps.setString(11, addressLine2);
+            ps.setString(12, birthCer);
+            ps.setString(13, form137);
+            ps.setString(14, imagePath);
+            ps.setInt(15, id);
 
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Student data updated successfully ");

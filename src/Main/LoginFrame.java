@@ -241,7 +241,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
             int userId = Integer.parseInt(userID.getText());
             String password = String.valueOf(userPass.getPassword());
-            String type =  userType.getSelectedItem().toString();
+            String type = userType.getSelectedItem().toString();
             try {
                 ps = con.prepareStatement("select * from user where user_id = ? and password=? and type=?");
                 ps.setInt(1, userId);
@@ -250,12 +250,26 @@ public class LoginFrame extends javax.swing.JFrame {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(this, "Login complete");
-                    Home home = new Home();
-                    home.setVisible(true);
-                    home.pack();
-                    this.dispose();
+                    if (type.equals("Student")) {
+                        StudentPortal portal = new StudentPortal();
+                        portal.setVisible(true);
+                        portal.pack();
+                        this.dispose();
+                    }
+                    if (type.equals("Teacher")) {
+                        Home home = new Home();
+                        home.setVisible(true);
+                        home.pack();
+                        this.dispose();
+                    }
+                    if (type.equals("Admin")) {
+                        StudentPortal portal = new StudentPortal();
+                        portal.setVisible(true);
+                        portal.pack();
+                        this.dispose();
+                    }
 
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(this, "User doesnt Exist");
                 }
             } catch (SQLException ex) {

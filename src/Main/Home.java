@@ -66,6 +66,7 @@ public class Home extends javax.swing.JFrame {
     Student student = new Student();
     Strand strand = new Strand();
     Grade grade = new Grade();
+    User user = new User();
     MarksSheet marksSheet = new MarksSheet();
 
     int xx, xy;
@@ -174,7 +175,7 @@ public class Home extends javax.swing.JFrame {
 
         // ✅ Fill textfields if data exists
         stuID.setText(dataMap.getOrDefault("ID", ""));
-        stuName.setText(dataMap.getOrDefault("Name", ""));
+        stuFname.setText(dataMap.getOrDefault("Name", ""));
         try {
             String birthdate = dataMap.get("Birthdate");
             if (birthdate != null && !birthdate.isEmpty()) {
@@ -284,7 +285,7 @@ public class Home extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         stuID = new javax.swing.JTextField();
-        stuName = new javax.swing.JTextField();
+        stuFname = new javax.swing.JTextField();
         stuMotherName = new javax.swing.JTextField();
         stuAddress1 = new javax.swing.JTextField();
         stuAddress2 = new javax.swing.JTextField();
@@ -309,6 +310,10 @@ public class Home extends javax.swing.JFrame {
         browseForm137 = new javax.swing.JButton();
         stuBirthCer = new javax.swing.JTextField();
         stuForm137 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        stuMiddleName = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        stuLastName = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         webPanel = new javax.swing.JPanel();
@@ -530,8 +535,8 @@ public class Home extends javax.swing.JFrame {
         stuID.setBackground(new java.awt.Color(204, 204, 204));
         stuID.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
 
-        stuName.setBackground(java.awt.Color.white);
-        stuName.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        stuFname.setBackground(java.awt.Color.white);
+        stuFname.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
 
         stuMotherName.setBackground(java.awt.Color.white);
         stuMotherName.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
@@ -558,7 +563,7 @@ public class Home extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Student's Name");
+        jLabel3.setText("First Name");
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
@@ -654,6 +659,20 @@ public class Home extends javax.swing.JFrame {
 
         stuForm137.setBackground(java.awt.Color.white);
 
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Middle Name");
+
+        stuMiddleName.setBackground(java.awt.Color.white);
+        stuMiddleName.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("Last Name");
+
+        stuLastName.setBackground(java.awt.Color.white);
+        stuLastName.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -674,20 +693,14 @@ public class Home extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(stuAddress1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(stuName, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel61)
                             .addComponent(jLabel62, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(stuBirth, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(stuGender, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(175, 175, 175))
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(stuGender, 0, 133, Short.MAX_VALUE)
+                            .addComponent(stuBirth, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel63)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -715,7 +728,22 @@ public class Home extends javax.swing.JFrame {
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(browseForm137)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(stuForm137)))))
+                                .addComponent(stuForm137))))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(31, 31, 31)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(stuFname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(stuMiddleName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(stuLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -726,11 +754,19 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(stuID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(stuName, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(stuFname, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(stuMiddleName, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(stuLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel61)
                     .addComponent(stuBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -764,14 +800,14 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(browseBirthCertificate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(browseBirthCertificate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(stuBirthCer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(browseForm137, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(browseForm137, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(stuForm137, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel5.setBackground(new java.awt.Color(153, 255, 204));
@@ -1014,9 +1050,11 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(78, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Student", jPanel2);
@@ -1086,11 +1124,11 @@ public class Home extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Student_ID", "Student_Name", "Date Of Birth", "Gender", "Email", "Phone Number", "Father's Name", "Mother's Name", "Address Line 1", "Address Line 2", "Birth Cerificate", "Form137", "Image Path"
+                "Student_ID", "First_Name", "Middle_Name", "Last_Name", "Date Of Birth", "Gender", "Email", "Phone Number", "Father's Name", "Mother's Name", "Address Line 1", "Address Line 2", "Birth Cerificate", "Form137", "Image Path"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -2763,7 +2801,9 @@ public class Home extends javax.swing.JFrame {
 
     private void clearStudent() {
         stuID.setText(String.valueOf(student.getMax()));
-        stuName.setText(null);
+        stuFname.setText(null);
+        stuMiddleName.setText(null);
+        stuLastName.setText(null);
         stuBirth.setDate(null);
         stuGender.setSelectedIndex(0);
         stuEmail.setText(null);
@@ -2822,7 +2862,7 @@ public class Home extends javax.swing.JFrame {
     }
 
     public boolean isEmptyStudent() {
-        if (stuName.getText().isEmpty()) {
+        if (stuFname.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Student name is missing");
             return false;
 
@@ -2952,11 +2992,14 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_stuStrandSearchBtActionPerformed
 
     private void addNewBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewBtActionPerformed
+        int id = student.getMax();
         if (isEmptyStudent()) {
-            if (!student.isEmailExist(stuEmail.getText())) {
-                if (!student.isPhoneExist(stuPhone.getText())) {
-                    int id = student.getMax();
-                    String sname = stuName.getText();
+            if (!student.isEmailExist(stuEmail.getText(), id)) {
+                if (!student.isPhoneExist(stuPhone.getText(), id)) {
+                    
+                    String sFname = stuFname.getText();
+                    String sMiddleName = stuMiddleName.getText();
+                    String sLastName = stuLastName.getText();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String date = dateFormat.format(stuBirth.getDate());
                     String gender = stuGender.getSelectedItem().toString();
@@ -2968,27 +3011,33 @@ public class Home extends javax.swing.JFrame {
                     String addressLine2 = stuAddress2.getText();
                     String birthCer = stuBirthCer.getText();
                     String form137 = stuForm137.getText();
-                    student.insert(id, sname, date, gender, email, phone,
+
+                    SimpleDateFormat passFormat = new SimpleDateFormat("yyyyMMdd");
+                    String birthForPass = passFormat.format(stuBirth.getDate());
+                    String password = sLastName.toLowerCase() + birthForPass;
+                    String type = "Student";
+
+                    student.insert(id, sFname, sMiddleName, sLastName, date, gender, email, phone,
                             motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
+                    user.insert(id, id, password, type);
 
-                    String qrContent = "ID: " + id
-                            + "\nName: " + sname
-                            + "\nBirthdate: " + date
-                            + "\nGender: " + gender
-                            + "\nEmail: " + email
-                            + "\nPhone: " + phone
-                            + "\nMother: " + motherName
-                            + "\nFather: " + fatherName
-                            + "\nAddress 1: " + addressLine1
-                            + "\nAddress 2: " + addressLine2
-                            + "\nBirth Certificate: " + birthCer
-                            + "\nForm 137: " + form137
-                            + "\nImage: " + imagePath;
-
-                    // ✅ Generate QR code with all details
-                    generateQRCode(id, sname, qrContent);
-
-                    StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+//                    String qrContent = "ID: " + id
+//                            + "\nName: " + sname
+//                            + "\nBirthdate: " + date
+//                            + "\nGender: " + gender
+//                            + "\nEmail: " + email
+//                            + "\nPhone: " + phone
+//                            + "\nMother: " + motherName
+//                            + "\nFather: " + fatherName
+//                            + "\nAddress 1: " + addressLine1
+//                            + "\nAddress 2: " + addressLine2
+//                            + "\nBirth Certificate: " + birthCer
+//                            + "\nForm 137: " + form137
+//                            + "\nImage: " + imagePath;
+//
+//                    // ✅ Generate QR code with all details
+//                    generateQRCode(id, sname, qrContent);
+                    StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "First Name", "Middle Name", "Last Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
                         "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
                     student.getStudentValue(StudentTable, "");
                     clearStudent();
@@ -3392,7 +3441,9 @@ public class Home extends javax.swing.JFrame {
             int id = Integer.parseInt(stuID.getText());
             if (student.isidExist(id)) {
                 if (!check()) {
-                    String sname = stuName.getText();
+                    String sfname = stuFname.getText();
+                    String sMidName = stuMiddleName.getText();
+                    String sLastName = stuLastName.getText();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String date = dateFormat.format(stuBirth.getDate());
                     String gender = stuGender.getSelectedItem().toString();
@@ -3404,27 +3455,26 @@ public class Home extends javax.swing.JFrame {
                     String addressLine2 = stuAddress2.getText();
                     String birthCer = stuBirthCer.getText();
                     String form137 = stuForm137.getText();
-                    student.update(id, sname, date, gender, email, phone,
+                    student.update(id, sfname, sMidName, sLastName, date, gender, email, phone,
                             motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
 
-                    String qrContent = "ID: " + id
-                            + "\nName: " + sname
-                            + "\nBirthdate: " + date
-                            + "\nGender: " + gender
-                            + "\nEmail: " + email
-                            + "\nPhone: " + phone
-                            + "\nMother: " + motherName
-                            + "\nFather: " + fatherName
-                            + "\nAddress 1: " + addressLine1
-                            + "\nAddress 2: " + addressLine2
-                            + "\nBirth Certificate: " + birthCer
-                            + "\nForm 137: " + form137
-                            + "\nImage: " + imagePath;
-
-                    // ✅ Generate QR code with all details
-                    generateQRCode(id, sname, qrContent);
-
-                    StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+//                    String qrContent = "ID: " + id
+//                            + "\nName: " + sname
+//                            + "\nBirthdate: " + date
+//                            + "\nGender: " + gender
+//                            + "\nEmail: " + email
+//                            + "\nPhone: " + phone
+//                            + "\nMother: " + motherName
+//                            + "\nFather: " + fatherName
+//                            + "\nAddress 1: " + addressLine1
+//                            + "\nAddress 2: " + addressLine2
+//                            + "\nBirth Certificate: " + birthCer
+//                            + "\nForm 137: " + form137
+//                            + "\nImage: " + imagePath;
+//
+//                    // ✅ Generate QR code with all details
+//                    generateQRCode(id, sname, qrContent);
+                    StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "First Name", "Middle Name", "LastName", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
                         "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
                     student.getStudentValue(StudentTable, "");
                     clearStudent();
@@ -3440,6 +3490,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_updateBtActionPerformed
 
     public boolean check() {
+        int id = Integer.parseInt(stuID.getText()); // current student ID
         String newEmail = stuEmail.getText();
         String newPhone = stuPhone.getText();
         String oldEmail = model.getValueAt(rowIndex, 4).toString();
@@ -3449,7 +3500,7 @@ public class Home extends javax.swing.JFrame {
 
         } else {
             if (!newEmail.equals(oldEmail)) {
-                boolean x = student.isEmailExist(newEmail);
+                boolean x = student.isEmailExist(newEmail, id);
                 if (x) {
                     JOptionPane.showMessageDialog(this, "the email already exist");
 
@@ -3457,7 +3508,7 @@ public class Home extends javax.swing.JFrame {
                 return x;
             }
             if (!newPhone.equals(oldPhone)) {
-                boolean x = student.isPhoneExist(newPhone);
+                boolean x = student.isPhoneExist(newPhone, id);
                 if (x) {
                     JOptionPane.showMessageDialog(this, "the phone number already exist");
 
@@ -3486,16 +3537,18 @@ public class Home extends javax.swing.JFrame {
         model = (DefaultTableModel) StudentTable.getModel();
         rowIndex = StudentTable.getSelectedRow();
         stuID.setText(model.getValueAt(rowIndex, 0).toString());
-        stuName.setText(model.getValueAt(rowIndex, 1).toString());
+        stuFname.setText(model.getValueAt(rowIndex, 1).toString());
+        stuMiddleName.setText(model.getValueAt(rowIndex, 2).toString());
+        stuLastName.setText(model.getValueAt(rowIndex, 3).toString());
 
         try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(model.getValueAt(rowIndex, 2).toString());
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(model.getValueAt(rowIndex, 4).toString());
             stuBirth.setDate(date);
         } catch (ParseException ex) {
             System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
 
-        String gender = model.getValueAt(rowIndex, 3).toString();
+        String gender = model.getValueAt(rowIndex, 5).toString();
         if (gender.equals("Male")) {
             stuGender.setSelectedIndex(0);
 
@@ -3503,15 +3556,15 @@ public class Home extends javax.swing.JFrame {
             stuGender.setSelectedIndex(1);
 
         }
-        stuEmail.setText(model.getValueAt(rowIndex, 4).toString());
-        stuPhone.setText(model.getValueAt(rowIndex, 5).toString());
-        stuFatherName.setText(model.getValueAt(rowIndex, 6).toString());
-        stuMotherName.setText(model.getValueAt(rowIndex, 7).toString());
-        stuAddress1.setText(model.getValueAt(rowIndex, 8).toString());
-        stuAddress2.setText(model.getValueAt(rowIndex, 9).toString());
-        stuBirthCer.setText(model.getValueAt(rowIndex, 10).toString());
-        stuForm137.setText(model.getValueAt(rowIndex, 11).toString());
-        String path = model.getValueAt(rowIndex, 12).toString();
+        stuEmail.setText(model.getValueAt(rowIndex, 6).toString());
+        stuPhone.setText(model.getValueAt(rowIndex, 7).toString());
+        stuFatherName.setText(model.getValueAt(rowIndex, 8).toString());
+        stuMotherName.setText(model.getValueAt(rowIndex, 9).toString());
+        stuAddress1.setText(model.getValueAt(rowIndex, 10).toString());
+        stuAddress2.setText(model.getValueAt(rowIndex, 11).toString());
+        stuBirthCer.setText(model.getValueAt(rowIndex, 12).toString());
+        stuForm137.setText(model.getValueAt(rowIndex, 13).toString());
+        String path = model.getValueAt(rowIndex, 14).toString();
         imagePath = path;
         imagePanel.setIcon(imageAdjust(path, null));//get image path and called image adjust method path to image
     }//GEN-LAST:event_StudentTableMouseClicked
@@ -3540,7 +3593,8 @@ public class Home extends javax.swing.JFrame {
         int id = Integer.parseInt(stuID.getText());
         if (student.isidExist(id)) {
             student.delete(id);
-            StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+            user.delete(id);
+            StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "First Name", "Middle Name", "Last Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
                 "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
             student.getStudentValue(StudentTable, "");
             clearStudent();
@@ -3862,6 +3916,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel61;
     private javax.swing.JLabel jLabel62;
     private javax.swing.JLabel jLabel63;
@@ -3927,6 +3983,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField stuBirthCer;
     private javax.swing.JTextField stuEmail;
     private javax.swing.JTextField stuFatherName;
+    private javax.swing.JTextField stuFname;
     private javax.swing.JTextField stuForm137;
     private javax.swing.JComboBox<String> stuGender;
     private javax.swing.JTextField stuGradeIDSearchField;
@@ -3954,11 +4011,12 @@ public class Home extends javax.swing.JFrame {
     public static javax.swing.JTextField stuGradeManageSub8;
     private javax.swing.JButton stuGradeManageUpdateBt;
     private javax.swing.JTextField stuID;
+    private javax.swing.JTextField stuLastName;
     private javax.swing.JButton stuMarksClearBt;
     private javax.swing.JButton stuMarksSearchBt;
     private javax.swing.JTextField stuMarksSearchField;
+    private javax.swing.JTextField stuMiddleName;
     private javax.swing.JTextField stuMotherName;
-    private javax.swing.JTextField stuName;
     private javax.swing.JTextField stuPhone;
     private javax.swing.JButton stuPrint_1;
     private javax.swing.JButton stuPrint_2;
