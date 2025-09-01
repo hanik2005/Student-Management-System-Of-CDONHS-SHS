@@ -85,15 +85,16 @@ public class Home extends javax.swing.JFrame {
 
     public Home() {
         this.setUndecorated(true);
+
         initComponents();
         init();
+        webcam = Webcam.getDefault();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        SwingUtilities.invokeLater(() -> {
-            initWebcam();
-        });
+//        SwingUtilities.invokeLater(() -> {
+//            initWebcam();
+//        });
         //webcam.close(); //this is a just a experiment care to erase in the future or not
-
     }
 
     private void initWebcam() {
@@ -105,7 +106,7 @@ public class Home extends javax.swing.JFrame {
 
         webcam.setViewSize(WebcamResolution.QVGA.getSize()); //WebcamResolution.QVGA (320x240) // WebcamResolution.HD720 (1280x720)
         //WebcamResolution.HD1080 (1920x1080)
-        webcamPanel = new WebcamPanel(webcam);
+        webcamPanel = new WebcamPanel(webcam, false);
         webcamPanel.setFPSDisplayed(true);
         webcamPanel.setMirrored(true);
 
@@ -316,14 +317,11 @@ public class Home extends javax.swing.JFrame {
         stuLastName = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
-        webPanel = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         imagePanel = new javax.swing.JLabel();
         browseImg = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        StartWebcam = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         updateBt = new javax.swing.JButton();
@@ -455,6 +453,18 @@ public class Home extends javax.swing.JFrame {
         jButton18 = new javax.swing.JButton();
         stuMarksClearBt = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
+        jPanel39 = new javax.swing.JPanel();
+        jPanel44 = new javax.swing.JPanel();
+        jPanel45 = new javax.swing.JPanel();
+        jLabel70 = new javax.swing.JLabel();
+        stuMarksSearchField1 = new javax.swing.JTextField();
+        stuMarksSearchBt1 = new javax.swing.JButton();
+        jPanel46 = new javax.swing.JPanel();
+        Final_Average1 = new javax.swing.JLabel();
+        jPanel47 = new javax.swing.JPanel();
+        webPanel = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        StartWebcam = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -816,17 +826,6 @@ public class Home extends javax.swing.JFrame {
         jPanel9.setBackground(new java.awt.Color(153, 255, 204));
         jPanel9.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
 
-        javax.swing.GroupLayout webPanelLayout = new javax.swing.GroupLayout(webPanel);
-        webPanel.setLayout(webPanelLayout);
-        webPanelLayout.setHorizontalGroup(
-            webPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 355, Short.MAX_VALUE)
-        );
-        webPanelLayout.setVerticalGroup(
-            webPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 246, Short.MAX_VALUE)
-        );
-
         jPanel14.setBackground(new java.awt.Color(153, 255, 204));
         jPanel14.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
         jPanel14.setForeground(new java.awt.Color(0, 0, 0));
@@ -844,7 +843,7 @@ public class Home extends javax.swing.JFrame {
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(imagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
         );
 
         browseImg.setBackground(new java.awt.Color(102, 255, 255));
@@ -882,65 +881,29 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel14Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addGap(56, 56, 56)
-                        .addComponent(browseImg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 105, Short.MAX_VALUE))
-                    .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(browseImg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(202, Short.MAX_VALUE))
         );
-
-        jButton3.setBackground(new java.awt.Color(102, 255, 255));
-        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Start Scanning");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        StartWebcam.setBackground(new java.awt.Color(102, 255, 255));
-        StartWebcam.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        StartWebcam.setForeground(new java.awt.Color(0, 0, 0));
-        StartWebcam.setText("StopWebcam");
-        StartWebcam.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StartWebcamActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(webPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(229, 229, 229)
-                        .addComponent(jButton3)
-                        .addGap(126, 126, 126)
-                        .addComponent(StartWebcam, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(464, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(webPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(64, 64, 64)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(StartWebcam, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addGap(13, 13, 13)
+                .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel8.setBackground(new java.awt.Color(153, 255, 204));
@@ -2715,6 +2678,194 @@ public class Home extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Marks Sheet", jPanel25);
 
+        jPanel39.setBackground(new java.awt.Color(102, 255, 255));
+
+        jPanel44.setBackground(new java.awt.Color(153, 255, 204));
+        jPanel44.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
+        jPanel44.setForeground(new java.awt.Color(0, 0, 0));
+
+        jPanel45.setBackground(new java.awt.Color(153, 255, 204));
+        jPanel45.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
+        jPanel45.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel70.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel70.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel70.setText("Student's ID");
+
+        stuMarksSearchField1.setBackground(new java.awt.Color(255, 255, 255));
+        stuMarksSearchField1.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+
+        stuMarksSearchBt1.setBackground(new java.awt.Color(153, 255, 204));
+        stuMarksSearchBt1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        stuMarksSearchBt1.setForeground(new java.awt.Color(0, 0, 0));
+        stuMarksSearchBt1.setText("Search");
+        stuMarksSearchBt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuMarksSearchBt1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel45Layout = new javax.swing.GroupLayout(jPanel45);
+        jPanel45.setLayout(jPanel45Layout);
+        jPanel45Layout.setHorizontalGroup(
+            jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel45Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel45Layout.createSequentialGroup()
+                        .addComponent(jLabel70)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel45Layout.createSequentialGroup()
+                        .addComponent(stuMarksSearchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(stuMarksSearchBt1, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel45Layout.setVerticalGroup(
+            jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel45Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel70)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(stuMarksSearchBt1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                    .addComponent(stuMarksSearchField1))
+                .addContainerGap())
+        );
+
+        jPanel46.setBackground(new java.awt.Color(153, 255, 204));
+        jPanel46.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
+        jPanel46.setForeground(new java.awt.Color(0, 0, 0));
+
+        Final_Average1.setFont(new java.awt.Font("Times New Roman", 1, 32)); // NOI18N
+        Final_Average1.setForeground(new java.awt.Color(0, 0, 0));
+        Final_Average1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Final_Average1.setText("G.A. : 0.0");
+
+        javax.swing.GroupLayout jPanel46Layout = new javax.swing.GroupLayout(jPanel46);
+        jPanel46.setLayout(jPanel46Layout);
+        jPanel46Layout.setHorizontalGroup(
+            jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel46Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Final_Average1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel46Layout.setVerticalGroup(
+            jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel46Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Final_Average1, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel44Layout = new javax.swing.GroupLayout(jPanel44);
+        jPanel44.setLayout(jPanel44Layout);
+        jPanel44Layout.setHorizontalGroup(
+            jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel44Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel45, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel46, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel44Layout.setVerticalGroup(
+            jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel44Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel45, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
+                .addComponent(jPanel46, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel47.setBackground(new java.awt.Color(153, 255, 204));
+        jPanel47.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
+        jPanel47.setForeground(new java.awt.Color(0, 0, 0));
+
+        javax.swing.GroupLayout webPanelLayout = new javax.swing.GroupLayout(webPanel);
+        webPanel.setLayout(webPanelLayout);
+        webPanelLayout.setHorizontalGroup(
+            webPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 355, Short.MAX_VALUE)
+        );
+        webPanelLayout.setVerticalGroup(
+            webPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 246, Short.MAX_VALUE)
+        );
+
+        jButton3.setBackground(new java.awt.Color(102, 255, 255));
+        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(0, 0, 0));
+        jButton3.setText("Start Scanning");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        StartWebcam.setBackground(new java.awt.Color(102, 255, 255));
+        StartWebcam.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        StartWebcam.setForeground(new java.awt.Color(0, 0, 0));
+        StartWebcam.setText("Start Webcam");
+        StartWebcam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StartWebcamActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel47Layout = new javax.swing.GroupLayout(jPanel47);
+        jPanel47.setLayout(jPanel47Layout);
+        jPanel47Layout.setHorizontalGroup(
+            jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel47Layout.createSequentialGroup()
+                .addContainerGap(302, Short.MAX_VALUE)
+                .addGroup(jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel47Layout.createSequentialGroup()
+                        .addComponent(webPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(185, 185, 185))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel47Layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addGap(126, 126, 126)
+                        .addComponent(StartWebcam, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(137, 137, 137))))
+        );
+        jPanel47Layout.setVerticalGroup(
+            jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel47Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(webPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addGroup(jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(StartWebcam, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(54, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel39Layout = new javax.swing.GroupLayout(jPanel39);
+        jPanel39.setLayout(jPanel39Layout);
+        jPanel39Layout.setHorizontalGroup(
+            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel39Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel47, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel39Layout.setVerticalGroup(
+            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel39Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel47, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(208, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Attendance", jPanel39);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -2996,7 +3147,7 @@ public class Home extends javax.swing.JFrame {
         if (isEmptyStudent()) {
             if (!student.isEmailExist(stuEmail.getText(), id)) {
                 if (!student.isPhoneExist(stuPhone.getText(), id)) {
-                    
+
                     String sFname = stuFname.getText();
                     String sMiddleName = stuMiddleName.getText();
                     String sLastName = stuLastName.getText();
@@ -3068,39 +3219,6 @@ public class Home extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void StartWebcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartWebcamActionPerformed
-        if (webcam == null) {
-            initWebcam(); // Initialize webcam if not already done
-        }
-
-        if (StartWebcam.isSelected()) {
-            if (webcam != null && webcam.isOpen()) {
-                webcamPanel.stop();
-                webcam.close();
-            }
-            StartWebcam.setText("Start Webcam");
-        } else {
-            // Stop webcam
-
-            if (!webcam.isOpen()) {
-                webcam.open();
-                webcamPanel.start();
-            }
-            StartWebcam.setText("Stop Webcam");
-
-        }
-    }//GEN-LAST:event_StartWebcamActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (qrScanTimer.isRunning()) {
-            qrScanTimer.stop();
-            jButton3.setText("Start Scanning");
-        } else {
-            qrScanTimer.start();
-            jButton3.setText("Stop Scanning");
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void stuFatherNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuFatherNameActionPerformed
         // TODO add your handling code here:
@@ -3810,6 +3928,44 @@ public class Home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton20ActionPerformed
 
+    private void stuMarksSearchBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuMarksSearchBt1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stuMarksSearchBt1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if (qrScanTimer.isRunning()) {
+            qrScanTimer.stop();
+            jButton3.setText("Start Scanning");
+        } else {
+            qrScanTimer.start();
+            jButton3.setText("Stop Scanning");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void StartWebcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartWebcamActionPerformed
+        if (webcam == null || webcamPanel == null) {
+            initWebcam();  // make sure it’s ready
+        }
+
+        if (StartWebcam.isSelected()) {
+            // Start webcam
+            if (!webcam.isOpen()) {
+                webcam.open();
+            }
+            webcamPanel.start();
+            qrScanTimer.start();
+            StartWebcam.setText("Stop Webcam");
+        } else {
+            // Stop webcam
+            if (webcam != null && webcam.isOpen()) {
+                qrScanTimer.stop();
+                webcamPanel.stop();
+                webcam.close();
+            }
+            StartWebcam.setText("Start Webcam");
+        }
+    }//GEN-LAST:event_StartWebcamActionPerformed
+
     private ImageIcon imageAdjust(String path, byte[] pic) {
         ImageIcon myImage = null;
         if (path != null) {
@@ -3866,6 +4022,7 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Clear;
     private javax.swing.JLabel Final_Average;
+    private javax.swing.JLabel Final_Average1;
     private javax.swing.JToggleButton StartWebcam;
     private javax.swing.JTable StudentGradeManagementTable;
     private javax.swing.JTable StudentMarksSheetTable;
@@ -3927,6 +4084,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel67;
     private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel69;
+    private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -3960,11 +4118,16 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel36;
     private javax.swing.JPanel jPanel37;
     private javax.swing.JPanel jPanel38;
+    private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel41;
     private javax.swing.JPanel jPanel42;
     private javax.swing.JPanel jPanel43;
+    private javax.swing.JPanel jPanel44;
+    private javax.swing.JPanel jPanel45;
+    private javax.swing.JPanel jPanel46;
+    private javax.swing.JPanel jPanel47;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -4014,7 +4177,9 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField stuLastName;
     private javax.swing.JButton stuMarksClearBt;
     private javax.swing.JButton stuMarksSearchBt;
+    private javax.swing.JButton stuMarksSearchBt1;
     private javax.swing.JTextField stuMarksSearchField;
+    private javax.swing.JTextField stuMarksSearchField1;
     private javax.swing.JTextField stuMiddleName;
     private javax.swing.JTextField stuMotherName;
     private javax.swing.JTextField stuPhone;

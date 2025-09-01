@@ -251,23 +251,24 @@ public class LoginFrame extends javax.swing.JFrame {
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(this, "Login complete");
                     if (type.equals("Student")) {
-                        StudentPortal portal = new StudentPortal();
+                        StudentPortal portal = new StudentPortal(userId);
                         portal.setVisible(true);
                         portal.pack();
-                        this.dispose();
+                        //this.dispose();
                     }
                     if (type.equals("Teacher")) {
                         Home home = new Home();
                         home.setVisible(true);
                         home.pack();
-                        this.dispose();
+                        //this.dispose();
                     }
                     if (type.equals("Admin")) {
-                        StudentPortal portal = new StudentPortal();
+                        StudentPortal portal = new StudentPortal(userId);
                         portal.setVisible(true);
                         portal.pack();
-                        this.dispose();
+                        //this.dispose();
                     }
+                    this.dispose();
 
                 } else {
                     JOptionPane.showMessageDialog(this, "User doesnt Exist");
