@@ -24,7 +24,7 @@ public class Strand {
         Statement st;
         try {
             st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT MAX(id) FROM strand");
+            ResultSet rs = st.executeQuery("SELECT MAX(strand_id) FROM strand");
             if (rs.next()) {
                 id = rs.getInt(1);
             }
@@ -36,7 +36,7 @@ public class Strand {
 
     public boolean getId(int id) {
         try {
-            ps = con.prepareStatement("select * from students where id= ?");
+            ps = con.prepareStatement("select * from student where student_id= ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -80,7 +80,7 @@ public class Strand {
             return;
         }
 
-        String sql = "INSERT INTO strand (id, student_id, grade_level, strand, section, subject_1, subject_2, subject_3, subject_4, subject_5, subject_6, subject_7, subject_8) "
+        String sql = "INSERT INTO strand (strand_id, student_id, grade_level, strand, section_name, subject_1, subject_2, subject_3, subject_4, subject_5, subject_6, subject_7, subject_8) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             ps = con.prepareStatement(sql);
@@ -134,7 +134,7 @@ public class Strand {
 
     // Fetch all strands and show in JTable
     public void getStrandValue(JTable table, String searchValue) {
-        String sql = "SELECT * FROM strand WHERE CONCAT(id,student_id,grade_level,strand,section) LIKE ? ORDER BY id DESC";
+        String sql = "SELECT * FROM strand WHERE CONCAT(strand_id,student_id,grade_level,strand,section_name) LIKE ? ORDER BY strand_id DESC";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, "%" + searchValue + "%");
@@ -155,30 +155,30 @@ public class Strand {
         }
     }
 
-    // Update strand details
-    public void update(int id, String gradeLevel, String strandName, String section) {
-        String sql = "UPDATE strand SET grade_level=?, strand_name=?, section=? WHERE id=?";
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setString(1, gradeLevel);
-            ps.setString(2, strandName);
-            ps.setString(3, section);
-            ps.setInt(4, id);
-
-            if (ps.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Strand data updated successfully");
-            }
-        } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-    }
+//    // Update strand details
+//    public void update(int id, String gradeLevel, String strandName, String section) {
+//        String sql = "UPDATE strand SET grade_level=?, strand=?, section_name=? WHERE strand_id=?";
+//        try {
+//            ps = con.prepareStatement(sql);
+//            ps.setString(1, gradeLevel);
+//            ps.setString(2, strandName);
+//            ps.setString(3, section);
+//            ps.setInt(4, id);
+//
+//            if (ps.executeUpdate() > 0) {
+//                JOptionPane.showMessageDialog(null, "Strand data updated successfully");
+//            }
+//        } catch (SQLException ex) {
+//            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+//        }
+//    }
 
     // Delete strand record
     public void delete(int id) {
         int yesOrNo = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this strand?", "Delete Strand", JOptionPane.OK_CANCEL_OPTION, 0);
         if (yesOrNo == JOptionPane.OK_OPTION) {
             try {
-                ps = con.prepareStatement("DELETE FROM strand WHERE id=?");
+                ps = con.prepareStatement("DELETE FROM strand WHERE strand_id=?");
                 ps.setInt(1, id);
                 if (ps.executeUpdate() > 0) {
                     JOptionPane.showMessageDialog(null, "Strand deleted successfully");
@@ -191,7 +191,7 @@ public class Strand {
 
     public String getNextSection(String gradeLevel, String strandName) {
         String section = "A";
-        String sql = "SELECT COUNT(*) FROM strand WHERE grade_level=? AND strand=?";
+        String sql = "SELECT COUNT(*) FROM strand WHERE grade_level=? AND strand_id=?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, gradeLevel);

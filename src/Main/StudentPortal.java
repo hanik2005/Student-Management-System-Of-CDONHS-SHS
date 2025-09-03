@@ -65,13 +65,13 @@ public class StudentPortal extends javax.swing.JFrame {
     public void setInformationStudentsDatabase() {
 
         try {
-            ps = con.prepareStatement("SELECT * FROM students WHERE id = ?");
+            ps = con.prepareStatement("SELECT * FROM student WHERE student_id = ?");
             ps.setInt(1, studentId);
             rs = ps.executeQuery();
 
             if (rs.next()) {
 
-                IdTxt.setText(rs.getString("Id"));
+                IdTxt.setText(rs.getString("student_id"));
 
                 String middleName = rs.getString("middle_name");
                 String middleInitial = (middleName != null && !middleName.isEmpty())

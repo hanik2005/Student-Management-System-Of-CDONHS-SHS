@@ -21,7 +21,7 @@ public class Student {
 
         try {
             st = con.createStatement();
-            ResultSet rs = st.executeQuery("select max(id) from students");
+            ResultSet rs = st.executeQuery("select max(student_id) from student");
             while (rs.next()) {
                 id = rs.getInt(1);
 
@@ -38,7 +38,7 @@ public class Student {
             String motherName, String fatherName, String addressLine1,
             String addressLine2, String birthCer, String form137, String imagePath) {
 
-        String sql = "insert into students values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into student values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
@@ -69,7 +69,7 @@ public class Student {
 
     public boolean isEmailExist(String email, int excludeId) {
         try {
-            ps = con.prepareStatement("SELECT * FROM students WHERE email = ? AND id <> ?");
+            ps = con.prepareStatement("SELECT * FROM student WHERE email = ? AND student_id <> ?");
             ps.setString(1, email);
             ps.setInt(2, excludeId);
             ResultSet rs = ps.executeQuery();
@@ -82,7 +82,7 @@ public class Student {
 
     public boolean isPhoneExist(String phone, int excludeId) {
         try {
-            ps = con.prepareStatement("SELECT * FROM students WHERE phone_number = ? AND id <> ?");
+            ps = con.prepareStatement("SELECT * FROM student WHERE phone_number = ? AND student_id <> ?");
             ps.setString(1, phone);
             ps.setInt(2, excludeId);
             ResultSet rs = ps.executeQuery();
@@ -96,7 +96,7 @@ public class Student {
     //check if student phone number already exist
     public boolean isidExist(int id) {
         try {
-            ps = con.prepareStatement("select * from students where id = ?");
+            ps = con.prepareStatement("select * from student where student_id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -112,7 +112,7 @@ public class Student {
 
     //get all student values from database student table
     public void getStudentValue(JTable table, String searchValue) {
-        String sql = "select * from students where concat(first_name,middle_name,last_name,email,phone_number) like ? order by id desc";
+        String sql = "select * from student where concat(first_name,middle_name,last_name,email,phone_number) like ? order by student_id desc";
 
         try {
             ps = con.prepareStatement(sql);
@@ -150,8 +150,8 @@ public class Student {
             String motherName, String fatherName, String addressLine1,
             String addressLine2, String birthCer, String form137, String imagePath) {
 
-        String sql = "update students set first_name=?,middle_name=?,last_name=?,date_of_birth=?,gender=?,email=?,phone_number=?,mother_name=?,"
-                + "father_name=?,address1=?,address2=?,birth_certificate=?,form_137=?,image_path=? where id=?";
+        String sql = "update student set first_name=?,middle_name=?,last_name=?,date_of_birth=?,gender=?,email=?,phone_number=?,mother_name=?,"
+                + "father_name=?,address1=?,address2=?,birth_certificate=?,form_137=?,image_path=? where student_id=?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, fname);
@@ -186,7 +186,7 @@ public class Student {
                 "Student Delete", JOptionPane.OK_CANCEL_OPTION, 0);
         if (yesOrNo == JOptionPane.OK_OPTION) {
             try {
-                ps = con.prepareStatement("delete from students where id = ?");
+                ps = con.prepareStatement("delete from student where student_id = ?");
                 ps.setInt(1, id);
                 if (ps.executeUpdate() > 0) {
                     JOptionPane.showMessageDialog(null, "Student data deleted successfully ");

@@ -46,7 +46,7 @@ public class User {
 
                 }
             } catch (SQLException ex) {
-                System.getLogger(Student.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                System.getLogger(User.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
 
         }

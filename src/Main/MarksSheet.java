@@ -29,7 +29,7 @@ public class MarksSheet {
 
         try {
             st = con.createStatement();
-            ResultSet rs = st.executeQuery("select max(id) from final_grade");
+            ResultSet rs = st.executeQuery("select max(general_average_id) from general_average");
             while (rs.next()) {
                 id = rs.getInt(1);
 
@@ -44,7 +44,7 @@ public class MarksSheet {
     //check student id already exist
     public boolean isidExist(int id) {
         try {
-            ps = con.prepareStatement("select * from grade where id = ?");
+            ps = con.prepareStatement("select * from grade where student_id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -61,7 +61,7 @@ public class MarksSheet {
 
     public void insert(int id, int sid, int gradeLevel, String strandName, String section, double quarterAv1, double quarterAv2,
             double quarterAv3, double quarterAv4, double finalGrade) {
-        String sql = "INSERT INTO final_grade VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO general_average VALUES(?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
@@ -85,8 +85,8 @@ public class MarksSheet {
 
     public void update(int id, double quarterAv1, double quarterAv2, double quarterAv3, double quarterAv4, double finalGrade) {
 
-        String sql = "update final_grade set quarter_1_average=?, "
-                + "quarter_2_average=?, quarter_3_average=?, quarter_4_average=?, final_average=? where id=?";
+        String sql = "update general_average set quarter_1_average=?, "
+                + "quarter_2_average=?, quarter_3_average=?, quarter_4_average=?, final_average=? where general_average_id=?";
         try {
             ps = con.prepareStatement(sql);
             ps.setDouble(1, quarterAv1);
@@ -108,7 +108,7 @@ public class MarksSheet {
     // ✅ Fetch student final_grade into JTable
 
     public void getFinalGradeValue(JTable table, int sid) {
-        String sql = "SELECT * FROM final_grade WHERE student_id = ?";
+        String sql = "SELECT * FROM general_average WHERE student_id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, sid);
@@ -120,7 +120,7 @@ public class MarksSheet {
 
             while (rs.next()) {
                 row = new Object[10];
-                row[0] = rs.getInt("id");
+                row[0] = rs.getInt("general_average_id");
                 row[1] = rs.getInt("student_id");
                 row[2] = rs.getInt("grade_level");
                 row[3] = rs.getString("strand_name");
@@ -137,7 +137,8 @@ public class MarksSheet {
         }
     }
 
-    public void updateQuarter(int sid, int gradeLevel, String strand, String section, int quarter, double average, double finalAverage) {
+    public void updateQuarter(int sid, int gradeLevel, String strand, String section, int quarter, double average, 
+            double finalAverage) {
         String column = "";
         if (quarter == 1) {
             column = "quarter_1_average";
@@ -149,7 +150,7 @@ public class MarksSheet {
             column = "quarter_4_average";
         }
 
-        String sql = "UPDATE final_grade SET " + column + "=?, final_average=? WHERE student_id=? AND grade_level=? AND strand_name=? AND section_name=?";
+        String sql = "UPDATE general_average SET " + column + "=?, final_average=? WHERE student_id=? AND grade_level=? AND strand_name=? AND section_name=?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setDouble(1, average);
@@ -167,7 +168,7 @@ public class MarksSheet {
 
     public boolean isSidGradeLevelStrandQuarterExist(int id, int gradeLevel, String strand, String section) {
         try {
-            ps = con.prepareStatement("SELECT * FROM final_grade WHERE student_id = ?"
+            ps = con.prepareStatement("SELECT * FROM general_average WHERE student_id = ?"
                     + " AND grade_level = ? AND strand_name = ? AND section_name = ?");
             ps.setInt(1, id);
             ps.setInt(2, gradeLevel);
@@ -188,7 +189,7 @@ public class MarksSheet {
         double[] quarters = new double[4]; // q1, q2, q3, q4
 
         String sql = "SELECT quarter_1_average, quarter_2_average, quarter_3_average, quarter_4_average "
-                + "FROM final_grade WHERE student_id=? AND grade_level=? AND strand_name=? AND section_name=?";
+                + "FROM general_average WHERE student_id=? AND grade_level=? AND strand_name=? AND section_name=?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, sid);
@@ -214,7 +215,7 @@ public class MarksSheet {
     public double getGeneralAverage(int sid) {
         double generalAverage = 0.0;
         String sql = "SELECT quarter_1_average, quarter_2_average, quarter_3_average, quarter_4_average "
-                + "FROM final_grade WHERE student_id = ?";
+                + "FROM general_average WHERE student_id = ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, sid);

@@ -30,7 +30,7 @@ public class Grade {
 
         try {
             st = con.createStatement();
-            ResultSet rs = st.executeQuery("select max(id) from grade");
+            ResultSet rs = st.executeQuery("select max(grade_id) from grade");
             while (rs.next()) {
                 id = rs.getInt(1);
 
@@ -88,7 +88,7 @@ public class Grade {
     //check student id already exist
     public boolean isidExist(int id) {
         try {
-            ps = con.prepareStatement("select * from grade where id = ?");
+            ps = con.prepareStatement("select * from grade where grade_id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -165,7 +165,7 @@ public class Grade {
             double subGrade5, double subGrade6, double subGrade7, double subGrade8, int quarter, double average) {
 
         String sql = "update grade set sub_grade1=?, sub_grade2=?, sub_grade3=?, sub_grade4=?, sub_grade5=?, sub_grade6=?, sub_grade7=?, "
-                + "sub_grade8=?, quarter=?, Average=? where id=?";
+                + "sub_grade8=?, quarter=?, quarter_average=? where grade_id=?";
         try {
             ps = con.prepareStatement(sql);
             ps.setDouble(1, subGrade1);
@@ -192,7 +192,7 @@ public class Grade {
 
     // Fetch all grade and show in JTable
     public void getGradeValue(JTable table, String searchValue) {
-        String sql = "SELECT * FROM grade WHERE CONCAT(id,student_id,grade_level,strand_name,section_name) LIKE ? ORDER BY id DESC";
+        String sql = "SELECT * FROM grade WHERE CONCAT(grade_id,student_id,grade_level,strand_name,section_name) LIKE ? ORDER BY grade_id DESC";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, "%" + searchValue + "%");

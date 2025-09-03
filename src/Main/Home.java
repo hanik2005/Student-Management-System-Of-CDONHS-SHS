@@ -3268,16 +3268,25 @@ public class Home extends javax.swing.JFrame {
 
     private void stuGradeManageSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSaveActionPerformed
         if (!stuGradeManageID.getText().isEmpty()) {
-            //if (!grade.isidExist(Integer.parseInt(idGradeManage.getText()))) {
-            int sid = Integer.parseInt(stuGradeManageID.getText());
-            int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
-            String strand = stuGradeManageStrand.getText();
-            String section = stuGradeManageSection.getText();
-            int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
-            if (!grade.isSidGradeLevelStrandQuarterExist(sid, gradeLevel, strand, section, quarter)) {
-                if (isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
-                        && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
-                        && isNumeric(subScore6.getText()) && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText())) {
+            try {
+                int sid = Integer.parseInt(stuGradeManageID.getText());
+                int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
+                String strand = stuGradeManageStrand.getText();
+                String section = stuGradeManageSection.getText();
+                int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
+
+                // Check if record already exists
+                if (!grade.isSidGradeLevelStrandQuarterExist(sid, gradeLevel, strand, section, quarter)) {
+
+                    // Validate numeric scores
+                    if (!(isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
+                            && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
+                            && isNumeric(subScore5.getText()) && isNumeric(subScore6.getText())
+                            && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText()))) {
+                        JOptionPane.showMessageDialog(this, "Please fill in all subject scores with valid numbers");
+                        return;
+                    }
+
                     int id = grade.getMax();
 
                     String subject1 = stuGradeManageSub1.getText();
@@ -3297,32 +3306,41 @@ public class Home extends javax.swing.JFrame {
                     double subGrade6 = Double.parseDouble(subScore6.getText());
                     double subGrade7 = Double.parseDouble(subScore7.getText());
                     double subGrade8 = Double.parseDouble(subScore8.getText());
-                    double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4 + subGrade5
-                            + subGrade6 + subGrade7 + subGrade8) / 8;
-                    average = Math.round(average * 100.0) / 100.0; // rounds to 2 decimals
 
-                    grade.insert(id, sid, gradeLevel, strand, section, subject1, subject2, subject3, subject4, subject5, subject6, subject7,
-                            subject8, subGrade1, subGrade2, subGrade3, subGrade4, subGrade5, subGrade6, subGrade7, subGrade8, quarter, Double.parseDouble(nf.format(average)));
+                    double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4
+                            + subGrade5 + subGrade6 + subGrade7 + subGrade8) / 8;
+                    average = Math.round(average * 100.0) / 100.0;
+
+                    grade.insert(id, sid, gradeLevel, strand, section,
+                            subject1, subject2, subject3, subject4, subject5, subject6, subject7, subject8,
+                            subGrade1, subGrade2, subGrade3, subGrade4, subGrade5, subGrade6, subGrade7, subGrade8,
+                            quarter, average);
 
                     insertUpdateMarkSheet(quarter, average, sid, gradeLevel, strand, section);
 
-                    StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
-                        "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
-                        "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+                    StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
+                        "ID", "Student_ID", "Grade_Level", "Strand", "Section",
+                        "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3",
+                        "Subject 4", "Score 4", "Subject 5", "Score 5",
+                        "Subject 6", "Score 6", "Subject 7", "Score 7",
+                        "Subject 8", "Score 8", "Quarter", "Average"
+                    }));
+
                     grade.getGradeValue(StudentGradeManagementTable, "");
                     clearGradeManage();
 
+                } else {
+                    JOptionPane.showMessageDialog(this, "Grade Level " + gradeLevel
+                            + " | Strand: " + strand + " | Section: " + section
+                            + " | Quarter: " + quarter + " already exists for this student.");
                 }
-            } else {
-                JOptionPane.showMessageDialog(this, "GradeLevel" + gradeLevel
-                        + "strand" + strand + "section" + section + "Students Grades has already added");
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "One or more fields are empty or not numeric.");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Grade id already exist");
+            JOptionPane.showMessageDialog(this, "No student is selected");
         }
-        //} else {
-        //JOptionPane.showMessageDialog(this, "No student is selected");
-        //}
     }//GEN-LAST:event_stuGradeManageSaveActionPerformed
 
     public void insertUpdateMarkSheet(int quarter, double average, int sid, int gradeLevel, String strand, String section) {
@@ -3369,18 +3387,15 @@ public class Home extends javax.swing.JFrame {
 
     }
 
-    private boolean isNumeric(String s) {
-        if (s == null || s.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Input cannot be empty!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
-            return false;
+    public static boolean isNumeric(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return false; // null or empty is not numeric
         }
         try {
-            Double.parseDouble(s);
-            return true; // Valid number
+            Double.parseDouble(str.trim()); // works for both int and double
+            return true;
         } catch (NumberFormatException e) {
-            System.out.println("wrong");
-            JOptionPane.showMessageDialog(this, "Please enter a valid number (e.g., 98.0 or 51.1)", "Invalid Input", JOptionPane.ERROR_MESSAGE);
-            return false; // Not valid
+            return false;
         }
     }
     private void stuGradeManageSub8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSub8ActionPerformed
@@ -3412,8 +3427,18 @@ public class Home extends javax.swing.JFrame {
                 StudentMarksSheetTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
                     "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average", "Average"}));
                 marksSheet.getFinalGradeValue(StudentMarksSheetTable, sid);
+                double general_average = marksSheet.getGeneralAverage(sid);
                 String GA = String.valueOf(String.format("%.2f", marksSheet.getGeneralAverage(sid)));
-                Final_Average.setText("G.A. : " + GA);
+
+                if (general_average >= 75) {
+                    Final_Average.setText("G.A. : " + GA);
+                    Final_Average.setForeground(Color.GREEN);
+                } else {
+                    Final_Average.setText("G.A. : " + GA);
+                    Final_Average.setForeground(Color.RED);
+
+                }
+
             } else {
                 JOptionPane.showMessageDialog(this, "No Grades Found");
             }
@@ -3851,11 +3876,21 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_StudentGradeManagementTableMouseClicked
 
     private void stuGradeManageUpdateBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageUpdateBtActionPerformed
+        if (!isNumeric(idGradeManage.getText())) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid Grade ID");
+        }
         int id = Integer.parseInt(idGradeManage.getText());
+
         if (grade.isidExist(id)) {
-            if (isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
-                    && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
-                    && isNumeric(subScore6.getText()) && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText())) {
+            try {
+                // Check if all scores are numeric
+                if (!(isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
+                        && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
+                        && isNumeric(subScore5.getText()) && isNumeric(subScore6.getText())
+                        && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText()))) {
+                    JOptionPane.showMessageDialog(this, "Please fill in all subject scores with valid numbers");
+                }
+
                 int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
                 double subGrade1 = Double.parseDouble(subScore1.getText());
                 double subGrade2 = Double.parseDouble(subScore2.getText());
@@ -3865,29 +3900,46 @@ public class Home extends javax.swing.JFrame {
                 double subGrade6 = Double.parseDouble(subScore6.getText());
                 double subGrade7 = Double.parseDouble(subScore7.getText());
                 double subGrade8 = Double.parseDouble(subScore8.getText());
+
+                if (!isNumeric(stuGradeManageID.getText()) || !isNumeric(stuGradeManageGradeLevel.getText())) {
+                    JOptionPane.showMessageDialog(this, "Please enter valid Student ID and Grade Level");
+                    return;
+                }
+
                 int sid = Integer.parseInt(stuGradeManageID.getText());
                 int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
                 String strand = stuGradeManageStrand.getText();
                 String section = stuGradeManageSection.getText();
-                double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4 + subGrade5
-                        + subGrade6 + subGrade7 + subGrade8) / 8;
-                average = Math.round(average * 100.0) / 100.0; // rounds to 2 decimals
+
+                // Compute average
+                double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4
+                        + subGrade5 + subGrade6 + subGrade7 + subGrade8) / 8;
+                average = Math.round(average * 100.0) / 100.0;
+
+                // Update DB
                 grade.update(id, subGrade1, subGrade2, subGrade3, subGrade4, subGrade5,
-                        subGrade6, subGrade7, subGrade8, quarter, Double.parseDouble(nf.format(average)));
-                StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
-                    "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
-                    "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+                        subGrade6, subGrade7, subGrade8, quarter, average);
+
+                // Refresh table
+                StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
+                    "ID", "Student_ID", "Grade_Level", "Strand", "Section",
+                    "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3",
+                    "Subject 4", "Score 4", "Subject 5", "Score 5",
+                    "Subject 6", "Score 6", "Subject 7", "Score 7",
+                    "Subject 8", "Score 8", "Quarter", "Average"}));
+
                 insertUpdateMarkSheet(quarter, average, sid, gradeLevel, strand, section);
                 grade.getGradeValue(StudentGradeManagementTable, "");
                 clearGradeManage();
 
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "One or more fields are empty or not numeric.");
             }
-
         } else {
-            JOptionPane.showMessageDialog(this, "Grade id doesnt exist or wrong input");
-
+            JOptionPane.showMessageDialog(this, "Grade ID doesn't exist or wrong input");
         }
     }//GEN-LAST:event_stuGradeManageUpdateBtActionPerformed
+
 
     private void stuGradeManageSearchTableBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSearchTableBtActionPerformed
         if (stuGradeManageSearchStuField.getText().isEmpty()) {
