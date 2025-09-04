@@ -24,11 +24,13 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.GlobalHistogramBinarizer;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeWriter;
+import design.BackgroundPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.print.PrinterException;
@@ -49,9 +51,11 @@ import javax.naming.spi.DirStateFactory.Result;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -2904,6 +2908,7 @@ public class Home extends javax.swing.JFrame {
 
     public void init() {
 
+        setBackgroundPanel();
         setTime();
         setDate();
         tableViewStudent();
@@ -3010,6 +3015,60 @@ public class Home extends javax.swing.JFrame {
         subScore8.setText("0.0");
         StudentGradeManagementTable.clearSelection();
 
+    }
+
+    public void setBackgroundPanel() {
+        // Create background panel with image
+        BackgroundPanel bgPanel2 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel2.setLayout(new BorderLayout());
+        jPanel2.setLayout(new BorderLayout());
+        jPanel2.add(bgPanel2, BorderLayout.CENTER);
+        jPanel2.revalidate();
+        jPanel2.repaint();
+        
+        BackgroundPanel bgPanel3 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel3.setLayout(new BorderLayout());
+        jPanel10.setLayout(new BorderLayout());
+        jPanel10.add(bgPanel3, BorderLayout.CENTER);
+        jPanel10.revalidate();
+        jPanel10.repaint();
+        
+        BackgroundPanel bgPanel4 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel4.setLayout(new BorderLayout());
+        jPanel6.setLayout(new BorderLayout());
+        jPanel6.add(bgPanel4, BorderLayout.CENTER);
+        jPanel6.revalidate();
+        jPanel6.repaint();
+        
+        BackgroundPanel bgPanel5 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel5.setLayout(new BorderLayout());
+        jPanel21.setLayout(new BorderLayout());
+        jPanel21.add(bgPanel5, BorderLayout.CENTER);
+        jPanel21.revalidate();
+        jPanel21.repaint();
+        
+        BackgroundPanel bgPanel6 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel6.setLayout(new BorderLayout());
+        jPanel26.setLayout(new BorderLayout());
+        jPanel26.add(bgPanel6, BorderLayout.CENTER);
+        jPanel26.revalidate();
+        jPanel26.repaint();
+        
+        BackgroundPanel bgPanel7 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel7.setLayout(new BorderLayout());
+        jPanel25.setLayout(new BorderLayout());
+        jPanel25.add(bgPanel7, BorderLayout.CENTER);
+        jPanel25.revalidate();
+        jPanel25.repaint();
+        
+        BackgroundPanel bgPanel8 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel8.setLayout(new BorderLayout());
+        jPanel39.setLayout(new BorderLayout());
+        jPanel39.add(bgPanel8, BorderLayout.CENTER);
+        jPanel39.revalidate();
+        jPanel39.repaint();
+        
+        
     }
 
     public boolean isEmptyStudent() {

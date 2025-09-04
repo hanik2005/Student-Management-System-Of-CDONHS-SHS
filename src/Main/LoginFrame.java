@@ -5,6 +5,8 @@
 package Main;
 
 import db.MyConnection;
+import design.BackgroundPanel;
+import java.awt.BorderLayout;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +26,25 @@ public class LoginFrame extends javax.swing.JFrame {
     public LoginFrame() {
         //this.setLocationRelativeTo(null);
         initComponents();
+        init();
         setLocationRelativeTo(null);
+    }
+    public void init(){
+        //setBackgroundPanel();
+    }
+    
+     public void setBackgroundPanel() {
+        // Create background panel with image
+        BackgroundPanel bgPanel = new BackgroundPanel("/assets/background.jpg");
+        bgPanel.setLayout(new BorderLayout());
+
+        // Replace jPanel2 with background panel
+        jPanel1.setLayout(new BorderLayout());
+        jPanel1.add(bgPanel, BorderLayout.CENTER);
+
+
+        jPanel1.revalidate();
+        jPanel1.repaint();
     }
 
     /**
@@ -59,6 +79,7 @@ public class LoginFrame extends javax.swing.JFrame {
         });
 
         jPanel1.setBackground(new java.awt.Color(135, 255, 204));
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jPanel1MouseDragged(evt);
