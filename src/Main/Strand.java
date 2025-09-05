@@ -72,16 +72,9 @@ public class Strand {
 //        }
 //    }
     public void insert(int id, int sid, int gradeLevel, String strandName, String section) {
-        // Fetch the subjects for the given grade level and strand
-        List<String> subjects = Subject.getSubjects(gradeLevel, strandName);
 
-        if (subjects.size() < 8) {
-            JOptionPane.showMessageDialog(null, "Not enough subjects for this strand and grade level!");
-            return;
-        }
-
-        String sql = "INSERT INTO strand (strand_id, student_id, grade_level, strand, section_name, subject_1, subject_2, subject_3, subject_4, subject_5, subject_6, subject_7, subject_8) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO strand (strand_id, student_id, grade_level, strand, section_name) "
+                + "VALUES (?, ?, ?, ?, ?)";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
@@ -90,10 +83,6 @@ public class Strand {
             ps.setString(4, strandName);
             ps.setString(5, section);
 
-            // Insert 8 subjects
-            for (int i = 0; i < 8; i++) {
-                ps.setString(6 + i, subjects.get(i));
-            }
 
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "New Strand and Subjects added successfully");

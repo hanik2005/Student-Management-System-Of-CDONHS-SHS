@@ -42,10 +42,12 @@ import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.naming.spi.DirStateFactory.Result;
 import javax.swing.ImageIcon;
@@ -1017,11 +1019,9 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Student", jPanel2);
@@ -2201,11 +2201,11 @@ public class Home extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Student_ID", "Grade Level", "Strand", "Section", "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5", "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"
+                "Student_ID", "Grade Level", "Strand", "Section", "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5", "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -3025,50 +3025,49 @@ public class Home extends javax.swing.JFrame {
         jPanel2.add(bgPanel2, BorderLayout.CENTER);
         jPanel2.revalidate();
         jPanel2.repaint();
-        
+
         BackgroundPanel bgPanel3 = new BackgroundPanel("/assets/background.jpg");
         bgPanel3.setLayout(new BorderLayout());
         jPanel10.setLayout(new BorderLayout());
         jPanel10.add(bgPanel3, BorderLayout.CENTER);
         jPanel10.revalidate();
         jPanel10.repaint();
-        
+
         BackgroundPanel bgPanel4 = new BackgroundPanel("/assets/background.jpg");
         bgPanel4.setLayout(new BorderLayout());
         jPanel6.setLayout(new BorderLayout());
         jPanel6.add(bgPanel4, BorderLayout.CENTER);
         jPanel6.revalidate();
         jPanel6.repaint();
-        
+
         BackgroundPanel bgPanel5 = new BackgroundPanel("/assets/background.jpg");
         bgPanel5.setLayout(new BorderLayout());
         jPanel21.setLayout(new BorderLayout());
         jPanel21.add(bgPanel5, BorderLayout.CENTER);
         jPanel21.revalidate();
         jPanel21.repaint();
-        
+
         BackgroundPanel bgPanel6 = new BackgroundPanel("/assets/background.jpg");
         bgPanel6.setLayout(new BorderLayout());
         jPanel26.setLayout(new BorderLayout());
         jPanel26.add(bgPanel6, BorderLayout.CENTER);
         jPanel26.revalidate();
         jPanel26.repaint();
-        
+
         BackgroundPanel bgPanel7 = new BackgroundPanel("/assets/background.jpg");
         bgPanel7.setLayout(new BorderLayout());
         jPanel25.setLayout(new BorderLayout());
         jPanel25.add(bgPanel7, BorderLayout.CENTER);
         jPanel25.revalidate();
         jPanel25.repaint();
-        
+
         BackgroundPanel bgPanel8 = new BackgroundPanel("/assets/background.jpg");
         bgPanel8.setLayout(new BorderLayout());
         jPanel39.setLayout(new BorderLayout());
         jPanel39.add(bgPanel8, BorderLayout.CENTER);
         jPanel39.revalidate();
         jPanel39.repaint();
-        
-        
+
     }
 
     public boolean isEmptyStudent() {
@@ -3335,7 +3334,7 @@ public class Home extends javax.swing.JFrame {
                 int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
 
                 // Check if record already exists
-                if (!grade.isSidGradeLevelStrandQuarterExist(sid, gradeLevel, strand, section, quarter)) {
+                if (!grade.isSidGradeLevelStrandQuarterExist(sid, quarter)) {
 
                     // Validate numeric scores
                     if (!(isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
@@ -3346,43 +3345,74 @@ public class Home extends javax.swing.JFrame {
                         return;
                     }
 
-                    int id = grade.getMax();
+                    //int id = grade.getMax();
+                    // ✅ Collect subject names from UI
+                    String[] subjectNames = {
+                        stuGradeManageSub1.getText(), stuGradeManageSub2.getText(),
+                        stuGradeManageSub3.getText(), stuGradeManageSub4.getText(),
+                        stuGradeManageSub5.getText(), stuGradeManageSub6.getText(),
+                        stuGradeManageSub7.getText(), stuGradeManageSub8.getText()
+                    };
 
-                    String subject1 = stuGradeManageSub1.getText();
-                    String subject2 = stuGradeManageSub2.getText();
-                    String subject3 = stuGradeManageSub3.getText();
-                    String subject4 = stuGradeManageSub4.getText();
-                    String subject5 = stuGradeManageSub5.getText();
-                    String subject6 = stuGradeManageSub6.getText();
-                    String subject7 = stuGradeManageSub7.getText();
-                    String subject8 = stuGradeManageSub8.getText();
+                    double[] scores = {
+                        Double.parseDouble(subScore1.getText()), Double.parseDouble(subScore2.getText()),
+                        Double.parseDouble(subScore3.getText()), Double.parseDouble(subScore4.getText()),
+                        Double.parseDouble(subScore5.getText()), Double.parseDouble(subScore6.getText()),
+                        Double.parseDouble(subScore7.getText()), Double.parseDouble(subScore8.getText())
+                    };
 
-                    double subGrade1 = Double.parseDouble(subScore1.getText());
-                    double subGrade2 = Double.parseDouble(subScore2.getText());
-                    double subGrade3 = Double.parseDouble(subScore3.getText());
-                    double subGrade4 = Double.parseDouble(subScore4.getText());
-                    double subGrade5 = Double.parseDouble(subScore5.getText());
-                    double subGrade6 = Double.parseDouble(subScore6.getText());
-                    double subGrade7 = Double.parseDouble(subScore7.getText());
-                    double subGrade8 = Double.parseDouble(subScore8.getText());
+                    // ✅ Fetch subject_ids from DB based on subject_name, grade_level, strand
+                    List<Integer> subjectIds = new ArrayList<>();
+                    for (String subjectName : subjectNames) {
+                        int subjectId = grade.getSubjectId(subjectName, gradeLevel, strand);
+                        if (subjectId == -1) {
+                            JOptionPane.showMessageDialog(this, "Subject " + subjectName + " not found in database.");
+                            return;
+                        }
+                        subjectIds.add(subjectId);
+                    }
 
-                    double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4
-                            + subGrade5 + subGrade6 + subGrade7 + subGrade8) / 8;
-                    average = Math.round(average * 100.0) / 100.0;
+                    // ✅ Convert scores array → List<Double>
+                    List<Double> gradeList = new ArrayList<>();
+                    for (double s : scores) {
+                        gradeList.add(s);
+                    }
 
-                    grade.insert(id, sid, gradeLevel, strand, section,
-                            subject1, subject2, subject3, subject4, subject5, subject6, subject7, subject8,
-                            subGrade1, subGrade2, subGrade3, subGrade4, subGrade5, subGrade6, subGrade7, subGrade8,
-                            quarter, average);
+                    // ✅ Insert all subject grades at once
+                    grade.insert(sid, subjectIds, gradeList, quarter);
+
+                    double total = 0;
+                    for (double g : scores) {
+                        total += g;
+                    }
+                    double average = Math.round((total / scores.length) * 100.0) / 100.0;
 
                     insertUpdateMarkSheet(quarter, average, sid, gradeLevel, strand, section);
 
+                    // ✅ Refresh table
                     StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
-                        "ID", "Student_ID", "Grade_Level", "Strand", "Section",
-                        "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3",
-                        "Subject 4", "Score 4", "Subject 5", "Score 5",
-                        "Subject 6", "Score 6", "Subject 7", "Score 7",
-                        "Subject 8", "Score 8", "Quarter", "Average"
+                        "Student ID", // 0
+                        "Grade Level", // 1
+                        "Strand", // 2
+                        "Section", // 3
+                        "Subject 1", // 5
+                        "Score 1", // 6
+                        "Subject 2", // 7
+                        "Score 2", // 8
+                        "Subject 3", // 9
+                        "Score 3", // 10
+                        "Subject 4", // 11
+                        "Score 4", // 12
+                        "Subject 5", // 13
+                        "Score 5", // 14
+                        "Subject 6", // 15
+                        "Score 6", // 16
+                        "Subject 7", // 17
+                        "Score 7", // 18
+                        "Subject 8", // 19
+                        "Score 8", // 20
+                        "Quarter",
+                        "average"
                     }));
 
                     grade.getGradeValue(StudentGradeManagementTable, "");
@@ -3897,37 +3927,46 @@ public class Home extends javax.swing.JFrame {
     private void StudentGradeManagementTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentGradeManagementTableMouseClicked
         model = (DefaultTableModel) StudentGradeManagementTable.getModel();
         rowIndex = StudentGradeManagementTable.getSelectedRow();
-        idGradeManage.setText(model.getValueAt(rowIndex, 0).toString());
-        stuGradeManageID.setText(model.getValueAt(rowIndex, 1).toString());
-        stuGradeManageGradeLevel.setText(model.getValueAt(rowIndex, 2).toString());
-        stuGradeManageStrand.setText(model.getValueAt(rowIndex, 3).toString());
-        stuGradeManageSection.setText(model.getValueAt(rowIndex, 4).toString());
-        stuGradeManageSub1.setText(model.getValueAt(rowIndex, 5).toString());//1
-        subScore1.setText(model.getValueAt(rowIndex, 6).toString());
-        stuGradeManageSub2.setText(model.getValueAt(rowIndex, 7).toString());//2
-        subScore2.setText(model.getValueAt(rowIndex, 8).toString());
-        stuGradeManageSub3.setText(model.getValueAt(rowIndex, 9).toString());//3
-        subScore3.setText(model.getValueAt(rowIndex, 10).toString());
-        stuGradeManageSub4.setText(model.getValueAt(rowIndex, 11).toString());//4
-        subScore4.setText(model.getValueAt(rowIndex, 12).toString());
-        stuGradeManageSub5.setText(model.getValueAt(rowIndex, 13).toString());//5
-        subScore5.setText(model.getValueAt(rowIndex, 14).toString());
-        stuGradeManageSub6.setText(model.getValueAt(rowIndex, 15).toString());//6
-        subScore6.setText(model.getValueAt(rowIndex, 16).toString());
-        stuGradeManageSub7.setText(model.getValueAt(rowIndex, 17).toString());//7
-        subScore7.setText(model.getValueAt(rowIndex, 18).toString());
-        stuGradeManageSub8.setText(model.getValueAt(rowIndex, 19).toString());//8
-        subScore8.setText(model.getValueAt(rowIndex, 20).toString());
-        String quarter = model.getValueAt(rowIndex, 21).toString();
+
+        // Basic info
+        stuGradeManageID.setText(model.getValueAt(rowIndex, 0).toString());   // student_id
+        stuGradeManageGradeLevel.setText(model.getValueAt(rowIndex, 1).toString());
+        stuGradeManageStrand.setText(model.getValueAt(rowIndex, 2).toString());
+        stuGradeManageSection.setText(model.getValueAt(rowIndex, 3).toString());
+
+        // Subjects + Scores
+        stuGradeManageSub1.setText(model.getValueAt(rowIndex, 4) != null ? model.getValueAt(rowIndex, 4).toString() : "");
+        subScore1.setText(model.getValueAt(rowIndex, 5) != null ? model.getValueAt(rowIndex, 5).toString() : "");
+
+        stuGradeManageSub2.setText(model.getValueAt(rowIndex, 6) != null ? model.getValueAt(rowIndex, 6).toString() : "");
+        subScore2.setText(model.getValueAt(rowIndex, 7) != null ? model.getValueAt(rowIndex, 7).toString() : "");
+
+        stuGradeManageSub3.setText(model.getValueAt(rowIndex, 8) != null ? model.getValueAt(rowIndex, 8).toString() : "");
+        subScore3.setText(model.getValueAt(rowIndex, 9) != null ? model.getValueAt(rowIndex, 9).toString() : "");
+
+        stuGradeManageSub4.setText(model.getValueAt(rowIndex, 10) != null ? model.getValueAt(rowIndex, 10).toString() : "");
+        subScore4.setText(model.getValueAt(rowIndex, 11) != null ? model.getValueAt(rowIndex, 11).toString() : "");
+
+        stuGradeManageSub5.setText(model.getValueAt(rowIndex, 12) != null ? model.getValueAt(rowIndex, 12).toString() : "");
+        subScore5.setText(model.getValueAt(rowIndex, 13) != null ? model.getValueAt(rowIndex, 13).toString() : "");
+
+        stuGradeManageSub6.setText(model.getValueAt(rowIndex, 14) != null ? model.getValueAt(rowIndex, 14).toString() : "");
+        subScore6.setText(model.getValueAt(rowIndex, 15) != null ? model.getValueAt(rowIndex, 15).toString() : "");
+
+        stuGradeManageSub7.setText(model.getValueAt(rowIndex, 16) != null ? model.getValueAt(rowIndex, 16).toString() : "");
+        subScore7.setText(model.getValueAt(rowIndex, 17) != null ? model.getValueAt(rowIndex, 17).toString() : "");
+
+        stuGradeManageSub8.setText(model.getValueAt(rowIndex, 18) != null ? model.getValueAt(rowIndex, 18).toString() : "");
+        subScore8.setText(model.getValueAt(rowIndex, 19) != null ? model.getValueAt(rowIndex, 19).toString() : "");
+
+        // Quarter
+        String quarter = model.getValueAt(rowIndex, 20).toString();
         if (quarter.equals("1")) {
             stuGradeManageQuarter.setSelectedIndex(0);
-
         } else if (quarter.equals("2")) {
             stuGradeManageQuarter.setSelectedIndex(1);
-
         } else if (quarter.equals("3")) {
             stuGradeManageQuarter.setSelectedIndex(2);
-
         } else {
             stuGradeManageQuarter.setSelectedIndex(3);
         }
@@ -3935,30 +3974,23 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_StudentGradeManagementTableMouseClicked
 
     private void stuGradeManageUpdateBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageUpdateBtActionPerformed
-        if (!isNumeric(idGradeManage.getText())) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid Grade ID");
-        }
-        int id = Integer.parseInt(idGradeManage.getText());
+//        if (!isNumeric(idGradeManage.getText())) {
+//            JOptionPane.showMessageDialog(this, "Please enter a valid Grade ID");
+//            return;
+//        }
+        int stuId = Integer.parseInt(stuGradeManageID.getText());
+        int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
 
-        if (grade.isidExist(id)) {
+        if (grade.isSidGradeLevelStrandQuarterExist(stuId, quarter)) {
             try {
-                // Check if all scores are numeric
+                // ✅ Validate numeric scores
                 if (!(isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
                         && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
                         && isNumeric(subScore5.getText()) && isNumeric(subScore6.getText())
                         && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText()))) {
                     JOptionPane.showMessageDialog(this, "Please fill in all subject scores with valid numbers");
+                    return;
                 }
-
-                int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
-                double subGrade1 = Double.parseDouble(subScore1.getText());
-                double subGrade2 = Double.parseDouble(subScore2.getText());
-                double subGrade3 = Double.parseDouble(subScore3.getText());
-                double subGrade4 = Double.parseDouble(subScore4.getText());
-                double subGrade5 = Double.parseDouble(subScore5.getText());
-                double subGrade6 = Double.parseDouble(subScore6.getText());
-                double subGrade7 = Double.parseDouble(subScore7.getText());
-                double subGrade8 = Double.parseDouble(subScore8.getText());
 
                 if (!isNumeric(stuGradeManageID.getText()) || !isNumeric(stuGradeManageGradeLevel.getText())) {
                     JOptionPane.showMessageDialog(this, "Please enter valid Student ID and Grade Level");
@@ -3970,24 +4002,77 @@ public class Home extends javax.swing.JFrame {
                 String strand = stuGradeManageStrand.getText();
                 String section = stuGradeManageSection.getText();
 
-                // Compute average
-                double average = (subGrade1 + subGrade2 + subGrade3 + subGrade4
-                        + subGrade5 + subGrade6 + subGrade7 + subGrade8) / 8;
-                average = Math.round(average * 100.0) / 100.0;
+                // ✅ Collect subject names
+                String[] subjectNames = {
+                    stuGradeManageSub1.getText(), stuGradeManageSub2.getText(),
+                    stuGradeManageSub3.getText(), stuGradeManageSub4.getText(),
+                    stuGradeManageSub5.getText(), stuGradeManageSub6.getText(),
+                    stuGradeManageSub7.getText(), stuGradeManageSub8.getText()
+                };
 
-                // Update DB
-                grade.update(id, subGrade1, subGrade2, subGrade3, subGrade4, subGrade5,
-                        subGrade6, subGrade7, subGrade8, quarter, average);
+                // ✅ Collect scores
+                double[] scoresArr = {
+                    Double.parseDouble(subScore1.getText()), Double.parseDouble(subScore2.getText()),
+                    Double.parseDouble(subScore3.getText()), Double.parseDouble(subScore4.getText()),
+                    Double.parseDouble(subScore5.getText()), Double.parseDouble(subScore6.getText()),
+                    Double.parseDouble(subScore7.getText()), Double.parseDouble(subScore8.getText())
+                };
 
-                // Refresh table
-                StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
-                    "ID", "Student_ID", "Grade_Level", "Strand", "Section",
-                    "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3",
-                    "Subject 4", "Score 4", "Subject 5", "Score 5",
-                    "Subject 6", "Score 6", "Subject 7", "Score 7",
-                    "Subject 8", "Score 8", "Quarter", "Average"}));
+                // ✅ Get subject IDs
+                List<Integer> subjectIds = new ArrayList<>();
+                for (String subjectName : subjectNames) {
+                    int subjectId = grade.getSubjectId(subjectName, gradeLevel, strand);
+                    if (subjectId == -1) {
+                        JOptionPane.showMessageDialog(this, "Subject " + subjectName + " not found in database.");
+                        return;
+                    }
+                    subjectIds.add(subjectId);
+                }
 
+                // ✅ Convert scores to List<Double>
+                List<Double> scores = new ArrayList<>();
+                for (double s : scoresArr) {
+                    scores.add(s);
+                }
+
+                // ✅ Update grades
+                grade.update(sid, subjectIds, scores, quarter);
+
+                // ✅ Compute new average
+                double total = 0;
+                for (double s : scores) {
+                    total += s;
+                }
+                double average = Math.round((total / scores.size()) * 100.0) / 100.0;
+
+                // ✅ Update marksheet
                 insertUpdateMarkSheet(quarter, average, sid, gradeLevel, strand, section);
+
+                StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
+                    "Student ID", // 0
+                    "Grade Level", // 1
+                    "Strand", // 2
+                    "Section", // 3
+                    "Subject 1", // 5
+                    "Score 1", // 6
+                    "Subject 2", // 7
+                    "Score 2", // 8
+                    "Subject 3", // 9
+                    "Score 3", // 10
+                    "Subject 4", // 11
+                    "Score 4", // 12
+                    "Subject 5", // 13
+                    "Score 5", // 14
+                    "Subject 6", // 15
+                    "Score 6", // 16
+                    "Subject 7", // 17
+                    "Score 7", // 18
+                    "Subject 8", // 19
+                    "Score 8", // 20
+                    "Quarter",
+                    "average"
+                }));
+
                 grade.getGradeValue(StudentGradeManagementTable, "");
                 clearGradeManage();
 
@@ -3995,7 +4080,7 @@ public class Home extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "One or more fields are empty or not numeric.");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Grade ID doesn't exist or wrong input");
+            JOptionPane.showMessageDialog(this, "Student ID from Quarter doesn't exist or wrong input");
         }
     }//GEN-LAST:event_stuGradeManageUpdateBtActionPerformed
 

@@ -9,5 +9,5 @@ package Main;
  * @author ADMIN
  */
 public class Teacher {
-    //Next Time
+   
 }

@@ -8,8 +8,8 @@ import java.sql.SQLException;
 public class MyConnection {
     
    private static final String url = "jdbc:mysql://localhost:3306/cdonhs_shs_database";
-   private static final String user = "root"; // default user
-   private static final String pass = "";     // default password in XAMPP is empty
+   private static final String user = "root";
+   private static final String pass = "";
    private static Connection conn = null;
    
    public static Connection getConnection(){

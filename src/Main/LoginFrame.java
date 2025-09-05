@@ -284,9 +284,9 @@ public class LoginFrame extends javax.swing.JFrame {
                         //this.dispose();
                     }
                     if (type.equals("Admin")) {
-                        StudentPortal portal = new StudentPortal(userId);
-                        portal.setVisible(true);
-                        portal.pack();
+                        Home home = new Home();
+                        home.setVisible(true);
+                        home.pack();
                         //this.dispose();
                     }
                     this.dispose();
