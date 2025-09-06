@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2025 at 06:00 PM
+-- Generation Time: Sep 06, 2025 at 05:20 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,29 +24,39 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `admin_id` int(11) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `gender` varchar(20) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `role` enum('Super Admin','Registrar','Guidance Admin','Finance Admin') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `general_average`
 --
 
 CREATE TABLE `general_average` (
-  `general_average_id` int(11) NOT NULL,
-  `student_id` int(10) NOT NULL,
-  `grade_level` int(2) NOT NULL,
-  `strand_name` varchar(30) NOT NULL,
-  `section_name` varchar(3) NOT NULL,
-  `quarter_1_average` decimal(5,2) DEFAULT NULL,
-  `quarter_2_average` decimal(5,2) DEFAULT NULL,
-  `quarter_3_average` decimal(5,2) DEFAULT NULL,
-  `quarter_4_average` decimal(5,2) DEFAULT NULL,
-  `final_average` decimal(5,2) NOT NULL
+  `student_id` int(11) NOT NULL,
+  `final_average` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `general_average`
 --
 
-INSERT INTO `general_average` (`general_average_id`, `student_id`, `grade_level`, `strand_name`, `section_name`, `quarter_1_average`, `quarter_2_average`, `quarter_3_average`, `quarter_4_average`, `final_average`) VALUES
-(1, 1, 11, 'STEM', 'A', 99.25, 96.50, 96.50, 96.50, 97.19),
-(2, 2, 11, 'TVL-ICT', 'A', 24.63, 0.00, 0.00, 0.00, 6.16);
+INSERT INTO `general_average` (`student_id`, `final_average`) VALUES
+(1, 88.97),
+(2, NULL);
 
 -- --------------------------------------------------------
 
@@ -67,38 +77,46 @@ CREATE TABLE `grade` (
 --
 
 INSERT INTO `grade` (`grade_id`, `student_id`, `subject_id`, `quarter`, `grade`) VALUES
-(97, 1, 1, 1, 97.00),
-(98, 1, 2, 1, 98.00),
-(99, 1, 3, 1, 99.00),
-(100, 1, 4, 1, 100.00),
-(101, 1, 5, 1, 100.00),
-(102, 1, 6, 1, 100.00),
-(103, 1, 7, 1, 100.00),
-(104, 1, 8, 1, 100.00),
-(105, 1, 1, 2, 97.00),
-(106, 1, 2, 2, 77.00),
-(107, 1, 3, 2, 99.00),
-(108, 1, 4, 2, 99.00),
-(109, 1, 5, 2, 100.00),
-(110, 1, 6, 2, 100.00),
-(111, 1, 7, 2, 100.00),
-(112, 1, 8, 2, 100.00),
-(113, 1, 1, 3, 97.00),
-(114, 1, 2, 3, 77.00),
-(115, 1, 3, 3, 99.00),
-(116, 1, 4, 3, 99.00),
-(117, 1, 5, 3, 100.00),
-(118, 1, 6, 3, 100.00),
-(119, 1, 7, 3, 100.00),
-(120, 1, 8, 3, 100.00),
-(121, 1, 1, 4, 97.00),
-(122, 1, 2, 4, 77.00),
-(123, 1, 3, 4, 99.00),
-(124, 1, 4, 4, 99.00),
-(125, 1, 5, 4, 100.00),
-(126, 1, 6, 4, 100.00),
-(127, 1, 7, 4, 100.00),
-(128, 1, 8, 4, 100.00);
+(177, 1, 1, 1, 93.00),
+(178, 1, 2, 1, 94.00),
+(179, 1, 3, 1, 92.00),
+(180, 1, 4, 1, 95.00),
+(181, 1, 5, 1, 95.00),
+(182, 1, 6, 1, 93.00),
+(183, 1, 7, 1, 94.00),
+(184, 1, 8, 1, 98.00),
+(185, 1, 1, 2, 77.00),
+(186, 1, 2, 2, 75.00),
+(187, 1, 3, 2, 76.00),
+(188, 1, 4, 2, 95.00),
+(189, 1, 5, 2, 95.00),
+(190, 1, 6, 2, 93.00),
+(191, 1, 7, 2, 94.00),
+(192, 1, 8, 2, 98.00),
+(193, 1, 1, 3, 66.00),
+(194, 1, 2, 3, 55.00),
+(195, 1, 3, 3, 77.00),
+(196, 1, 4, 3, 77.00),
+(197, 1, 5, 3, 76.00),
+(198, 1, 6, 3, 93.00),
+(199, 1, 7, 3, 94.00),
+(200, 1, 8, 3, 98.00),
+(201, 1, 1, 4, 93.00),
+(202, 1, 2, 4, 94.00),
+(203, 1, 3, 4, 92.00),
+(204, 1, 4, 4, 95.00),
+(205, 1, 5, 4, 95.00),
+(206, 1, 6, 4, 93.00),
+(207, 1, 7, 4, 94.00),
+(208, 1, 8, 4, 98.00),
+(209, 2, 33, 1, 98.00),
+(210, 2, 34, 1, 92.00),
+(211, 2, 35, 1, 93.00),
+(212, 2, 36, 1, 94.00),
+(213, 2, 37, 1, 95.00),
+(214, 2, 38, 1, 96.00),
+(215, 2, 39, 1, 98.00),
+(216, 2, 40, 1, 99.00);
 
 -- --------------------------------------------------------
 
@@ -143,16 +161,17 @@ CREATE TABLE `student` (
   `address2` varchar(50) NOT NULL,
   `birth_certificate` varchar(100) NOT NULL,
   `form_137` varchar(100) NOT NULL,
-  `image_path` varchar(100) NOT NULL
+  `image_path` varchar(100) NOT NULL,
+  `LRN` char(12) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`student_id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `gender`, `email`, `phone_number`, `mother_name`, `father_name`, `address1`, `address2`, `birth_certificate`, `form_137`, `image_path`) VALUES
-(1, 'Nick', 'hfhfdhd', 'hdfhhdfhh', '2025-09-04', 'Male', 'asdaf@gmail.ocm', '09976866868', 'fasfaf', 'fafasfa', 'fasfaf', 'fafafa', 'fafsaf', 'fasfaf', 'D:\\PICTURES\\boy_pick_left_1.png'),
-(2, 'Harvey ', 'D.', 'Clarito', '2025-09-04', 'Male', 'dasdsda@gmail.com', '09329239232', 'mama', 'papa', 'dadasda', 'dada', 'dad', 'dasda', 'D:\\PICTURES\\boy_pick_left_2.png');
+INSERT INTO `student` (`student_id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `gender`, `email`, `phone_number`, `mother_name`, `father_name`, `address1`, `address2`, `birth_certificate`, `form_137`, `image_path`, `LRN`) VALUES
+(1, 'Nick', 'hfhfdhd', 'hdfhhdfhh', '2025-09-04', 'Male', 'asdaf@gmail.ocm', '09976866868', 'fasfaf', 'fafasfa', 'fasfaf', 'fafafa', 'fafsaf', 'fasfaf', 'D:\\PICTURES\\boy_pick_left_1.png', NULL),
+(2, 'Harvey ', 'D.', 'Clarito', '2025-09-04', 'Male', 'dasdsda@gmail.com', '09329239232', 'mama', 'papa', 'dadasda', 'dada', 'dad', 'dasda', 'D:\\PICTURES\\boy_pick_left_2.png', NULL);
 
 -- --------------------------------------------------------
 
@@ -289,6 +308,26 @@ INSERT INTO `subject` (`subject_id`, `subject_name`, `grade_level`, `strand_name
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `teacher`
+--
+
+CREATE TABLE `teacher` (
+  `teacher_id` int(11) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `gender` varchar(20) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `specialization` varchar(50) NOT NULL,
+  `hire_date` date NOT NULL,
+  `image_path` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -312,11 +351,17 @@ INSERT INTO `user` (`Id`, `user_id`, `password`, `type`) VALUES
 --
 
 --
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`admin_id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- Indexes for table `general_average`
 --
 ALTER TABLE `general_average`
-  ADD PRIMARY KEY (`general_average_id`),
-  ADD KEY `student_id` (`student_id`);
+  ADD PRIMARY KEY (`student_id`);
 
 --
 -- Indexes for table `grade`
@@ -336,13 +381,21 @@ ALTER TABLE `strand`
 -- Indexes for table `student`
 --
 ALTER TABLE `student`
-  ADD PRIMARY KEY (`student_id`);
+  ADD PRIMARY KEY (`student_id`),
+  ADD UNIQUE KEY `LRN` (`LRN`);
 
 --
 -- Indexes for table `subject`
 --
 ALTER TABLE `subject`
   ADD PRIMARY KEY (`subject_id`);
+
+--
+-- Indexes for table `teacher`
+--
+ALTER TABLE `teacher`
+  ADD PRIMARY KEY (`teacher_id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `user`
@@ -356,16 +409,16 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `general_average`
+-- AUTO_INCREMENT for table `admin`
 --
-ALTER TABLE `general_average`
-  MODIFY `general_average_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `admin`
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `grade`
 --
 ALTER TABLE `grade`
-  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
 
 --
 -- AUTO_INCREMENT for table `strand`
@@ -384,6 +437,12 @@ ALTER TABLE `student`
 --
 ALTER TABLE `subject`
   MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+
+--
+-- AUTO_INCREMENT for table `teacher`
+--
+ALTER TABLE `teacher`
+  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`

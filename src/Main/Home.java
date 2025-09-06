@@ -4,26 +4,7 @@
  */
 package Main;
 
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamPanel;
-import com.github.sarxos.webcam.WebcamResolution;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.ChecksumException;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.FormatException;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.common.GlobalHistogramBinarizer;
-import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.QRCodeWriter;
+
 import design.BackgroundPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -82,10 +63,6 @@ public class Home extends javax.swing.JFrame {
     NumberFormat nf = NumberFormat.getInstance();
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Home.class.getName());
-    public Webcam webcam;
-    public WebcamPanel webcamPanel;
-    public Timer qrScanTimer;
-    public boolean isScanning = false;
     private String birthCertificatePath;
     private String form137Path;
 
@@ -94,183 +71,12 @@ public class Home extends javax.swing.JFrame {
 
         initComponents();
         init();
-        webcam = Webcam.getDefault();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 //        SwingUtilities.invokeLater(() -> {
 //            initWebcam();
 //        });
         //webcam.close(); //this is a just a experiment care to erase in the future or not
-    }
-
-    private void initWebcam() {
-        webcam = Webcam.getDefault();
-        if (webcam == null) {
-            JOptionPane.showMessageDialog(this, "No webcam detected");
-            return;
-        }
-
-        webcam.setViewSize(WebcamResolution.QVGA.getSize()); //WebcamResolution.QVGA (320x240) // WebcamResolution.HD720 (1280x720)
-        //WebcamResolution.HD1080 (1920x1080)
-        webcamPanel = new WebcamPanel(webcam, false);
-        webcamPanel.setFPSDisplayed(true);
-        webcamPanel.setMirrored(true);
-
-        webPanel.setLayout(new BorderLayout());
-        webPanel.add(webcamPanel, BorderLayout.CENTER);
-        webcamPanel.start();
-        //webcam.close(); //this is a just a experiment care to erase in the future or not
-
-        // Initialize QR scan timer (scans every 500ms)
-        qrScanTimer = new Timer(500, e -> scanForQRCode());
-    }
-
-    private void scanForQRCode() {
-        if (!isScanning && webcam != null && webcam.isOpen()) {
-            isScanning = true;
-            try {
-                BufferedImage image = webcam.getImage();
-                if (image != null) {
-                    com.google.zxing.Result result = decodeQRCode(image);
-                    if (result != null && result.getText() != null && !result.getText().isEmpty()) {
-                        qrScanTimer.stop();
-                        handleQRCodeResult(result.getText());
-                    }
-                }
-            } finally {
-                isScanning = false;
-            }
-        }
-    }
-
-    private com.google.zxing.Result decodeQRCode(BufferedImage image) {
-        if (image == null) {
-            return null;
-        }
-
-        try {
-            LuminanceSource source = new BufferedImageLuminanceSource(image);
-            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
-            // Correct way to set hints
-            Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
-            hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
-            hints.put(DecodeHintType.POSSIBLE_FORMATS, Arrays.asList(BarcodeFormat.QR_CODE));
-
-            return new MultiFormatReader().decode(bitmap, hints);
-        } catch (NotFoundException e) {
-            return null; // No QR code found
-        } catch (Exception e) {
-            logger.log(java.util.logging.Level.WARNING, "QR decoding error", e);
-            return null;
-        }
-    }
-
-    private void handleQRCodeResult(String qrText) {
-        // Split QR text by line
-        String[] lines = qrText.split("\n");
-        Map<String, String> dataMap = new HashMap<>();
-
-        for (String line : lines) {
-            if (line.contains(":")) {
-                String[] parts = line.split(":", 2);
-                if (parts.length == 2) {
-                    dataMap.put(parts[0].trim(), parts[1].trim());
-                }
-            }
-        }
-
-        // ✅ Fill textfields if data exists
-        stuID.setText(dataMap.getOrDefault("ID", ""));
-        stuFname.setText(dataMap.getOrDefault("Name", ""));
-        try {
-            String birthdate = dataMap.get("Birthdate");
-            if (birthdate != null && !birthdate.isEmpty()) {
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                stuBirth.setDate(df.parse(birthdate));
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Invalid date format in QR");
-        }
-        stuGender.setSelectedItem(dataMap.getOrDefault("Gender", ""));
-        stuEmail.setText(dataMap.getOrDefault("Email", ""));
-        stuPhone.setText(dataMap.getOrDefault("Phone", ""));
-        stuMotherName.setText(dataMap.getOrDefault("Mother", ""));
-        stuFatherName.setText(dataMap.getOrDefault("Father", ""));
-        stuAddress1.setText(dataMap.getOrDefault("Address 1", ""));
-        stuAddress2.setText(dataMap.getOrDefault("Address 2", ""));
-        stuBirthCer.setText(dataMap.getOrDefault("Birth Certificate", ""));
-        stuForm137.setText(dataMap.getOrDefault("Form 137", ""));
-
-        // PROBLEM IS HERE PLEASE CHECK PLEASE
-        String imgPath = dataMap.get("Image");
-        if (imgPath != null && !imgPath.isEmpty()) {
-            File imgFile = new File(imgPath);
-            if (imgFile.exists()) {
-                // Display image on the panel
-                imagePanel.setIcon(imageAdjust(imgPath, null));
-
-                // Store current image path
-                imagePath = imgPath;
-
-                // ✅ Also show the path in a textfield (or label)
-                imagePanel.setText(imgPath);
-            } else {
-                JOptionPane.showMessageDialog(this, "Image file not found at: " + imgPath);
-            }
-        }
-
-        JOptionPane.showMessageDialog(this, "QR Code data loaded into form!");
-
-        // Restart scanning after a delay
-        Timer restartTimer = new Timer(2000, e -> {
-            qrScanTimer.start();
-            ((Timer) e.getSource()).stop();
-        });
-        restartTimer.setRepeats(false);
-        restartTimer.start();
-    }
-
-    private void startQRScanning() {
-        if (webcam != null && !qrScanTimer.isRunning()) {
-            qrScanTimer.start();
-            JOptionPane.showMessageDialog(this, "QR Code scanning started");
-        }
-    }
-
-    private void stopQRScanning() {
-        if (qrScanTimer != null && qrScanTimer.isRunning()) {
-            qrScanTimer.stop();
-        }
-    }
-
-    private void generateQRCode(int studentId, String studentName, String qrContent) {
-        try {
-            int width = 300;   // bigger QR size since more data
-            int height = 300;
-            String fileType = "png";
-
-            // Folder where QR codes will be saved
-            File qrFolder = new File("qrcodes");
-            if (!qrFolder.exists()) {
-                qrFolder.mkdir();
-            }
-
-            // File path with student ID and name
-            File qrFile = new File(qrFolder, studentId + "_" + studentName.replaceAll("\\s+", "_") + ".png");
-
-            // Generate QR code
-            Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
-            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-            hints.put(EncodeHintType.MARGIN, 1); // reduce margin for more space
-
-            BitMatrix bitMatrix = new MultiFormatWriter().encode(qrContent, BarcodeFormat.QR_CODE, width, height, hints);
-            MatrixToImageWriter.writeToPath(bitMatrix, fileType, qrFile.toPath());
-
-            JOptionPane.showMessageDialog(this, "QR Code generated and saved:\n" + qrFile.getAbsolutePath());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error generating QR Code: " + e.getMessage());
-        }
     }
 
     /**
@@ -459,18 +265,6 @@ public class Home extends javax.swing.JFrame {
         jButton18 = new javax.swing.JButton();
         stuMarksClearBt = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
-        jPanel39 = new javax.swing.JPanel();
-        jPanel44 = new javax.swing.JPanel();
-        jPanel45 = new javax.swing.JPanel();
-        jLabel70 = new javax.swing.JLabel();
-        stuMarksSearchField1 = new javax.swing.JTextField();
-        stuMarksSearchBt1 = new javax.swing.JButton();
-        jPanel46 = new javax.swing.JPanel();
-        Final_Average1 = new javax.swing.JLabel();
-        jPanel47 = new javax.swing.JPanel();
-        webPanel = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        StartWebcam = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -2508,11 +2302,11 @@ public class Home extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Student_ID", "Grade Level", "Strand", "Section", "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average", "Final_Average"
+                "Student_ID", "Grade Level", "Strand", "Section", "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average", "Final_Average", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -2681,194 +2475,6 @@ public class Home extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Marks Sheet", jPanel25);
-
-        jPanel39.setBackground(new java.awt.Color(102, 255, 255));
-
-        jPanel44.setBackground(new java.awt.Color(153, 255, 204));
-        jPanel44.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
-        jPanel44.setForeground(new java.awt.Color(0, 0, 0));
-
-        jPanel45.setBackground(new java.awt.Color(153, 255, 204));
-        jPanel45.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
-        jPanel45.setForeground(new java.awt.Color(0, 0, 0));
-
-        jLabel70.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel70.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel70.setText("Student's ID");
-
-        stuMarksSearchField1.setBackground(new java.awt.Color(255, 255, 255));
-        stuMarksSearchField1.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-
-        stuMarksSearchBt1.setBackground(new java.awt.Color(153, 255, 204));
-        stuMarksSearchBt1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        stuMarksSearchBt1.setForeground(new java.awt.Color(0, 0, 0));
-        stuMarksSearchBt1.setText("Search");
-        stuMarksSearchBt1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stuMarksSearchBt1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel45Layout = new javax.swing.GroupLayout(jPanel45);
-        jPanel45.setLayout(jPanel45Layout);
-        jPanel45Layout.setHorizontalGroup(
-            jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel45Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel45Layout.createSequentialGroup()
-                        .addComponent(jLabel70)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel45Layout.createSequentialGroup()
-                        .addComponent(stuMarksSearchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stuMarksSearchBt1, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel45Layout.setVerticalGroup(
-            jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel45Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel70)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(stuMarksSearchBt1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                    .addComponent(stuMarksSearchField1))
-                .addContainerGap())
-        );
-
-        jPanel46.setBackground(new java.awt.Color(153, 255, 204));
-        jPanel46.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
-        jPanel46.setForeground(new java.awt.Color(0, 0, 0));
-
-        Final_Average1.setFont(new java.awt.Font("Times New Roman", 1, 32)); // NOI18N
-        Final_Average1.setForeground(new java.awt.Color(0, 0, 0));
-        Final_Average1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Final_Average1.setText("G.A. : 0.0");
-
-        javax.swing.GroupLayout jPanel46Layout = new javax.swing.GroupLayout(jPanel46);
-        jPanel46.setLayout(jPanel46Layout);
-        jPanel46Layout.setHorizontalGroup(
-            jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel46Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Final_Average1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel46Layout.setVerticalGroup(
-            jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel46Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Final_Average1, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout jPanel44Layout = new javax.swing.GroupLayout(jPanel44);
-        jPanel44.setLayout(jPanel44Layout);
-        jPanel44Layout.setHorizontalGroup(
-            jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel44Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel45, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel46, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel44Layout.setVerticalGroup(
-            jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel44Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel45, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
-                .addComponent(jPanel46, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        jPanel47.setBackground(new java.awt.Color(153, 255, 204));
-        jPanel47.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
-        jPanel47.setForeground(new java.awt.Color(0, 0, 0));
-
-        javax.swing.GroupLayout webPanelLayout = new javax.swing.GroupLayout(webPanel);
-        webPanel.setLayout(webPanelLayout);
-        webPanelLayout.setHorizontalGroup(
-            webPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 355, Short.MAX_VALUE)
-        );
-        webPanelLayout.setVerticalGroup(
-            webPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 246, Short.MAX_VALUE)
-        );
-
-        jButton3.setBackground(new java.awt.Color(102, 255, 255));
-        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Start Scanning");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        StartWebcam.setBackground(new java.awt.Color(102, 255, 255));
-        StartWebcam.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        StartWebcam.setForeground(new java.awt.Color(0, 0, 0));
-        StartWebcam.setText("Start Webcam");
-        StartWebcam.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StartWebcamActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel47Layout = new javax.swing.GroupLayout(jPanel47);
-        jPanel47.setLayout(jPanel47Layout);
-        jPanel47Layout.setHorizontalGroup(
-            jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel47Layout.createSequentialGroup()
-                .addContainerGap(302, Short.MAX_VALUE)
-                .addGroup(jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel47Layout.createSequentialGroup()
-                        .addComponent(webPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(185, 185, 185))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel47Layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addGap(126, 126, 126)
-                        .addComponent(StartWebcam, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(137, 137, 137))))
-        );
-        jPanel47Layout.setVerticalGroup(
-            jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel47Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(webPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addGroup(jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(StartWebcam, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel39Layout = new javax.swing.GroupLayout(jPanel39);
-        jPanel39.setLayout(jPanel39Layout);
-        jPanel39Layout.setHorizontalGroup(
-            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel39Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel47, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel39Layout.setVerticalGroup(
-            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel39Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel47, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(208, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Attendance", jPanel39);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -3061,13 +2667,6 @@ public class Home extends javax.swing.JFrame {
         jPanel25.revalidate();
         jPanel25.repaint();
 
-        BackgroundPanel bgPanel8 = new BackgroundPanel("/assets/background.jpg");
-        bgPanel8.setLayout(new BorderLayout());
-        jPanel39.setLayout(new BorderLayout());
-        jPanel39.add(bgPanel8, BorderLayout.CENTER);
-        jPanel39.revalidate();
-        jPanel39.repaint();
-
     }
 
     public boolean isEmptyStudent() {
@@ -3180,7 +2779,6 @@ public class Home extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
-            webcam.close();
             this.dispose();
             LoginFrame frame = new LoginFrame();
             frame.setVisible(true);
@@ -3268,7 +2866,6 @@ public class Home extends javax.swing.JFrame {
 
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
-            webcam.close();//HERE
             this.dispose();
             LoginFrame frame = new LoginFrame();
             frame.setVisible(true);
@@ -3294,7 +2891,6 @@ public class Home extends javax.swing.JFrame {
         //LOGOUT
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
-            webcam.close();//HERE PROBKEM
             this.dispose();
             LoginFrame frame = new LoginFrame();
             frame.setVisible(true);
@@ -3316,7 +2912,6 @@ public class Home extends javax.swing.JFrame {
         //LOGOUT
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
-            webcam.close();//HERE PROBLEM
             this.dispose();
             LoginFrame frame = new LoginFrame();
             frame.setVisible(true);
@@ -3385,9 +2980,8 @@ public class Home extends javax.swing.JFrame {
                     for (double g : scores) {
                         total += g;
                     }
-                    double average = Math.round((total / scores.length) * 100.0) / 100.0;
 
-                    insertUpdateMarkSheet(quarter, average, sid, gradeLevel, strand, section);
+                    marksSheet.insertUpdateGeneralAverage(sid);
 
                     // ✅ Refresh table
                     StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
@@ -3499,7 +3093,6 @@ public class Home extends javax.swing.JFrame {
         //LOGOUT
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
-            webcam.close();//HERE
             this.dispose();
             LoginFrame frame = new LoginFrame();
             frame.setVisible(true);
@@ -3513,25 +3106,38 @@ public class Home extends javax.swing.JFrame {
         } else {
             int sid = Integer.parseInt(stuMarksSearchField.getText());
             if (marksSheet.isidExist(sid)) {
-                StudentMarksSheetTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
-                    "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average", "Average"}));
+                // Keep same table structure
+                StudentMarksSheetTable.setModel(new DefaultTableModel(null, new Object[]{
+                    "Student_ID", "Grade_Level", "Strand", "Section",
+                    "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average",
+                    "Average", "Status"
+                }));
+
+                // Populate the table
                 marksSheet.getFinalGradeValue(StudentMarksSheetTable, sid);
-                double general_average = marksSheet.getGeneralAverage(sid);
-                String GA = String.valueOf(String.format("%.2f", marksSheet.getGeneralAverage(sid)));
 
-                if (general_average >= 75) {
-                    Final_Average.setText("G.A. : " + GA);
-                    Final_Average.setForeground(Color.GREEN);
-                } else {
-                    Final_Average.setText("G.A. : " + GA);
-                    Final_Average.setForeground(Color.RED);
+                // Fetch final average
+                Double general_average = marksSheet.getGeneralAverage(sid);
 
+                // Check if student has a row in general_average table
+                boolean hasGeneralAverage = marksSheet.isGeneralAverageExist(sid); // you need to create this method
+
+                if (hasGeneralAverage || general_average == null) { // incomplete quarters or no row
+                    Final_Average.setText("G.A.: Incomplete");
+                    Final_Average.setForeground(Color.ORANGE);
+                } else { // all quarters filled
+                    String GA = String.format("%.2f", general_average);
+                    Final_Average.setText("G.A.: " + GA);
+                    if (general_average >= 75) {
+                        Final_Average.setForeground(Color.GREEN);
+                    } else {
+                        Final_Average.setForeground(Color.RED);
+                    }
                 }
 
             } else {
                 JOptionPane.showMessageDialog(this, "No Grades Found");
             }
-
         }
     }//GEN-LAST:event_stuMarksSearchBtActionPerformed
 
@@ -4043,10 +3649,8 @@ public class Home extends javax.swing.JFrame {
                 for (double s : scores) {
                     total += s;
                 }
-                double average = Math.round((total / scores.size()) * 100.0) / 100.0;
 
-                // ✅ Update marksheet
-                insertUpdateMarkSheet(quarter, average, sid, gradeLevel, strand, section);
+                marksSheet.insertUpdateGeneralAverage(sid);
 
                 StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
                     "Student ID", // 0
@@ -4109,6 +3713,7 @@ public class Home extends javax.swing.JFrame {
     private void stuMarksClearBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuMarksClearBtActionPerformed
         stuMarksSearchField.setText(null);
         Final_Average.setText("G.A. : 0.0");
+        Final_Average.setForeground(Color.BLACK);
         StudentMarksSheetTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
             "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average", "Average"}));
 
@@ -4123,44 +3728,6 @@ public class Home extends javax.swing.JFrame {
             System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }//GEN-LAST:event_jButton20ActionPerformed
-
-    private void stuMarksSearchBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuMarksSearchBt1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_stuMarksSearchBt1ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (qrScanTimer.isRunning()) {
-            qrScanTimer.stop();
-            jButton3.setText("Start Scanning");
-        } else {
-            qrScanTimer.start();
-            jButton3.setText("Stop Scanning");
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void StartWebcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartWebcamActionPerformed
-        if (webcam == null || webcamPanel == null) {
-            initWebcam();  // make sure it’s ready
-        }
-
-        if (StartWebcam.isSelected()) {
-            // Start webcam
-            if (!webcam.isOpen()) {
-                webcam.open();
-            }
-            webcamPanel.start();
-            qrScanTimer.start();
-            StartWebcam.setText("Stop Webcam");
-        } else {
-            // Stop webcam
-            if (webcam != null && webcam.isOpen()) {
-                qrScanTimer.stop();
-                webcamPanel.stop();
-                webcam.close();
-            }
-            StartWebcam.setText("Start Webcam");
-        }
-    }//GEN-LAST:event_StartWebcamActionPerformed
 
     private ImageIcon imageAdjust(String path, byte[] pic) {
         ImageIcon myImage = null;
@@ -4218,8 +3785,6 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Clear;
     private javax.swing.JLabel Final_Average;
-    private javax.swing.JLabel Final_Average1;
-    private javax.swing.JToggleButton StartWebcam;
     private javax.swing.JTable StudentGradeManagementTable;
     private javax.swing.JTable StudentMarksSheetTable;
     private javax.swing.JTable StudentTable;
@@ -4236,7 +3801,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -4280,7 +3844,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel67;
     private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel69;
-    private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -4314,16 +3877,11 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel36;
     private javax.swing.JPanel jPanel37;
     private javax.swing.JPanel jPanel38;
-    private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel41;
     private javax.swing.JPanel jPanel42;
     private javax.swing.JPanel jPanel43;
-    private javax.swing.JPanel jPanel44;
-    private javax.swing.JPanel jPanel45;
-    private javax.swing.JPanel jPanel46;
-    private javax.swing.JPanel jPanel47;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -4373,9 +3931,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField stuLastName;
     private javax.swing.JButton stuMarksClearBt;
     private javax.swing.JButton stuMarksSearchBt;
-    private javax.swing.JButton stuMarksSearchBt1;
     private javax.swing.JTextField stuMarksSearchField;
-    private javax.swing.JTextField stuMarksSearchField1;
     private javax.swing.JTextField stuMiddleName;
     private javax.swing.JTextField stuMotherName;
     private javax.swing.JTextField stuPhone;
@@ -4404,6 +3960,5 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtTime;
     private javax.swing.JButton updateBt;
-    private javax.swing.JPanel webPanel;
     // End of variables declaration//GEN-END:variables
 }

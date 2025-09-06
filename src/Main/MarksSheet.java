@@ -108,28 +108,99 @@ public class MarksSheet {
     // ✅ Fetch student final_grade into JTable
 
     public void getFinalGradeValue(JTable table, int sid) {
-        String sql = "SELECT * FROM general_average WHERE student_id = ?";
+        String sql = "SELECT s.grade_level, s.strand AS strand_name, s.section_name "
+                + "FROM strand s WHERE s.student_id = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, sid);
             ResultSet rs = ps.executeQuery();
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            Object[] row;
-
             model.setRowCount(0); // clear table before adding new data
 
-            while (rs.next()) {
-                row = new Object[10];
-                row[0] = rs.getInt("general_average_id");
-                row[1] = rs.getInt("student_id");
-                row[2] = rs.getInt("grade_level");
-                row[3] = rs.getString("strand_name");
-                row[4] = rs.getString("section_name");
-                row[5] = rs.getDouble("quarter_1_average");
-                row[6] = rs.getDouble("quarter_2_average");
-                row[7] = rs.getDouble("quarter_3_average");
-                row[8] = rs.getDouble("quarter_4_average");
-                row[9] = rs.getDouble("final_average");
+            if (rs.next()) {
+                int gradeLevel = rs.getInt("grade_level");
+                String strand = rs.getString("strand_name");
+                String section = rs.getString("section_name");
+
+                Object[] row = new Object[10]; // SID, GradeLevel, Strand, Section, Q1-Q4, FinalAvg, Status
+                row[0] = sid;
+                row[1] = gradeLevel;
+                row[2] = strand;
+                row[3] = section;
+
+                boolean allQuartersFilled = true;
+                double total = 0;
+                int quartersWithGrades = 0;
+
+                // Calculate averages per quarter
+                for (int q = 1; q <= 4; q++) {
+                    String avgSql = "SELECT AVG(grade) AS quarter_avg FROM grade WHERE student_id = ? AND quarter = ?";
+                    PreparedStatement psAvg = con.prepareStatement(avgSql);
+                    psAvg.setInt(1, sid);
+                    psAvg.setInt(2, q);
+                    ResultSet rsAvg = psAvg.executeQuery();
+                    if (rsAvg.next()) {
+                        double quarterAvg = rsAvg.getDouble("quarter_avg");
+                        if (quarterAvg > 0) {
+                            row[3 + q] = Math.round(quarterAvg * 100.0) / 100.0; // Q1-Q4 in row[4]-row[7]
+                            total += quarterAvg;
+                            quartersWithGrades++;
+                        } else {
+                            row[3 + q] = null;
+                            allQuartersFilled = false;
+                        }
+                    } else {
+                        row[3 + q] = null;
+                        allQuartersFilled = false;
+                    }
+                }
+
+                // Compute final average only if all 4 quarters have grades
+                Double finalAverage = null;
+                if (quartersWithGrades == 4) {
+                    finalAverage = Math.round((total / 4) * 100.0) / 100.0;
+                }
+
+                // Insert or update final average in general_average table
+                String checkSql = "SELECT student_id FROM general_average WHERE student_id = ?";
+                PreparedStatement psCheck = con.prepareStatement(checkSql);
+                psCheck.setInt(1, sid);
+                ResultSet rsCheck = psCheck.executeQuery();
+
+                if (rsCheck.next()) {
+                    // Update
+                    String updateSql = "UPDATE general_average SET final_average=? WHERE student_id=?";
+                    PreparedStatement psUpdate = con.prepareStatement(updateSql);
+                    if (finalAverage != null) {
+                        psUpdate.setDouble(1, finalAverage);
+                    } else {
+                        psUpdate.setNull(1, java.sql.Types.DOUBLE);
+                    }
+                    psUpdate.setInt(2, sid);
+                    psUpdate.executeUpdate();
+                } else {
+                    // Insert
+                    String insertSql = "INSERT INTO general_average(student_id, final_average) VALUES(?, ?)";
+                    PreparedStatement psInsert = con.prepareStatement(insertSql);
+                    psInsert.setInt(1, sid);
+                    if (finalAverage != null) {
+                        psInsert.setDouble(2, finalAverage);
+                    } else {
+                        psInsert.setNull(2, java.sql.Types.DOUBLE);
+                    }
+                    psInsert.executeUpdate();
+                }
+
+                // Set final average and status
+                row[8] = finalAverage; // Final Average
+                if (!allQuartersFilled || finalAverage == null) {
+                    row[9] = "Incomplete";
+                } else if (finalAverage >= 75) {
+                    row[9] = "Pass";
+                } else {
+                    row[9] = "Fail";
+                }
+
                 model.addRow(row);
             }
         } catch (SQLException ex) {
@@ -137,7 +208,7 @@ public class MarksSheet {
         }
     }
 
-    public void updateQuarter(int sid, int gradeLevel, String strand, String section, int quarter, double average, 
+    public void updateQuarter(int sid, int gradeLevel, String strand, String section, int quarter, double average,
             double finalAverage) {
         String column = "";
         if (quarter == 1) {
@@ -213,28 +284,95 @@ public class MarksSheet {
     }
 
     public double getGeneralAverage(int sid) {
-        double generalAverage = 0.0;
-        String sql = "SELECT quarter_1_average, quarter_2_average, quarter_3_average, quarter_4_average "
-                + "FROM general_average WHERE student_id = ?";
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        double finalAverage = 0;
+        String sql = "SELECT final_average FROM general_average WHERE student_id = ?";
+        try {
+            ps = con.prepareStatement(sql);
             ps.setInt(1, sid);
             ResultSet rs = ps.executeQuery();
-
             if (rs.next()) {
-                double q1 = rs.getDouble("quarter_1_average");
-                double q2 = rs.getDouble("quarter_2_average");
-                double q3 = rs.getDouble("quarter_3_average");
-                double q4 = rs.getDouble("quarter_4_average");
-
-                generalAverage = (q1 + q2 + q3 + q4) / 4;
+                finalAverage = rs.getDouble("final_average");
             }
-
-            rs.close();
         } catch (SQLException ex) {
             System.getLogger(MarksSheet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-
-        return generalAverage;
+        return finalAverage;
     }
+
+    public Double computeFinalAverage(int studentId) {
+        double total = 0;
+        int filledQuarters = 0;
+        String sql = "SELECT AVG(grade) AS quarter_avg FROM grade WHERE student_id = ? AND quarter = ?";
+
+        try {
+            for (int q = 1; q <= 4; q++) {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, studentId);
+                ps.setInt(2, q);
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next() && rs.getDouble("quarter_avg") > 0) {
+                    total += rs.getDouble("quarter_avg");
+                    filledQuarters++;
+                }
+            }
+        } catch (SQLException ex) {
+            System.getLogger(MarksSheet.class.getName())
+                    .log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+
+        // Only compute average if all 4 quarters have grades
+        if (filledQuarters == 4) {
+            return Math.round((total / 4) * 100.0) / 100.0;
+        } else {
+            return null; // or 0 if you prefer, but null indicates incomplete
+        }
+    }
+
+    public void insertUpdateGeneralAverage(int studentId) {
+        Double finalAverage = computeFinalAverage(studentId);
+
+        // Only update if all 4 quarters are filled
+        if (finalAverage != null) {
+            try {
+                // Check if row already exists
+                String checkSql = "SELECT student_id FROM general_average WHERE student_id = ?";
+                PreparedStatement psCheck = con.prepareStatement(checkSql);
+                psCheck.setInt(1, studentId);
+                ResultSet rs = psCheck.executeQuery();
+
+                if (rs.next()) {
+                    // Update existing row
+                    String updateSql = "UPDATE general_average SET final_average=? WHERE student_id=?";
+                    PreparedStatement psUpdate = con.prepareStatement(updateSql);
+                    psUpdate.setDouble(1, finalAverage);
+                    psUpdate.setInt(2, studentId);
+                    psUpdate.executeUpdate();
+                } else {
+                    // Insert new row
+                    String insertSql = "INSERT INTO general_average(student_id, final_average) VALUES(?, ?)";
+                    PreparedStatement psInsert = con.prepareStatement(insertSql);
+                    psInsert.setInt(1, studentId);
+                    psInsert.setDouble(2, finalAverage);
+                    psInsert.executeUpdate();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean isGeneralAverageExist(int studentId) {
+        try {
+            String sql = "SELECT student_id FROM general_average WHERE student_id = ?";
+            PreparedStatement psCheck = con.prepareStatement(sql);
+            psCheck.setInt(1, studentId);
+            ResultSet rs = psCheck.executeQuery();
+            return rs.next(); // true if row exists
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
 }
