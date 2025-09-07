@@ -5,12 +5,9 @@
         <group>
             <file>file:/D:/PROJECTS/Student_Management_System_CDONHS_SHS/src/Main/LoginFrame.java</file>
             <file>file:/D:/PROJECTS/Student_Management_System_CDONHS_SHS/src/Main/Home.java</file>
-            <file>file:/D:/PROJECTS/Student_Management_System_CDONHS_SHS/src/Main/Student.java</file>
-            <file>file:/D:/PROJECTS/Student_Management_System_CDONHS_SHS/src/Main/Grade.java</file>
-            <file>file:/D:/PROJECTS/Student_Management_System_CDONHS_SHS/src/Main/Strand.java</file>
-            <file>file:/D:/PROJECTS/Student_Management_System_CDONHS_SHS/src/Main/MarksSheet.java</file>
             <file>file:/D:/PROJECTS/Student_Management_System_CDONHS_SHS/src/Main/AdminFrame.java</file>
             <file>file:/D:/PROJECTS/Student_Management_System_CDONHS_SHS/src/Main/StudentPortal.java</file>
+            <file>file:/D:/PROJECTS/Student_Management_System_CDONHS_SHS/src/Main/Student.java</file>
         </group>
     </open-files>
 </project-private>

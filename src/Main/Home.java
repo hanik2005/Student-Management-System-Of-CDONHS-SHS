@@ -4,7 +4,6 @@
  */
 package Main;
 
-
 import design.BackgroundPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -43,6 +42,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
 /**
  *
@@ -134,6 +136,9 @@ public class Home extends javax.swing.JFrame {
         imagePanel = new javax.swing.JLabel();
         browseImg = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
+        jPanel39 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        stuLRN = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         updateBt = new javax.swing.JButton();
@@ -466,6 +471,11 @@ public class Home extends javax.swing.JFrame {
         });
 
         stuBirthCer.setBackground(java.awt.Color.white);
+        stuBirthCer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuBirthCerActionPerformed(evt);
+            }
+        });
 
         stuForm137.setBackground(java.awt.Color.white);
 
@@ -686,23 +696,64 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(jLabel12)
                         .addGap(56, 56, 56)
                         .addComponent(browseImg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addContainerGap(221, Short.MAX_VALUE))
+        );
+
+        jPanel39.setBackground(new java.awt.Color(153, 255, 204));
+        jPanel39.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
+        jPanel39.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel16.setText("LRN");
+
+        stuLRN.setBackground(java.awt.Color.white);
+        stuLRN.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+
+        javax.swing.GroupLayout jPanel39Layout = new javax.swing.GroupLayout(jPanel39);
+        jPanel39.setLayout(jPanel39Layout);
+        jPanel39Layout.setHorizontalGroup(
+            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel39Layout.createSequentialGroup()
+                .addGroup(jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel39Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel16))
+                    .addGroup(jPanel39Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(stuLRN, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(41, Short.MAX_VALUE))
+        );
+        jPanel39Layout.setVerticalGroup(
+            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel39Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stuLRN)
+                .addGap(62, 62, 62))
         );
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(464, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -758,7 +809,7 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(addNewBt, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(updateBt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(Clear, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -814,8 +865,8 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Student", jPanel2);
@@ -2579,6 +2630,7 @@ public class Home extends javax.swing.JFrame {
         imagePanel.setIcon(null);
         StudentTable.clearSelection();
         imagePath = null;
+        stuLRN.setText(null);
 
     }
 
@@ -2725,6 +2777,14 @@ public class Home extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Form 137 path is missing");
             return false;
         }
+        if (stuLRN.getText().length() >= 15) {
+            JOptionPane.showMessageDialog(this, "LRN is to long");
+            return false;
+        }
+        if (stuLRN.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "LRN is missing");
+            return false;
+        }
         if (imagePath == null) {
             JOptionPane.showMessageDialog(this, "Please add your image");
             return false;
@@ -2818,6 +2878,8 @@ public class Home extends javax.swing.JFrame {
                     String addressLine2 = stuAddress2.getText();
                     String birthCer = stuBirthCer.getText();
                     String form137 = stuForm137.getText();
+                    long stuLrn = Long.parseLong(stuLRN.getText());
+                    
 
                     SimpleDateFormat passFormat = new SimpleDateFormat("yyyyMMdd");
                     String birthForPass = passFormat.format(stuBirth.getDate());
@@ -2825,7 +2887,7 @@ public class Home extends javax.swing.JFrame {
                     String type = "Student";
 
                     student.insert(id, sFname, sMiddleName, sLastName, date, gender, email, phone,
-                            motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
+                            motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath, stuLrn);
                     user.insert(id, id, password, type);
 
 //                    String qrContent = "ID: " + id
@@ -2845,7 +2907,7 @@ public class Home extends javax.swing.JFrame {
 //                    // ✅ Generate QR code with all details
 //                    generateQRCode(id, sname, qrContent);
                     StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "First Name", "Middle Name", "Last Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
-                        "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
+                        "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path", "LRN"}));
                     student.getStudentValue(StudentTable, "");
                     clearStudent();
                 } else {
@@ -3184,7 +3246,7 @@ public class Home extends javax.swing.JFrame {
         if (output == JFileChooser.APPROVE_OPTION) {
             File selectFile = file.getSelectedFile();
             String path = selectFile.getAbsolutePath();
-            imagePanel.setIcon(imageAdjust(path, null));
+            imagePanel.setIcon(imageAdjust(path, null, imagePanel));
             imagePath = path;
 
         } else {
@@ -3293,8 +3355,9 @@ public class Home extends javax.swing.JFrame {
                     String addressLine2 = stuAddress2.getText();
                     String birthCer = stuBirthCer.getText();
                     String form137 = stuForm137.getText();
+                    long stuLrn = Long.parseLong(stuLRN.getText());
                     student.update(id, sfname, sMidName, sLastName, date, gender, email, phone,
-                            motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
+                            motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath, stuLrn);
 
 //                    String qrContent = "ID: " + id
 //                            + "\nName: " + sname
@@ -3404,7 +3467,7 @@ public class Home extends javax.swing.JFrame {
         stuForm137.setText(model.getValueAt(rowIndex, 13).toString());
         String path = model.getValueAt(rowIndex, 14).toString();
         imagePath = path;
-        imagePanel.setIcon(imageAdjust(path, null));//get image path and called image adjust method path to image
+        imagePanel.setIcon(imageAdjust(path, null, imagePanel));//get image path and called image adjust method path to image
     }//GEN-LAST:event_StudentTableMouseClicked
 
 
@@ -3729,19 +3792,27 @@ public class Home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton20ActionPerformed
 
-    private ImageIcon imageAdjust(String path, byte[] pic) {
+    private void stuBirthCerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuBirthCerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stuBirthCerActionPerformed
+
+    public ImageIcon imageAdjust(String path, byte[] pic, JLabel targetLabel) {
         ImageIcon myImage = null;
+
         if (path != null) {
             myImage = new ImageIcon(path);
         } else {
             myImage = new ImageIcon(pic);
-
         }
-        Image img = myImage.getImage();
-        Image newImage = img.getScaledInstance(imagePanel.getWidth(), imagePanel.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon icon = new ImageIcon(newImage);
-        return icon;
 
+        Image img = myImage.getImage();
+        Image newImage = img.getScaledInstance(
+                targetLabel.getWidth(),
+                targetLabel.getHeight(),
+                Image.SCALE_SMOOTH
+        );
+
+        return new ImageIcon(newImage);
     }
 
     public void setTime() {
@@ -3809,6 +3880,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -3877,6 +3949,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel36;
     private javax.swing.JPanel jPanel37;
     private javax.swing.JPanel jPanel38;
+    private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel41;
@@ -3928,6 +4001,7 @@ public class Home extends javax.swing.JFrame {
     public static javax.swing.JTextField stuGradeManageSub8;
     private javax.swing.JButton stuGradeManageUpdateBt;
     private javax.swing.JTextField stuID;
+    private javax.swing.JTextField stuLRN;
     private javax.swing.JTextField stuLastName;
     private javax.swing.JButton stuMarksClearBt;
     private javax.swing.JButton stuMarksSearchBt;

@@ -96,6 +96,7 @@ public class AdminFrame extends javax.swing.JFrame {
         stuBirthCer.setText(null);
         stuForm137.setText(null);
         imagePanel.setIcon(null);
+        stuLRN.setText(null);
         StudentTable.clearSelection();
         imagePath = null;
 
@@ -250,6 +251,9 @@ public class AdminFrame extends javax.swing.JFrame {
         imagePanel = new javax.swing.JLabel();
         browseImg = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
+        jPanel39 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        stuLRN = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         updateBt = new javax.swing.JButton();
@@ -685,20 +689,61 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addContainerGap(202, Short.MAX_VALUE))
         );
 
+        jPanel39.setBackground(new java.awt.Color(153, 255, 204));
+        jPanel39.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
+        jPanel39.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel16.setText("LRN");
+
+        stuLRN.setBackground(java.awt.Color.white);
+        stuLRN.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+
+        javax.swing.GroupLayout jPanel39Layout = new javax.swing.GroupLayout(jPanel39);
+        jPanel39.setLayout(jPanel39Layout);
+        jPanel39Layout.setHorizontalGroup(
+            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel39Layout.createSequentialGroup()
+                .addGroup(jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel39Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel16))
+                    .addGroup(jPanel39Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(stuLRN, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(41, Short.MAX_VALUE))
+        );
+        jPanel39Layout.setVerticalGroup(
+            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel39Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stuLRN)
+                .addGap(62, 62, 62))
+        );
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(464, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -754,7 +799,7 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addComponent(addNewBt, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(updateBt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(Clear, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1184,8 +1229,9 @@ public class AdminFrame extends javax.swing.JFrame {
                     String addressLine2 = stuAddress2.getText();
                     String birthCer = stuBirthCer.getText();
                     String form137 = stuForm137.getText();
+                    long stuLrn = Long.parseLong(stuLRN.getText());
                     student.update(id, sfname, sMidName, sLastName, date, gender, email, phone,
-                        motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
+                        motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath, stuLrn);
 
                     //                    String qrContent = "ID: " + id
                     //                            + "\nName: " + sname
@@ -1238,6 +1284,7 @@ public class AdminFrame extends javax.swing.JFrame {
                     String addressLine2 = stuAddress2.getText();
                     String birthCer = stuBirthCer.getText();
                     String form137 = stuForm137.getText();
+                    int stuLrn = Integer.parseInt(stuLRN.getText());
 
                     SimpleDateFormat passFormat = new SimpleDateFormat("yyyyMMdd");
                     String birthForPass = passFormat.format(stuBirth.getDate());
@@ -1245,7 +1292,7 @@ public class AdminFrame extends javax.swing.JFrame {
                     String type = "Student";
 
                     student.insert(id, sFname, sMiddleName, sLastName, date, gender, email, phone,
-                        motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath);
+                        motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath, stuLrn);
                     user.insert(id, id, password, type);
 
                     //                    String qrContent = "ID: " + id
@@ -1436,6 +1483,7 @@ stuSearchField_1.setText(null);
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1456,6 +1504,7 @@ stuSearchField_1.setText(null);
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
@@ -1473,6 +1522,7 @@ stuSearchField_1.setText(null);
     private javax.swing.JTextField stuForm137;
     private javax.swing.JComboBox<String> stuGender;
     private javax.swing.JTextField stuID;
+    private javax.swing.JTextField stuLRN;
     private javax.swing.JTextField stuLastName;
     private javax.swing.JTextField stuMiddleName;
     private javax.swing.JTextField stuMotherName;

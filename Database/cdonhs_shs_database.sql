@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 06, 2025 at 05:20 AM
+-- Generation Time: Sep 07, 2025 at 02:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,7 +35,8 @@ CREATE TABLE `admin` (
   `gender` varchar(20) NOT NULL,
   `email` varchar(50) DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
-  `address` varchar(100) DEFAULT NULL,
+  `address1` varchar(100) NOT NULL,
+  `address2` varchar(100) NOT NULL,
   `role` enum('Super Admin','Registrar','Guidance Admin','Finance Admin') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -162,7 +163,7 @@ CREATE TABLE `student` (
   `birth_certificate` varchar(100) NOT NULL,
   `form_137` varchar(100) NOT NULL,
   `image_path` varchar(100) NOT NULL,
-  `LRN` char(12) DEFAULT NULL
+  `LRN` bigint(12) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -171,7 +172,8 @@ CREATE TABLE `student` (
 
 INSERT INTO `student` (`student_id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `gender`, `email`, `phone_number`, `mother_name`, `father_name`, `address1`, `address2`, `birth_certificate`, `form_137`, `image_path`, `LRN`) VALUES
 (1, 'Nick', 'hfhfdhd', 'hdfhhdfhh', '2025-09-04', 'Male', 'asdaf@gmail.ocm', '09976866868', 'fasfaf', 'fafasfa', 'fasfaf', 'fafafa', 'fafsaf', 'fasfaf', 'D:\\PICTURES\\boy_pick_left_1.png', NULL),
-(2, 'Harvey ', 'D.', 'Clarito', '2025-09-04', 'Male', 'dasdsda@gmail.com', '09329239232', 'mama', 'papa', 'dadasda', 'dada', 'dad', 'dasda', 'D:\\PICTURES\\boy_pick_left_2.png', NULL);
+(2, 'Harvey ', 'D.', 'Clarito', '2025-09-04', 'Male', 'dasdsda@gmail.com', '09329239232', 'mama', 'papa', 'dadasda', 'dada', 'dad', 'dasda', 'D:\\PICTURES\\boy_pick_left_2.png', NULL),
+(3, 'ran', 'man', 'clarito', '2005-08-20', 'Male', 'dasdad@gmail.com', '099232323', 'dasds', 'dasddd', 'dasdasd', 'dasd', 'FELISILDA_&_CLARITO.pdf', 'Scholar_csr.pdf', 'D:\\PICTURES\\boy_pick_left_2.png', 405220150089);
 
 -- --------------------------------------------------------
 
@@ -314,15 +316,16 @@ INSERT INTO `subject` (`subject_id`, `subject_name`, `grade_level`, `strand_name
 CREATE TABLE `teacher` (
   `teacher_id` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
-  `middle_name` varchar(50) DEFAULT NULL,
+  `middle_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `gender` varchar(20) NOT NULL,
-  `email` varchar(50) DEFAULT NULL,
-  `phone_number` varchar(20) DEFAULT NULL,
-  `address` varchar(100) DEFAULT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone_number` varchar(20) NOT NULL,
+  `address1` varchar(100) NOT NULL,
+  `address2` varchar(100) NOT NULL,
   `specialization` varchar(50) NOT NULL,
   `hire_date` date NOT NULL,
-  `image_path` varchar(100) DEFAULT NULL
+  `image_path` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -332,8 +335,8 @@ CREATE TABLE `teacher` (
 --
 
 CREATE TABLE `user` (
-  `Id` int(10) NOT NULL,
-  `user_id` int(10) NOT NULL,
+  `Id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `password` varchar(30) NOT NULL,
   `type` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -344,7 +347,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`Id`, `user_id`, `password`, `type`) VALUES
 (1, 1, 'hdfhhdfhh20250904', 'Student'),
-(2, 2, 'clarito20250904', 'Student');
+(2, 2, 'clarito20250904', 'Student'),
+(3, 3, 'clarito20050820', 'Student');
 
 --
 -- Indexes for dumped tables
@@ -368,7 +372,8 @@ ALTER TABLE `general_average`
 --
 ALTER TABLE `grade`
   ADD PRIMARY KEY (`grade_id`),
-  ADD KEY `student_id` (`student_id`);
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `subject_id` (`subject_id`);
 
 --
 -- Indexes for table `strand`
@@ -430,7 +435,7 @@ ALTER TABLE `strand`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `subject`
@@ -448,7 +453,7 @@ ALTER TABLE `teacher`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `Id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -464,19 +469,14 @@ ALTER TABLE `general_average`
 -- Constraints for table `grade`
 --
 ALTER TABLE `grade`
-  ADD CONSTRAINT `grade_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`);
+  ADD CONSTRAINT `grade_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
+  ADD CONSTRAINT `grade_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`);
 
 --
 -- Constraints for table `strand`
 --
 ALTER TABLE `strand`
   ADD CONSTRAINT `strand_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`);
-
---
--- Constraints for table `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `student` (`student_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
