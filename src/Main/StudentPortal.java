@@ -4,6 +4,7 @@
  */
 package Main;
 
+import model.SubjectGrade;
 import db.MyConnection;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
@@ -17,9 +18,11 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -38,6 +41,7 @@ public class StudentPortal extends javax.swing.JFrame {
     ResultSet rs;
     private String imagePath;
     Home home = new Home();
+    Grade grade = new Grade();
 
     /**
      * Creates new form StudentPortal
@@ -141,6 +145,48 @@ public class StudentPortal extends javax.swing.JFrame {
         }
     }
 
+    public void displayStudentGrades(int studentId, int quarter, int gradeLevel) {
+        Map<Integer, SubjectGrade> grades = grade.getStudentGrades(studentId, quarter, gradeLevel);
+
+        // Subject name text fields
+        JTextField[] subjectFields = {
+            stuGradeManageSub1, stuGradeManageSub2, stuGradeManageSub3, stuGradeManageSub4,
+            stuGradeManageSub5, stuGradeManageSub6, stuGradeManageSub7, stuGradeManageSub8
+        };
+
+        // Score text fields
+        JTextField[] scoreFields = {
+            subScore1, subScore2, subScore3, subScore4,
+            subScore5, subScore6, subScore7, subScore8
+        };
+
+        double total = 0.0;
+        int count = 0;
+
+        for (int i = 1; i <= 8; i++) {
+            if (grades.containsKey(i)) {
+                SubjectGrade sg = grades.get(i);
+
+                subjectFields[i - 1].setText(sg.getSubjectName());
+                scoreFields[i - 1].setText(String.valueOf(sg.getGrade()));
+
+                total += sg.getGrade();
+                count++;
+            } else {
+                subjectFields[i - 1].setText("");
+                scoreFields[i - 1].setText("0.0");
+            }
+        }
+
+        // Show overall subject average for this quarter
+        if (count > 0) {
+            double average = total / count;
+            subsAverage.setText(String.format("%.2f", average));
+        } else {
+            subsAverage.setText("0.0");
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -208,8 +254,8 @@ public class StudentPortal extends javax.swing.JFrame {
         jLabel67 = new javax.swing.JLabel();
         stuGradeManageSearchButton = new javax.swing.JButton();
         jLabel68 = new javax.swing.JLabel();
-        stuGradeManageGradeLevelSearchField = new javax.swing.JComboBox<>();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        stuGradeLevel = new javax.swing.JComboBox<>();
+        stuQuarter = new javax.swing.JComboBox<>();
         jLabel30 = new javax.swing.JLabel();
         stuGradeManageSub1 = new javax.swing.JTextField();
         stuGradeManageSub2 = new javax.swing.JTextField();
@@ -778,14 +824,14 @@ public class StudentPortal extends javax.swing.JFrame {
         jLabel68.setForeground(new java.awt.Color(0, 0, 0));
         jLabel68.setText("Grade Level");
 
-        stuGradeManageGradeLevelSearchField.setBackground(new java.awt.Color(255, 255, 255));
-        stuGradeManageGradeLevelSearchField.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        stuGradeManageGradeLevelSearchField.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeManageGradeLevelSearchField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11", "12" }));
+        stuGradeLevel.setBackground(new java.awt.Color(255, 255, 255));
+        stuGradeLevel.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        stuGradeLevel.setForeground(new java.awt.Color(0, 0, 0));
+        stuGradeLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11", "12" }));
 
-        jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
+        stuQuarter.setBackground(new java.awt.Color(255, 255, 255));
+        stuQuarter.setForeground(new java.awt.Color(0, 0, 0));
+        stuQuarter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
@@ -797,8 +843,8 @@ public class StudentPortal extends javax.swing.JFrame {
                     .addGroup(jPanel37Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(stuGradeManageGradeLevelSearchField, 0, 311, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(stuGradeLevel, 0, 311, Short.MAX_VALUE)
+                            .addComponent(stuQuarter, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(stuGradeManageSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
                 .addContainerGap())
@@ -815,11 +861,11 @@ public class StudentPortal extends javax.swing.JFrame {
                 .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(stuGradeManageSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel37Layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(stuQuarter, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel68)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stuGradeManageGradeLevelSearchField, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                        .addComponent(stuGradeLevel, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                         .addContainerGap())))
         );
 
@@ -1283,13 +1329,30 @@ public class StudentPortal extends javax.swing.JFrame {
     }//GEN-LAST:event_logStuBtActionPerformed
 
     private void stuGradeManageSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSearchButtonActionPerformed
-//        if (stuGradeIDSearchField.getText().isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Student id is missing");
-//        } else {
-//            int sid = Integer.parseInt(stuGradeIDSearchField.getText());
-//            int gradeLevel = Integer.parseInt(stuGradeManageGradeLevelSearchField.getSelectedItem().toString());
-//            grade.getDetails(sid, gradeLevel);
-//        }
+        try {
+            int quarter = Integer.parseInt(stuQuarter.getSelectedItem().toString());
+            int gradeLevel = Integer.parseInt(stuGradeLevel.getSelectedItem().toString());
+            // Fetch grades
+            Map<Integer, SubjectGrade> grades = grade.getStudentGrades(studentId, quarter, gradeLevel);
+
+            if (grades.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "No grades have been recorded yet for this student in Grade " + gradeLevel
+                        + ", Quarter " + quarter + ".",
+                        "No Grades Found",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // Display grades if found
+                displayStudentGrades(studentId, quarter, gradeLevel);
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid Student ID, Grade Level, and Quarter.",
+                    "Invalid Input",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_stuGradeManageSearchButtonActionPerformed
 
     private void stuGradeManageSub5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSub5ActionPerformed
@@ -1338,7 +1401,6 @@ public class StudentPortal extends javax.swing.JFrame {
     private javax.swing.JLabel imagePanel1;
     private javax.swing.JLabel imagePanel2;
     private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1392,8 +1454,8 @@ public class StudentPortal extends javax.swing.JFrame {
     private javax.swing.JTextField phoneTxt;
     private javax.swing.JTextField sectionTxt;
     private javax.swing.JTextField strandTxt;
+    private javax.swing.JComboBox<String> stuGradeLevel;
     private javax.swing.JButton stuGradeManageClearBt;
-    private javax.swing.JComboBox<String> stuGradeManageGradeLevelSearchField;
     private javax.swing.JButton stuGradeManageSearchButton;
     public static javax.swing.JTextField stuGradeManageSub1;
     public static javax.swing.JTextField stuGradeManageSub2;
@@ -1404,6 +1466,7 @@ public class StudentPortal extends javax.swing.JFrame {
     public static javax.swing.JTextField stuGradeManageSub7;
     public static javax.swing.JTextField stuGradeManageSub8;
     private javax.swing.JTextField stuLrn;
+    private javax.swing.JComboBox<String> stuQuarter;
     private javax.swing.JTextField subScore1;
     private javax.swing.JTextField subScore2;
     private javax.swing.JTextField subScore3;

@@ -1284,8 +1284,8 @@
                                           <Group type="102" attributes="0">
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="stuGradeManageGradeLevelSearchField" pref="311" max="32767" attributes="0"/>
-                                                  <Component id="jComboBox1" max="32767" attributes="0"/>
+                                                  <Component id="stuGradeLevel" pref="311" max="32767" attributes="0"/>
+                                                  <Component id="stuQuarter" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -1308,11 +1308,11 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="stuGradeManageSearchButton" max="32767" attributes="0"/>
                                           <Group type="102" attributes="0">
-                                              <Component id="jComboBox1" min="-2" pref="33" max="-2" attributes="0"/>
+                                              <Component id="stuQuarter" min="-2" pref="33" max="-2" attributes="0"/>
                                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                               <Component id="jLabel68" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="stuGradeManageGradeLevelSearchField" pref="30" max="32767" attributes="0"/>
+                                              <Component id="stuGradeLevel" pref="30" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -1360,7 +1360,7 @@
                                 <Property name="text" type="java.lang.String" value="Grade Level"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JComboBox" name="stuGradeManageGradeLevelSearchField">
+                            <Component class="javax.swing.JComboBox" name="stuGradeLevel">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -1382,7 +1382,7 @@
                                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                               </AuxValues>
                             </Component>
-                            <Component class="javax.swing.JComboBox" name="jComboBox1">
+                            <Component class="javax.swing.JComboBox" name="stuQuarter">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                                   <Color blue="ff" green="ff" red="ff" type="rgb"/>

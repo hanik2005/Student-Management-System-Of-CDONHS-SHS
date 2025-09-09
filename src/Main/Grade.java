@@ -4,13 +4,16 @@
  */
 package Main;
 
+import model.SubjectGrade;
 import db.MyConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -283,5 +286,31 @@ public class Grade {
         } catch (SQLException ex) {
             System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
+    }
+
+    public Map<Integer, SubjectGrade> getStudentGrades(int studentId, int quarter, int gradeLevel) {
+        Map<Integer, SubjectGrade> grades = new HashMap<>();
+        String sql = "SELECT subj.subject_order, subj.subject_name, g.grade "
+                + "FROM grade g "
+                + "JOIN subject subj ON g.subject_id = subj.subject_id "
+                + "WHERE g.student_id = ? AND g.quarter = ? AND subj.grade_level = ? "
+                + "ORDER BY subj.subject_order";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            ps.setInt(2, quarter);
+            ps.setInt(3, gradeLevel);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int order = rs.getInt("subject_order");
+                String subjectName = rs.getString("subject_name");
+                double grade = rs.getDouble("grade");
+                grades.put(order, new SubjectGrade(subjectName, grade));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return grades;
     }
 }

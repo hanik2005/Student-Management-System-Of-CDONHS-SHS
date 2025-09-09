@@ -2878,7 +2878,7 @@ public class Home extends javax.swing.JFrame {
                     String addressLine2 = stuAddress2.getText();
                     String birthCer = stuBirthCer.getText();
                     String form137 = stuForm137.getText();
-                    long stuLrn = Long.parseLong(stuLRN.getText());
+                    String stuLrn = stuLRN.getText();
                     
 
                     SimpleDateFormat passFormat = new SimpleDateFormat("yyyyMMdd");
@@ -3355,7 +3355,7 @@ public class Home extends javax.swing.JFrame {
                     String addressLine2 = stuAddress2.getText();
                     String birthCer = stuBirthCer.getText();
                     String form137 = stuForm137.getText();
-                    long stuLrn = Long.parseLong(stuLRN.getText());
+                    String stuLrn = stuLRN.getText();
                     student.update(id, sfname, sMidName, sLastName, date, gender, email, phone,
                             motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath, stuLrn);
 

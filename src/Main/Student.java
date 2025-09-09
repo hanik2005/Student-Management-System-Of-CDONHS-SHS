@@ -36,7 +36,7 @@ public class Student {
     //insert data into student table
     public void insert(int id, String fname, String midName, String lastName, String date, String gender, String email, String phone,
             String motherName, String fatherName, String addressLine1,
-            String addressLine2, String birthCer, String form137, String imagePath, long lrn) {
+            String addressLine2, String birthCer, String form137, String imagePath, String lrn) {
 
         String sql = "insert into student values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
@@ -56,7 +56,7 @@ public class Student {
             ps.setString(13, birthCer);
             ps.setString(14, form137);
             ps.setString(15, imagePath);
-            ps.setLong(16, lrn);
+            ps.setString(16, lrn);
 
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "New Student added successfully");
@@ -149,7 +149,7 @@ public class Student {
 
     public void update(int id, String fname, String midName, String lname, String date, String gender, String email, String phone,
             String motherName, String fatherName, String addressLine1,
-            String addressLine2, String birthCer, String form137, String imagePath, long lrn) {
+            String addressLine2, String birthCer, String form137, String imagePath, String lrn) {
 
         String sql = "update student set first_name=?,middle_name=?,last_name=?,date_of_birth=?,gender=?,email=?,phone_number=?,mother_name=?,"
                 + "father_name=?,address1=?,address2=?,birth_certificate=?,form_137=?,image_path=?,LRN=? where student_id=?";
@@ -170,7 +170,7 @@ public class Student {
             ps.setString(13, form137);
             ps.setString(14, imagePath);
             ps.setInt(15, id);
-            ps.setLong(16, lrn);
+            ps.setString(16, lrn);
 
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Student data updated successfully ");
