@@ -4,6 +4,11 @@
  */
 package Main;
 
+import com.itextpdf.text.Document;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import design.BackgroundPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,6 +20,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -42,6 +48,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -150,6 +157,7 @@ public class Home extends javax.swing.JFrame {
         stuSearchField_1 = new javax.swing.JTextField();
         searchBt_1 = new javax.swing.JButton();
         stuRefresh_1 = new javax.swing.JButton();
+        stuSort_1 = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         StudentTable = new javax.swing.JTable();
@@ -179,6 +187,7 @@ public class Home extends javax.swing.JFrame {
         stuSearchField_2 = new javax.swing.JTextField();
         stuSearchBt_2 = new javax.swing.JButton();
         stuRefresh_2 = new javax.swing.JButton();
+        stuSort_2 = new javax.swing.JButton();
         jPanel18 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         StudentTrackTable = new javax.swing.JTable();
@@ -249,6 +258,7 @@ public class Home extends javax.swing.JFrame {
         stuGradeManageSearchStuField = new javax.swing.JTextField();
         stuGradeManageSearchTableBt = new javax.swing.JButton();
         stuGradeManageRefreshTable = new javax.swing.JButton();
+        stuSort_3 = new javax.swing.JButton();
         jPanel42 = new javax.swing.JPanel();
         jButton13 = new javax.swing.JButton();
         stuGradeManagePrint = new javax.swing.JButton();
@@ -865,7 +875,7 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(66, Short.MAX_VALUE))
         );
 
@@ -902,6 +912,16 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        stuSort_1.setBackground(new java.awt.Color(153, 255, 204));
+        stuSort_1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        stuSort_1.setForeground(new java.awt.Color(0, 0, 0));
+        stuSort_1.setText("Sort");
+        stuSort_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuSort_1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
@@ -913,9 +933,11 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(stuSearchField_1, javax.swing.GroupLayout.PREFERRED_SIZE, 687, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(searchBt_1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59)
+                .addGap(18, 18, 18)
                 .addComponent(stuRefresh_1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(110, 110, 110))
+                .addGap(28, 28, 28)
+                .addComponent(stuSort_1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -925,7 +947,8 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
                     .addComponent(stuSearchField_1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchBt_1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stuRefresh_1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stuRefresh_1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stuSort_1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -936,11 +959,11 @@ public class Home extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Student_ID", "First_Name", "Middle_Name", "Last_Name", "Date Of Birth", "Gender", "Email", "Phone Number", "Father's Name", "Mother's Name", "Address Line 1", "Address Line 2", "Birth Cerificate", "Form137", "Image Path"
+                "Student_ID", "First_Name", "Middle_Name", "Last_Name", "Date Of Birth", "Gender", "Email", "Phone Number", "Father's Name", "Mother's Name", "Address Line 1", "Address Line 2", "Birth Cerificate", "Form137", "Image Path", "LRN"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1256,6 +1279,16 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        stuSort_2.setBackground(new java.awt.Color(153, 255, 204));
+        stuSort_2.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        stuSort_2.setForeground(new java.awt.Color(0, 0, 0));
+        stuSort_2.setText("Sort");
+        stuSort_2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuSort_2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel35Layout = new javax.swing.GroupLayout(jPanel35);
         jPanel35.setLayout(jPanel35Layout);
         jPanel35Layout.setHorizontalGroup(
@@ -1265,10 +1298,12 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(stuSearchField_2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(stuSearchBt_2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stuSearchBt_2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(stuRefresh_2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuSort_2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(stuRefresh_2)
                 .addContainerGap())
         );
         jPanel35Layout.setVerticalGroup(
@@ -1279,7 +1314,8 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(stuSearchField_2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(stuSearchBt_2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stuRefresh_2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stuRefresh_2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stuSort_2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16))
         );
 
@@ -1291,7 +1327,7 @@ public class Home extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Student_ID", "Grade Level", "Strand", "Section"
+                "Strand_ID", "Student_ID", "Grade Level", "Strand", "Section"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -2111,6 +2147,16 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        stuSort_3.setBackground(new java.awt.Color(153, 255, 204));
+        stuSort_3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        stuSort_3.setForeground(new java.awt.Color(0, 0, 0));
+        stuSort_3.setText("Sort");
+        stuSort_3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuSort_3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel41Layout = new javax.swing.GroupLayout(jPanel41);
         jPanel41.setLayout(jPanel41Layout);
         jPanel41Layout.setHorizontalGroup(
@@ -2123,18 +2169,24 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(stuGradeManageSearchTableBt, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(stuSort_3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(stuGradeManageRefreshTable, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel41Layout.setVerticalGroup(
             jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel41Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(stuGradeManageSearchStuField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(stuGradeManageSearchTableBt)
-                    .addComponent(stuGradeManageRefreshTable))
+                .addContainerGap()
+                .addGroup(jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(stuSort_3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel41Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(stuGradeManageSearchStuField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(stuGradeManageSearchTableBt)
+                            .addComponent(stuGradeManageRefreshTable))))
                 .addGap(16, 16, 16))
         );
 
@@ -2879,7 +2931,6 @@ public class Home extends javax.swing.JFrame {
                     String birthCer = stuBirthCer.getText();
                     String form137 = stuForm137.getText();
                     String stuLrn = stuLRN.getText();
-                    
 
                     SimpleDateFormat passFormat = new SimpleDateFormat("yyyyMMdd");
                     String birthForPass = passFormat.format(stuBirth.getDate());
@@ -2961,13 +3012,12 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void stuGradeManagePrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManagePrintActionPerformed
-        try {
-            MessageFormat header = new MessageFormat("Students Grade Information");
-            MessageFormat footer = new MessageFormat("Page{0,number,integer}");
-            StudentGradeManagementTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
-        } catch (PrinterException ex) {
-            System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+       try { MessageFormat header = new MessageFormat("Students Grade Information"); 
+       MessageFormat footer = new MessageFormat("Page{0,number,integer}"); 
+       StudentGradeManagementTable.print(JTable.PrintMode.FIT_WIDTH, header, footer); 
+       } catch (PrinterException ex) { 
+           System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex); 
+       }
     }//GEN-LAST:event_stuGradeManagePrintActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -3496,7 +3546,7 @@ public class Home extends javax.swing.JFrame {
             student.delete(id);
             user.delete(id);
             StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "First Name", "Middle Name", "Last Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
-                "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
+                "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path", "LRN"}));
             student.getStudentValue(StudentTable, "");
             clearStudent();
 
@@ -3510,16 +3560,16 @@ public class Home extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Search field is empty");
 
         } else {
-            StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
-                "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
+            StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "First_Name", "Middle_Name", "Last_Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+                "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path", "LRN"}));
             student.getStudentValue(StudentTable, stuSearchField_1.getText());
 
         }
     }//GEN-LAST:event_searchBt_1ActionPerformed
 
     private void stuRefresh_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuRefresh_1ActionPerformed
-        StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "Student Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
-            "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path"}));
+        StudentTable.setModel(new DefaultTableModel(null, new Object[]{"Student ID", "First_Name", "Middle_Name", "Last_Name", "Date of Birth", "Gender", "Email", "Phone Number", "Father's Name",
+            "Mother's Name", "Address Line 1", "Address Line 2", "Birth Certificate", "Form137", "Image Path", "LRN"}));
         student.getStudentValue(StudentTable, "");
         stuSearchField_1.setText(null);
     }//GEN-LAST:event_stuRefresh_1ActionPerformed
@@ -3563,13 +3613,134 @@ public class Home extends javax.swing.JFrame {
 
     private void stuPrint_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuPrint_2ActionPerformed
         try {
-            MessageFormat header = new MessageFormat("All Strand Student Information");
-            MessageFormat footer = new MessageFormat("Page{0,number,integer}");
-            StudentTrackTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
-        } catch (PrinterException ex) {
-            System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            // === 1. Ask user to select a strand ===
+            String[] strands = {"STEM", "ABM", "HUMSS", "TVL-ICT", "TVL-EIM", "TVL-HE", "GAS"};
+            String selectedStrand = (String) JOptionPane.showInputDialog(
+                    this,
+                    "Select Strand to Print:",
+                    "Choose Strand",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    strands,
+                    strands[0] // default
+            );
+
+            if (selectedStrand == null) {
+                return; // user cancelled
+            }
+
+            // === 2. Create new model for combined report ===
+            DefaultTableModel combinedModel = new DefaultTableModel(
+                    new Object[]{"Student ID", "Student Name", "Gender", "Strand", "Grade Level", "Section"}, 0);
+
+            DefaultTableModel studentModel = (DefaultTableModel) StudentTable.getModel();
+            DefaultTableModel trackModel = (DefaultTableModel) StudentTrackTable.getModel();
+
+            // === 2a. Get column indexes ===
+            int trackIdCol = getColumnIndex(trackModel, "Student_ID");
+            int trackStrandCol = getColumnIndex(trackModel, "Strand");
+            int gradeLevelCol = getColumnIndex(trackModel, "Grade Level");
+            int sectionCol = getColumnIndex(trackModel, "Section");
+
+            int studentIdCol = getColumnIndex(studentModel, "Student_ID");
+            int firstNameCol = getColumnIndex(studentModel, "First_Name");
+            int middleNameCol = getColumnIndex(studentModel, "Middle_Name");
+            int lastNameCol = getColumnIndex(studentModel, "Last_Name");
+            int genderCol = getColumnIndex(studentModel, "Gender");
+
+            // === 3. Loop and join tables ===
+            for (int i = 0; i < studentModel.getRowCount(); i++) {
+                Object studentId = studentModel.getValueAt(i, studentIdCol);
+                String studentName = studentModel.getValueAt(i, firstNameCol) + " "
+                        + studentModel.getValueAt(i, middleNameCol) + " "
+                        + studentModel.getValueAt(i, lastNameCol);
+                Object gender = studentModel.getValueAt(i, genderCol);
+
+                Object strand = "";
+                Object gradeLevel = "";
+                Object section = "";
+
+                for (int j = 0; j < trackModel.getRowCount(); j++) {
+                    Object trackId = trackModel.getValueAt(j, trackIdCol);
+                    Object trackStrand = trackModel.getValueAt(j, trackStrandCol);
+
+                    if (studentId.toString().equals(trackId.toString())
+                            && selectedStrand.equalsIgnoreCase(trackStrand.toString().trim())) {
+                        strand = trackStrand;
+                        gradeLevel = trackModel.getValueAt(j, gradeLevelCol);
+                        section = trackModel.getValueAt(j, sectionCol);
+
+                        combinedModel.addRow(new Object[]{studentId, studentName, gender, strand, gradeLevel, section});
+                        break;
+                    }
+                }
+            }
+
+            if (combinedModel.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "No students found for strand: " + selectedStrand);
+                return;
+            }
+
+            // === 4. Ask user where to save the PDF ===
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save PDF Report");
+            fileChooser.setSelectedFile(new java.io.File("StudentReport_" + selectedStrand + ".pdf"));
+
+            int userSelection = fileChooser.showSaveDialog(this);
+            if (userSelection != JFileChooser.APPROVE_OPTION) {
+                return; // user cancelled
+            }
+
+            java.io.File pdfFile = fileChooser.getSelectedFile();
+
+            // Ensure file has .pdf extension
+            if (!pdfFile.getName().toLowerCase().endsWith(".pdf")) {
+                pdfFile = new java.io.File(pdfFile.getAbsolutePath() + ".pdf");
+            }
+
+            // === 5. Generate PDF ===
+            Document document = new Document();
+            PdfWriter.getInstance(document, new java.io.FileOutputStream(pdfFile));
+            document.open();
+
+            // Title
+            document.add(new com.itextpdf.text.Paragraph("Student Information Report - " + selectedStrand));
+            document.add(new com.itextpdf.text.Paragraph(" "));
+
+            // Table
+            PdfPTable pdfTable = new PdfPTable(combinedModel.getColumnCount());
+
+            // Add headers
+            for (int col = 0; col < combinedModel.getColumnCount(); col++) {
+                pdfTable.addCell(new com.itextpdf.text.Phrase(combinedModel.getColumnName(col)));
+            }
+
+            // Add rows
+            for (int row = 0; row < combinedModel.getRowCount(); row++) {
+                for (int col = 0; col < combinedModel.getColumnCount(); col++) {
+                    Object value = combinedModel.getValueAt(row, col);
+                    pdfTable.addCell(new com.itextpdf.text.Phrase(value != null ? value.toString() : ""));
+                }
+            }
+
+            document.add(pdfTable);
+            document.close();
+
+            JOptionPane.showMessageDialog(this, "PDF saved successfully:\n" + pdfFile.getAbsolutePath());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_stuPrint_2ActionPerformed
+    private int getColumnIndex(DefaultTableModel model, String columnName) {
+        for (int i = 0; i < model.getColumnCount(); i++) {
+            if (model.getColumnName(i).equalsIgnoreCase(columnName)) {
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("Column '" + columnName + "' not found in table model.");
+    }
 
     private void stuGradeIDSearchFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stuGradeIDSearchFieldKeyTyped
         if (!Character.isDigit(evt.getKeyChar())) {
@@ -3796,6 +3967,71 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_stuBirthCerActionPerformed
 
+    private void stuSort_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuSort_1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) StudentTable.getModel();
+
+        // Attach TableRowSorter to your table
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        StudentTable.setRowSorter(sorter);
+
+        // Example: Sort by Student ID (numerically) and then by Student Name (alphabetically)
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+
+        int studentIdCol = 0;  // Student ID is column 0
+        int studentNameCol = 1; // Student Name is column 1
+
+        // First sort by ID (ascending)
+        sortKeys.add(new RowSorter.SortKey(studentIdCol, SortOrder.ASCENDING));
+
+        // Then sort by Name (ascending)
+        sortKeys.add(new RowSorter.SortKey(studentNameCol, SortOrder.ASCENDING));
+
+        sorter.setSortKeys(sortKeys);
+        sorter.sort();
+    }//GEN-LAST:event_stuSort_1ActionPerformed
+
+    private void stuSort_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuSort_2ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) StudentTrackTable.getModel();
+
+        // Attach TableRowSorter to your table
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        StudentTrackTable.setRowSorter(sorter);
+
+        // Example: Sort by Student ID (numerically) and then by Student Name (alphabetically)
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+
+        int IdCol = 0;  // Student ID is column 0
+        int studentStrandIdCol = 1; // Student Name is column 1
+
+        // First sort by ID (ascending)
+        sortKeys.add(new RowSorter.SortKey(IdCol, SortOrder.ASCENDING));
+
+        // Then sort by Name (ascending)
+        sortKeys.add(new RowSorter.SortKey(studentStrandIdCol, SortOrder.ASCENDING));
+
+        sorter.setSortKeys(sortKeys);
+        sorter.sort();
+    }//GEN-LAST:event_stuSort_2ActionPerformed
+
+    private void stuSort_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuSort_3ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) StudentGradeManagementTable.getModel();
+
+        // Attach TableRowSorter to your table
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        StudentGradeManagementTable.setRowSorter(sorter);
+
+        // Example: Sort by Student ID (numerically) and then by Student Name (alphabetically)
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+
+        int stuIdCol = 0;  // Student ID is column 0
+
+        // First sort by ID (ascending)
+        sortKeys.add(new RowSorter.SortKey(stuIdCol, SortOrder.ASCENDING));
+
+        sorter.setSortKeys(sortKeys);
+        sorter.sort();
+    }//GEN-LAST:event_stuSort_3ActionPerformed
+
     public ImageIcon imageAdjust(String path, byte[] pic, JLabel targetLabel) {
         ImageIcon myImage = null;
 
@@ -4018,6 +4254,9 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField stuSearchField_1;
     private javax.swing.JTextField stuSearchField_2;
     private javax.swing.JComboBox<String> stuSection;
+    private javax.swing.JButton stuSort_1;
+    private javax.swing.JButton stuSort_2;
+    private javax.swing.JButton stuSort_3;
     private javax.swing.JComboBox<String> stuStrand;
     private javax.swing.JButton stuStrandClearBt;
     public static javax.swing.JTextField stuStrandId;
