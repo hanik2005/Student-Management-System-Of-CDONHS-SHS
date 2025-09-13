@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 public class MyConnection {
     
-   private static final String url = "jdbc:mysql://localhost:3306/cdonhs_shs_database";
+   private static final String url = "jdbc:mysql://localhost:3306/cdonhs_shs_database_new";
    private static final String user = "root";
    private static final String pass = "";
    private static Connection conn = null;

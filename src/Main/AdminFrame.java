@@ -1291,9 +1291,9 @@ public class AdminFrame extends javax.swing.JFrame {
                     String password = sLastName.toLowerCase() + birthForPass;
                     String type = "Student";
 
-                    student.insert(id, sFname, sMiddleName, sLastName, date, gender, email, phone,
-                        motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath, stuLrn);
-                    user.insert(id, id, password, type);
+                    //student.insert(id, sFname, sMiddleName, sLastName, date, gender, email, phone,
+                        //motherName, fatherName, addressLine1, addressLine2, birthCer, form137, imagePath, stuLrn);
+                    //user.insert(id, id, password, type);
 
                     //                    String qrContent = "ID: " + id
                     //                            + "\nName: " + sname

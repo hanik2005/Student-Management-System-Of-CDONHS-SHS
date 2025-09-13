@@ -19,20 +19,6 @@ public class Strand {
     PreparedStatement ps;
 
     // Get next available ID
-    public int getMax() {
-        int id = 0;
-        Statement st;
-        try {
-            st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT MAX(strand_id) FROM strand");
-            if (rs.next()) {
-                id = rs.getInt(1);
-            }
-        } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        return id + 1;
-    }
 
     public boolean getId(int id) {
         try {
@@ -52,115 +38,6 @@ public class Strand {
 
         return false;
     }
-
-//    // Insert new strand
-//    public void insert(int id, int sid, String gradeLevel, String strandName, String section) {
-//        String sql = "INSERT INTO strand VALUES(?,?,?,?,?)";
-//        try {
-//            ps = con.prepareStatement(sql);
-//            ps.setInt(1, id);
-//            ps.setInt(2, sid);
-//            ps.setInt(3, Integer.parseInt(gradeLevel));
-//            ps.setString(4, strandName);
-//            ps.setString(5, section);
-//
-//            if (ps.executeUpdate() > 0) {
-//                JOptionPane.showMessageDialog(null, "New Strand added successfully");
-//            }
-//        } catch (SQLException ex) {
-//            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-//        }
-//    }
-    public void insert(int id, int sid, int gradeLevel, String strandName, String section) {
-
-        String sql = "INSERT INTO strand (strand_id, student_id, grade_level, strand, section_name) "
-                + "VALUES (?, ?, ?, ?, ?)";
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.setInt(2, sid);
-            ps.setInt(3, gradeLevel);
-            ps.setString(4, strandName);
-            ps.setString(5, section);
-
-
-            if (ps.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "New Strand and Subjects added successfully");
-            }
-        } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-    }
-
-    public boolean hasSameGradeAndStrand(int studentId, int gradeLevel, String strandName) {
-        String sql = "SELECT * FROM strand WHERE student_id = ? AND grade_level = ? AND strand = ?";
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, studentId);
-            ps.setInt(2, gradeLevel);
-            ps.setString(3, strandName);
-            ResultSet rs = ps.executeQuery();
-            return rs.next(); // true if record exists
-        } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        return false;
-    }
-
-    public boolean isStudentAlreadyEnrolled(int studentId) {
-        String sql = "SELECT * FROM strand WHERE student_id = ?";
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, studentId);
-            ResultSet rs = ps.executeQuery();
-            return rs.next(); // true if record exists
-        } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        return false;
-    }
-
-
-    // Fetch all strands and show in JTable
-    public void getStrandValue(JTable table, String searchValue) {
-        String sql = "SELECT * FROM strand WHERE CONCAT(strand_id,student_id,grade_level,strand,section_name) LIKE ? ORDER BY strand_id DESC";
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setString(1, "%" + searchValue + "%");
-            ResultSet rs = ps.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            Object[] row;
-            while (rs.next()) {
-                row = new Object[5];
-                row[0] = rs.getInt(1);
-                row[1] = rs.getString(2);
-                row[2] = rs.getString(3);
-                row[3] = rs.getString(4);
-                row[4] = rs.getString(5);
-                model.addRow(row);
-            }
-        } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-    }
-
-//    // Update strand details
-//    public void update(int id, String gradeLevel, String strandName, String section) {
-//        String sql = "UPDATE strand SET grade_level=?, strand=?, section_name=? WHERE strand_id=?";
-//        try {
-//            ps = con.prepareStatement(sql);
-//            ps.setString(1, gradeLevel);
-//            ps.setString(2, strandName);
-//            ps.setString(3, section);
-//            ps.setInt(4, id);
-//
-//            if (ps.executeUpdate() > 0) {
-//                JOptionPane.showMessageDialog(null, "Strand data updated successfully");
-//            }
-//        } catch (SQLException ex) {
-//            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-//        }
-//    }
 
     // Delete strand record
     public void delete(int id) {
@@ -202,5 +79,120 @@ public class Strand {
             System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return section;
+    }
+
+    public int convertStrandNameToId(String strandName) {
+        String sql = "SELECT strand_id FROM strands WHERE strand_name = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, strandName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("strand_id");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return -1;
+    }
+
+   
+     //* Check if student exists in student table
+ 
+    public boolean studentExists(int studentId) {
+        String sql = "SELECT COUNT(*) FROM student WHERE student_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    
+     //* Check if student is already enrolled in the same grade level and strand
+   
+    public boolean isStudentAlreadyEnrolled(int studentId, int gradeLevel, int strandId) {
+        String sql = "SELECT COUNT(*) FROM student_strand WHERE student_id = ? AND grade_level = ? AND strand_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            ps.setInt(2, gradeLevel);
+            ps.setInt(3, strandId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Check if student is enrolled in any strand
+     */
+    public boolean isStudentEnrolledInAnyStrand(int studentId) {
+        String sql = "SELECT COUNT(*) FROM student_strand WHERE student_id = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Insert into student_strand table
+     */
+    public void insertStudentStrand(int studentId, int strandId, int gradeLevel, String section) {
+        String sql = "INSERT INTO student_strand (strand_id, student_id, grade_level, section_name) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, strandId);
+            ps.setInt(2, studentId);
+            ps.setInt(3, gradeLevel);
+            ps.setString(4, section);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error enrolling student: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Load student strands table (replace your strand.getStrandValue method)
+     */
+    public void loadStudentStrandsTable(JTable table, String search) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0); // Clear existing data
+
+        String sql = "SELECT ss.strand_id, ss.student_id, ss.grade_level, s.strand_name, ss.section_name "
+                + "FROM student_strand ss "
+                + "JOIN strands s ON ss.strand_id = s.strand_id "
+                + "WHERE ss.student_id LIKE ? OR s.strand_name LIKE ? "
+                + "ORDER BY ss.student_id";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + search + "%");
+            ps.setString(2, "%" + search + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("strand_id"),
+                    rs.getInt("student_id"),
+                    rs.getInt("grade_level"),
+                    rs.getString("strand_name"),
+                    rs.getString("section_name")
+                });
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

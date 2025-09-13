@@ -47,8 +47,13 @@ public class Grade {
 
     public boolean getDetails(int sid, int gradeLevel) {
         try {
-            // Step 1: Get student strand & section from strand table
-            ps = con.prepareStatement("SELECT * FROM strand WHERE student_id = ? AND grade_level = ?");
+            // Step 1: Get student strand & section from student_strand table joined with strands
+            String strandSql = "SELECT ss.student_id, ss.grade_level, ss.section_name, s.strand_name, s.strand_id "
+                    + "FROM student_strand ss "
+                    + "JOIN strands s ON ss.strand_id = s.strand_id "
+                    + "WHERE ss.student_id = ? AND ss.grade_level = ?";
+
+            ps = con.prepareStatement(strandSql);
             ps.setInt(1, sid);
             ps.setInt(2, gradeLevel);
             ResultSet rs = ps.executeQuery();
@@ -57,16 +62,19 @@ public class Grade {
                 // Fill UI
                 Home.stuGradeManageID.setText(String.valueOf(rs.getInt("student_id")));
                 Home.stuGradeManageGradeLevel.setText(String.valueOf(rs.getInt("grade_level")));
-                String strandName = rs.getString("strand");
+                String strandName = rs.getString("strand_name");
+                int strandId = rs.getInt("strand_id");
                 Home.stuGradeManageStrand.setText(strandName);
                 Home.stuGradeManageSection.setText(rs.getString("section_name"));
 
-                // Step 2: Get subjects dynamically from subject table
-                PreparedStatement ps2 = con.prepareStatement(
-                        "SELECT subject_name FROM subject WHERE grade_level = ? AND strand_name = ? ORDER BY subject_id ASC"
-                );
+                // Step 2: Get subjects dynamically from subject table using strand_id
+                String subjectSql = "SELECT subject_name FROM subject "
+                        + "WHERE grade_level = ? AND strand_id = ? "
+                        + "ORDER BY subject_order ASC";
+
+                PreparedStatement ps2 = con.prepareStatement(subjectSql);
                 ps2.setInt(1, gradeLevel);
-                ps2.setString(2, strandName);
+                ps2.setInt(2, strandId);
                 ResultSet rs2 = ps2.executeQuery();
 
                 // Step 3: Fill subjects into UI fields
@@ -95,6 +103,28 @@ public class Grade {
                     index++;
                 }
 
+                // Clear any remaining subject fields if there are fewer than 8 subjects
+                for (int i = index; i <= 8; i++) {
+                    switch (i) {
+                        case 1 ->
+                            Home.stuGradeManageSub1.setText("");
+                        case 2 ->
+                            Home.stuGradeManageSub2.setText("");
+                        case 3 ->
+                            Home.stuGradeManageSub3.setText("");
+                        case 4 ->
+                            Home.stuGradeManageSub4.setText("");
+                        case 5 ->
+                            Home.stuGradeManageSub5.setText("");
+                        case 6 ->
+                            Home.stuGradeManageSub6.setText("");
+                        case 7 ->
+                            Home.stuGradeManageSub7.setText("");
+                        case 8 ->
+                            Home.stuGradeManageSub8.setText("");
+                    }
+                }
+
                 if (index <= 8) {
                     JOptionPane.showMessageDialog(null, "⚠ Not enough subjects found in database for this strand.");
                 }
@@ -104,7 +134,8 @@ public class Grade {
                 JOptionPane.showMessageDialog(null, "❌ Student ID or Grade level doesn't exist.");
             }
         } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, "Error getting student details", ex);
+            JOptionPane.showMessageDialog(null, "❌ Database error: " + ex.getMessage());
         }
 
         return false;
@@ -112,7 +143,10 @@ public class Grade {
 
     public int getSubjectId(String subjectName, int gradeLevel, String strandName) {
         int subjectId = -1; // default if not found
-        String sql = "SELECT subject_id FROM subject WHERE subject_name = ? AND grade_level = ? AND strand_name = ?";
+
+        String sql = "SELECT subject_id FROM subject subj "
+                + "JOIN strands s ON subj.strand_id = s.strand_id "
+                + "WHERE subj.subject_name = ? AND subj.grade_level = ? AND s.strand_name = ?";
 
         try {
             ps = con.prepareStatement(sql);
@@ -125,7 +159,7 @@ public class Grade {
                 subjectId = rs.getInt("subject_id");
             }
         } catch (SQLException ex) {
-            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, "Error getting subject ID", ex);
         }
 
         return subjectId;
@@ -210,12 +244,11 @@ public class Grade {
         }
     }
 
-    // Fetch all grade and show in JTable
     public void getGradeValue(JTable table, String searchValue) {
         String sql = "SELECT g.student_id, "
-                + "st.grade_level, "
-                + "st.strand, "
-                + "st.section_name, "
+                + "ss.grade_level, "
+                + "s.strand_name, "
+                + "ss.section_name, "
                 + "g.quarter, "
                 + "AVG(g.grade) AS quarter_average, "
                 + "MAX(CASE WHEN subj.subject_order = 1 THEN subj.subject_name END) AS subject1, "
@@ -236,12 +269,10 @@ public class Grade {
                 + "MAX(CASE WHEN subj.subject_order = 8 THEN g.grade END) AS score8 "
                 + "FROM grade g "
                 + "JOIN subject subj ON g.subject_id = subj.subject_id "
-                + "LEFT JOIN strand st "
-                + "   ON st.student_id = g.student_id "
-                + "  AND st.grade_level = subj.grade_level "
-                + "  AND st.strand = subj.strand_name "
-                + "WHERE CONCAT(g.student_id, st.grade_level, st.strand, st.section_name, g.quarter) LIKE ? "
-                + "GROUP BY g.student_id, st.grade_level, st.strand, st.section_name, g.quarter "
+                + "LEFT JOIN student_strand ss ON g.student_id = ss.student_id "
+                + "LEFT JOIN strands s ON ss.strand_id = s.strand_id "
+                + "WHERE CONCAT(g.student_id, ss.grade_level, s.strand_name, ss.section_name, g.quarter) LIKE ? "
+                + "GROUP BY g.student_id, ss.grade_level, s.strand_name, ss.section_name, g.quarter "
                 + "ORDER BY g.student_id DESC";
 
         try {
@@ -256,7 +287,7 @@ public class Grade {
                 row = new Object[23];
                 row[0] = rs.getInt("student_id");
                 row[1] = rs.getInt("grade_level");
-                row[2] = rs.getString("strand");
+                row[2] = rs.getString("strand_name"); // Changed from "strand" to "strand_name"
                 row[3] = rs.getString("section_name");
 
                 // subjects + scores

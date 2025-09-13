@@ -34,29 +34,30 @@ public class Student {
     }
 
     //insert data into student table
-    public void insert(int id, String fname, String midName, String lastName, String date, String gender, String email, String phone,
+    public void insert(int student_id, int user_id, String fname, String midName, String lastName, String date, String gender, String email, String phone,
             String motherName, String fatherName, String addressLine1,
             String addressLine2, String birthCer, String form137, String imagePath, String lrn) {
 
-        String sql = "insert into student values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into student values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            ps.setString(2, fname);
-            ps.setString(3, midName);
-            ps.setString(4, lastName);
-            ps.setString(5, date);
-            ps.setString(6, gender);
-            ps.setString(7, email);
-            ps.setString(8, phone);
-            ps.setString(9, motherName);
-            ps.setString(10, fatherName);
-            ps.setString(11, addressLine1);
-            ps.setString(12, addressLine2);
-            ps.setString(13, birthCer);
-            ps.setString(14, form137);
-            ps.setString(15, imagePath);
-            ps.setString(16, lrn);
+            ps.setInt(1, student_id);
+            ps.setInt(2, user_id);
+            ps.setString(3, fname);
+            ps.setString(4, midName);
+            ps.setString(5, lastName);
+            ps.setString(6, date);
+            ps.setString(7, gender);
+            ps.setString(8, email);
+            ps.setString(9, phone);
+            ps.setString(10, motherName);
+            ps.setString(11, fatherName);
+            ps.setString(12, addressLine1);
+            ps.setString(13, addressLine2);
+            ps.setString(14, birthCer);
+            ps.setString(15, form137);
+            ps.setString(16, imagePath);
+            ps.setString(17, lrn);
 
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "New Student added successfully");
@@ -122,9 +123,9 @@ public class Student {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             Object[] row;
             while (rs.next()) {
-                row = new Object[15];
+                row = new Object[17];
                 row[0] = rs.getInt(1);
-                row[1] = rs.getString(2);
+                row[1] = rs.getInt(2);
                 row[2] = rs.getString(3);
                 row[3] = rs.getString(4);
                 row[4] = rs.getString(5);
@@ -138,6 +139,8 @@ public class Student {
                 row[12] = rs.getString(13);
                 row[13] = rs.getString(14);
                 row[14] = rs.getString(15);
+                row[15] = rs.getString(16);
+                row[16] = rs.getString(17);
                 model.addRow(row);
 
             }
@@ -147,7 +150,7 @@ public class Student {
 
     }
 
-    public void update(int id, String fname, String midName, String lname, String date, String gender, String email, String phone,
+    public void update(int student_id, String fname, String midName, String lname, String date, String gender, String email, String phone,
             String motherName, String fatherName, String addressLine1,
             String addressLine2, String birthCer, String form137, String imagePath, String lrn) {
 
@@ -169,8 +172,9 @@ public class Student {
             ps.setString(12, birthCer);
             ps.setString(13, form137);
             ps.setString(14, imagePath);
-            ps.setInt(15, id);
-            ps.setString(16, lrn);
+            ps.setString(15, lrn);
+            ps.setInt(16, student_id);
+            
 
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Student data updated successfully ");

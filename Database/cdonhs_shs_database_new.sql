@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2025 at 03:08 PM
+-- Generation Time: Sep 13, 2025 at 04:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -11,73 +11,55 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: cdonhs_shs_database
+-- Database: `cdonhs_shs_database_new`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table admin
+-- Table structure for table `admin`
 --
 
-CREATE TABLE admin (
-  admin_id int(11) NOT NULL,
-  user_id int(11) NOT NULL,
-  first_name varchar(50) NOT NULL,
-  middle_name varchar(50) DEFAULT NULL,
-  last_name varchar(50) NOT NULL,
-  gender enum('Male','Female') NOT NULL,
-  email varchar(50) DEFAULT NULL,
-  phone_number varchar(20) DEFAULT NULL,
-  address1 varchar(100) NOT NULL,
-  address2 varchar(100) NOT NULL,
-  role enum('Super Admin','Registrar','Guidance Admin','Finance Admin') NOT NULL
+CREATE TABLE `admin` (
+  `admin_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `gender` enum('Male','Female') NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
+  `address1` varchar(100) NOT NULL,
+  `address2` varchar(100) NOT NULL,
+  `role` enum('Super Admin','Registrar','Guidance Admin','Finance Admin') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table general_average
+-- Table structure for table `grade`
 --
 
-CREATE TABLE general_average (
-  student_id int(11) NOT NULL,
-  final_average double DEFAULT NULL
+CREATE TABLE `grade` (
+  `grade_id` int(11) NOT NULL,
+  `student_id` int(10) NOT NULL,
+  `subject_id` int(11) NOT NULL,
+  `quarter` int(1) NOT NULL,
+  `grade` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table general_average
+-- Dumping data for table `grade`
 --
 
-INSERT INTO general_average (student_id, final_average) VALUES
-(1, 88.97),
-(2, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table grade
---
-
-CREATE TABLE grade (
-  grade_id int(11) NOT NULL,
-  student_id int(10) NOT NULL,
-  subject_id int(11) NOT NULL,
-  quarter int(1) NOT NULL,
-  grade decimal(5,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table grade
---
-
-INSERT INTO grade (grade_id, student_id, subject_id, quarter, grade) VALUES
+INSERT INTO `grade` (`grade_id`, `student_id`, `subject_id`, `quarter`, `grade`) VALUES
 (177, 1, 1, 1, 93.00),
 (178, 1, 2, 1, 94.00),
 (179, 1, 3, 1, 92.00),
@@ -122,19 +104,19 @@ INSERT INTO grade (grade_id, student_id, subject_id, quarter, grade) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table strands
+-- Table structure for table `strands`
 --
 
-CREATE TABLE strands (
-  strand_id int(11) NOT NULL,
-  strand_name varchar(30) NOT NULL
+CREATE TABLE `strands` (
+  `strand_id` int(11) NOT NULL,
+  `strand_name` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table strands
+-- Dumping data for table `strands`
 --
 
-INSERT INTO strands (strand_id, strand_name) VALUES
+INSERT INTO `strands` (`strand_id`, `strand_name`) VALUES
 (1, 'STEM'),
 (2, 'ABM'),
 (3, 'HUMSS'),
@@ -146,77 +128,77 @@ INSERT INTO strands (strand_id, strand_name) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table student_strand
+-- Table structure for table `student`
 --
 
-CREATE TABLE student_strand (
-  strand_id int(11) NOT NULL,
-  student_id int(10) NOT NULL,
-  grade_level int(2) NOT NULL,
-  section_name varchar(30) NOT NULL
+CREATE TABLE `student` (
+  `student_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `date_of_birth` date NOT NULL,
+  `gender` enum('Male','Female') NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone_number` varchar(20) NOT NULL,
+  `mother_name` varchar(50) NOT NULL,
+  `father_name` varchar(50) NOT NULL,
+  `address1` varchar(50) NOT NULL,
+  `address2` varchar(50) NOT NULL,
+  `birth_certificate` varchar(100) NOT NULL,
+  `form_137` varchar(100) NOT NULL,
+  `image_path` varchar(100) NOT NULL,
+  `LRN` varchar(12) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table student_strand
+-- Dumping data for table `student`
 --
 
-INSERT INTO student_strand (strand_id, student_id, grade_level, section_name) VALUES
-(1, 1, 11, 'A'),
-(5, 2, 11, 'A');
-
--- --------------------------------------------------------
-
---
--- Table structure for table student
---
-
-CREATE TABLE student (
-  student_id int(11) NOT NULL,
-  user_id int(11) NOT NULL,
-  first_name varchar(50) NOT NULL,
-  middle_name varchar(50) NOT NULL,
-  last_name varchar(50) NOT NULL,
-  date_of_birth date NOT NULL,
-  gender enum('Male','Female') NOT NULL,
-  email varchar(50) NOT NULL,
-  phone_number varchar(20) NOT NULL,
-  mother_name varchar(50) NOT NULL,
-  father_name varchar(50) NOT NULL,
-  address1 varchar(50) NOT NULL,
-  address2 varchar(50) NOT NULL,
-  birth_certificate varchar(100) NOT NULL,
-  form_137 varchar(100) NOT NULL,
-  image_path varchar(100) NOT NULL,
-  LRN varchar(12) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table student
---
-
-INSERT INTO student (student_id, user_id, first_name, middle_name, last_name, date_of_birth, gender, email, phone_number, mother_name, father_name, address1, address2, birth_certificate, form_137, image_path, LRN) VALUES
+INSERT INTO `student` (`student_id`, `user_id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `gender`, `email`, `phone_number`, `mother_name`, `father_name`, `address1`, `address2`, `birth_certificate`, `form_137`, `image_path`, `LRN`) VALUES
 (1, 1, 'Nick', 'hfhfdhd', 'hdfhhdfhh', '2025-09-04', 'Male', 'asdaf@gmail.ocm', '09976866868', 'fasfaf', 'fafasfa', 'fasfaf', 'fafafa', 'fafsaf', 'fasfaf', 'D:\\PICTURES\\boy_pick_left_1.png', NULL),
 (2, 2, 'Harvey ', 'D.', 'Clarito', '2025-09-04', 'Male', 'dasdsda@gmail.com', '09329239232', 'mama', 'papa', 'dadasda', 'dada', 'dad', 'dasda', 'D:\\PICTURES\\boy_pick_left_2.png', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table subject
+-- Table structure for table `student_strand`
 --
 
-CREATE TABLE subject (
-  subject_id int(11) NOT NULL,
-  subject_name varchar(100) NOT NULL,
-  grade_level int(2) NOT NULL,
-  strand_id int(11) NOT NULL,
-  subject_order int(1) NOT NULL
+CREATE TABLE `student_strand` (
+  `strand_id` int(11) NOT NULL,
+  `student_id` int(10) NOT NULL,
+  `grade_level` int(2) NOT NULL,
+  `section_name` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table subject
+-- Dumping data for table `student_strand`
 --
 
-INSERT INTO subject (subject_id, subject_name, grade_level, strand_id, subject_order) VALUES
+INSERT INTO `student_strand` (`strand_id`, `student_id`, `grade_level`, `section_name`) VALUES
+(1, 1, 11, 'A'),
+(5, 2, 11, 'A');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subject`
+--
+
+CREATE TABLE `subject` (
+  `subject_id` int(11) NOT NULL,
+  `subject_name` varchar(100) NOT NULL,
+  `grade_level` int(2) NOT NULL,
+  `strand_id` int(11) NOT NULL,
+  `subject_order` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `subject`
+--
+
+INSERT INTO `subject` (`subject_id`, `subject_name`, `grade_level`, `strand_id`, `subject_order`) VALUES
 (1, 'Oral Communication', 11, 1, 1),
 (2, 'Komunikasyon at Pananaliksik', 11, 1, 2),
 (3, 'General Mathematics', 11, 1, 3),
@@ -333,41 +315,41 @@ INSERT INTO subject (subject_id, subject_name, grade_level, strand_id, subject_o
 -- --------------------------------------------------------
 
 --
--- Table structure for table teacher
+-- Table structure for table `teacher`
 --
 
-CREATE TABLE teacher (
-  teacher_id int(11) NOT NULL,
-  user_id int(11) NOT NULL,
-  first_name varchar(50) NOT NULL,
-  middle_name varchar(50) NOT NULL,
-  last_name varchar(50) NOT NULL,
-  gender varchar(20) NOT NULL,
-  email varchar(50) NOT NULL,
-  phone_number varchar(20) NOT NULL,
-  address1 varchar(100) NOT NULL,
-  address2 varchar(100) NOT NULL,
-  specialization varchar(50) NOT NULL,
-  hire_date date NOT NULL,
-  image_path varchar(100) NOT NULL
+CREATE TABLE `teacher` (
+  `teacher_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `middle_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `gender` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone_number` varchar(20) NOT NULL,
+  `address1` varchar(100) NOT NULL,
+  `address2` varchar(100) NOT NULL,
+  `specialization` varchar(50) NOT NULL,
+  `hire_date` date NOT NULL,
+  `image_path` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table type
+-- Table structure for table `type`
 --
 
-CREATE TABLE type (
-  type_id int(11) NOT NULL,
-  type_name varchar(20) NOT NULL
+CREATE TABLE `type` (
+  `type_id` int(11) NOT NULL,
+  `type_name` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table type
+-- Dumping data for table `type`
 --
 
-INSERT INTO type (type_id, type_name) VALUES
+INSERT INTO `type` (`type_id`, `type_name`) VALUES
 (1, 'Admin'),
 (2, 'Student'),
 (3, 'Teacher');
@@ -375,21 +357,21 @@ INSERT INTO type (type_id, type_name) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table user
+-- Table structure for table `user`
 --
 
-CREATE TABLE user (
-  user_id int(11) NOT NULL,
-  username varchar(50) NOT NULL,
-  password varchar(255) NOT NULL,
-  type_id int(11) NOT NULL
+CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `type_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table user
+-- Dumping data for table `user`
 --
 
-INSERT INTO user (user_id, username, password, type_id) VALUES
+INSERT INTO `user` (`user_id`, `username`, `password`, `type_id`) VALUES
 (1, 'hdfhhdfhh', 'hdfhhdfhh20250904', 2),
 (2, 'clarito', 'clarito20250904', 2);
 
@@ -398,183 +380,170 @@ INSERT INTO user (user_id, username, password, type_id) VALUES
 --
 
 --
--- Indexes for table admin
+-- Indexes for table `admin`
 --
-ALTER TABLE admin
-  ADD PRIMARY KEY (admin_id),
-  ADD UNIQUE KEY email (email),
-  ADD KEY user_id (user_id);
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`admin_id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table general_average
+-- Indexes for table `grade`
 --
-ALTER TABLE general_average
-  ADD PRIMARY KEY (student_id);
+ALTER TABLE `grade`
+  ADD PRIMARY KEY (`grade_id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `subject_id` (`subject_id`);
 
 --
--- Indexes for table grade
+-- Indexes for table `strands`
 --
-ALTER TABLE grade
-  ADD PRIMARY KEY (grade_id),
-  ADD KEY student_id (student_id),
-  ADD KEY subject_id (subject_id);
+ALTER TABLE `strands`
+  ADD PRIMARY KEY (`strand_id`);
 
 --
--- Indexes for table strands
+-- Indexes for table `student`
 --
-ALTER TABLE strands
-  ADD PRIMARY KEY (strand_id);
+ALTER TABLE `student`
+  ADD PRIMARY KEY (`student_id`),
+  ADD UNIQUE KEY `LRN` (`LRN`),
+  ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table student_strand
+-- Indexes for table `student_strand`
 --
-ALTER TABLE student_strand
-  ADD PRIMARY KEY (strand_id, student_id),
-  ADD KEY student_id (student_id);
+ALTER TABLE `student_strand`
+  ADD PRIMARY KEY (`strand_id`,`student_id`),
+  ADD KEY `student_id` (`student_id`);
 
 --
--- Indexes for table student
+-- Indexes for table `subject`
 --
-ALTER TABLE student
-  ADD PRIMARY KEY (student_id),
-  ADD UNIQUE KEY LRN (LRN),
-  ADD KEY user_id (user_id);
+ALTER TABLE `subject`
+  ADD PRIMARY KEY (`subject_id`),
+  ADD KEY `strand_id` (`strand_id`);
 
 --
--- Indexes for table subject
+-- Indexes for table `teacher`
 --
-ALTER TABLE subject
-  ADD PRIMARY KEY (subject_id),
-  ADD KEY strand_id (strand_id);
+ALTER TABLE `teacher`
+  ADD PRIMARY KEY (`teacher_id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table teacher
+-- Indexes for table `type`
 --
-ALTER TABLE teacher
-  ADD PRIMARY KEY (teacher_id),
-  ADD UNIQUE KEY email (email),
-  ADD KEY user_id (user_id);
+ALTER TABLE `type`
+  ADD PRIMARY KEY (`type_id`);
 
 --
--- Indexes for table type
+-- Indexes for table `user`
 --
-ALTER TABLE type
-  ADD PRIMARY KEY (type_id);
-
---
--- Indexes for table user
---
-ALTER TABLE user
-  ADD PRIMARY KEY (user_id),
-  ADD UNIQUE KEY username (username),
-  ADD KEY type_id (type_id);
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `type_id` (`type_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table admin
+-- AUTO_INCREMENT for table `admin`
 --
-ALTER TABLE admin
-  MODIFY admin_id int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `admin`
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table grade
+-- AUTO_INCREMENT for table `grade`
 --
-ALTER TABLE grade
-  MODIFY grade_id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
+ALTER TABLE `grade`
+  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
 
 --
--- AUTO_INCREMENT for table strands
+-- AUTO_INCREMENT for table `strands`
 --
-ALTER TABLE strands
-  MODIFY strand_id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+ALTER TABLE `strands`
+  MODIFY `strand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table student
+-- AUTO_INCREMENT for table `student`
 --
-ALTER TABLE student
-  MODIFY student_id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+ALTER TABLE `student`
+  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table subject
+-- AUTO_INCREMENT for table `subject`
 --
-ALTER TABLE subject
-  MODIFY subject_id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+ALTER TABLE `subject`
+  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
--- AUTO_INCREMENT for table teacher
+-- AUTO_INCREMENT for table `teacher`
 --
-ALTER TABLE teacher
-  MODIFY teacher_id int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `teacher`
+  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table type
+-- AUTO_INCREMENT for table `type`
 --
-ALTER TABLE type
-  MODIFY type_id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `type`
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table user
+-- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE user
-  MODIFY user_id int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `user`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table admin
+-- Constraints for table `admin`
 --
-ALTER TABLE admin
-  ADD CONSTRAINT admin_ibfk_1 FOREIGN KEY (user_id) REFERENCES user (user_id);
+ALTER TABLE `admin`
+  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
--- Constraints for table general_average
+-- Constraints for table `grade`
 --
-ALTER TABLE general_average
-  ADD CONSTRAINT general_average_ibfk_1 FOREIGN KEY (student_id) REFERENCES student (student_id);
+ALTER TABLE `grade`
+  ADD CONSTRAINT `grade_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
+  ADD CONSTRAINT `grade_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`);
 
 --
--- Constraints for table grade
+-- Constraints for table `student`
 --
-ALTER TABLE grade
-  ADD CONSTRAINT grade_ibfk_1 FOREIGN KEY (student_id) REFERENCES student (student_id),
-  ADD CONSTRAINT grade_ibfk_2 FOREIGN KEY (subject_id) REFERENCES subject (subject_id);
+ALTER TABLE `student`
+  ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
--- Constraints for table student_strand
+-- Constraints for table `student_strand`
 --
-ALTER TABLE student_strand
-  ADD CONSTRAINT student_strand_ibfk_1 FOREIGN KEY (student_id) REFERENCES student (student_id),
-  ADD CONSTRAINT student_strand_ibfk_2 FOREIGN KEY (strand_id) REFERENCES strands (strand_id);
+ALTER TABLE `student_strand`
+  ADD CONSTRAINT `student_strand_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
+  ADD CONSTRAINT `student_strand_ibfk_2` FOREIGN KEY (`strand_id`) REFERENCES `strands` (`strand_id`);
 
 --
--- Constraints for table student
+-- Constraints for table `subject`
 --
-ALTER TABLE student
-  ADD CONSTRAINT student_ibfk_1 FOREIGN KEY (user_id) REFERENCES user (user_id);
+ALTER TABLE `subject`
+  ADD CONSTRAINT `subject_ibfk_1` FOREIGN KEY (`strand_id`) REFERENCES `strands` (`strand_id`);
 
 --
--- Constraints for table subject
+-- Constraints for table `teacher`
 --
-ALTER TABLE subject
-  ADD CONSTRAINT subject_ibfk_1 FOREIGN KEY (strand_id) REFERENCES strands (strand_id);
+ALTER TABLE `teacher`
+  ADD CONSTRAINT `teacher_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
--- Constraints for table teacher
+-- Constraints for table `user`
 --
-ALTER TABLE teacher
-  ADD CONSTRAINT teacher_ibfk_1 FOREIGN KEY (user_id) REFERENCES user (user_id);
-
---
--- Constraints for table user
---
-ALTER TABLE user
-  ADD CONSTRAINT user_ibfk_1 FOREIGN KEY (type_id) REFERENCES type (type_id);
-
+ALTER TABLE `user`
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `type` (`type_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
