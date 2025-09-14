@@ -16,114 +16,17 @@ public class MarksSheet {
     PreparedStatement ps;
 
     // Since general_average only has student_id and final_average, we don't need getMax() for IDs
-    public boolean isidExist(int id) {
-        try {
-            ps = con.prepareStatement("select * from grade where student_id = ?");
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            System.getLogger(MarksSheet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        return false;
-    }
-
-    // Insert or update final average
-    public void insertUpdateFinalAverage(int studentId, double finalAverage) {
-        String sql = "INSERT INTO general_average (student_id, final_average) VALUES (?, ?) "
-                + "ON DUPLICATE KEY UPDATE final_average = ?";
+    public boolean isIdExistInGradeLevel(int studentId, int gradeLevel) {
+        String sql = "SELECT 1 FROM student_strand WHERE student_id = ? AND grade_level = ? LIMIT 1";
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, studentId);
-            ps.setDouble(2, finalAverage);
-            ps.setDouble(3, finalAverage);
-
-            ps.executeUpdate();
-        } catch (SQLException ex) {
-            System.getLogger(MarksSheet.class.getName()).log(System.Logger.Level.ERROR, "Error updating final average", ex);
-        }
-    }
-
-    // Fetch student final grade into JTable
-    public void getFinalGradeValue(JTable table, int sid) {
-        // Get student strand information from student_strand and strands tables
-        String sql = "SELECT ss.grade_level, s.strand_name, ss.section_name "
-                + "FROM student_strand ss "
-                + "JOIN strands s ON ss.strand_id = s.strand_id "
-                + "WHERE ss.student_id = ?";
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, sid);
+            ps.setInt(2, gradeLevel);
             ResultSet rs = ps.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.setRowCount(0); // clear table before adding new data
-
-            if (rs.next()) {
-                int gradeLevel = rs.getInt("grade_level");
-                String strand = rs.getString("strand_name");
-                String section = rs.getString("section_name");
-
-                Object[] row = new Object[10]; // SID, GradeLevel, Strand, Section, Q1-Q4, FinalAvg, Status
-                row[0] = sid;
-                row[1] = gradeLevel;
-                row[2] = strand;
-                row[3] = section;
-
-                boolean allQuartersFilled = true;
-                double total = 0;
-                int quartersWithGrades = 0;
-
-                // Calculate averages per quarter
-                for (int q = 1; q <= 4; q++) {
-                    String avgSql = "SELECT AVG(grade) AS quarter_avg FROM grade WHERE student_id = ? AND quarter = ?";
-                    try (PreparedStatement psAvg = con.prepareStatement(avgSql)) {
-                        psAvg.setInt(1, sid);
-                        psAvg.setInt(2, q);
-                        ResultSet rsAvg = psAvg.executeQuery();
-                        if (rsAvg.next()) {
-                            double quarterAvg = rsAvg.getDouble("quarter_avg");
-                            if (quarterAvg > 0) {
-                                row[3 + q] = Math.round(quarterAvg * 100.0) / 100.0; // Q1-Q4 in row[4]-row[7]
-                                total += quarterAvg;
-                                quartersWithGrades++;
-                            } else {
-                                row[3 + q] = null;
-                                allQuartersFilled = false;
-                            }
-                        } else {
-                            row[3 + q] = null;
-                            allQuartersFilled = false;
-                        }
-                    }
-                }
-
-                // Compute final average only if all 4 quarters have grades
-                Double finalAverage = null;
-                if (quartersWithGrades == 4) {
-                    finalAverage = Math.round((total / 4) * 100.0) / 100.0;
-                    // Update the general_average table
-                    insertUpdateFinalAverage(sid, finalAverage);
-                }
-
-                // Get the final average from database (in case it was already computed)
-                Double dbFinalAverage = getGeneralAverage(sid);
-                row[8] = dbFinalAverage; // Final Average
-
-                // Determine status
-                if (!allQuartersFilled || dbFinalAverage == null) {
-                    row[9] = "Incomplete";
-                } else if (dbFinalAverage >= 75) {
-                    row[9] = "Pass";
-                } else {
-                    row[9] = "Fail";
-                }
-
-                model.addRow(row);
-            }
+            return rs.next();
         } catch (SQLException ex) {
-            System.getLogger(MarksSheet.class.getName()).log(System.Logger.Level.ERROR, "Error getting final grade", ex);
+            System.getLogger(MarksSheet.class.getName()).log(System.Logger.Level.ERROR, "Error checking student grade level", ex);
+            return false;
         }
     }
 
@@ -172,15 +75,6 @@ public class MarksSheet {
         }
     }
 
-    public void insertUpdateGeneralAverage(int studentId) {
-        Double finalAverage = computeFinalAverage(studentId);
-
-        // Only update if all 4 quarters are filled
-        if (finalAverage != null) {
-            insertUpdateFinalAverage(studentId, finalAverage);
-        }
-    }
-
     public boolean isGeneralAverageExist(int studentId) {
         try {
             String sql = "SELECT student_id FROM general_average WHERE student_id = ?";
@@ -221,8 +115,8 @@ public class MarksSheet {
     }
 
     // Get student details with calculated quarter averages
-    public ResultSet getStudentMarksDetails(int studentId) {
-        String sql = "SELECT ss.student_id, ss.grade_level, s.strand_name, ss.section_name, "
+    public ResultSet getStudentMarksDetails(int studentId, int gradeLevel) {
+        String sql = "SELECT ss.student_id, subj.grade_level, s.strand_name, ss.section_name, "
                 + "AVG(CASE WHEN g.quarter = 1 THEN g.grade END) as quarter1_avg, "
                 + "AVG(CASE WHEN g.quarter = 2 THEN g.grade END) as quarter2_avg, "
                 + "AVG(CASE WHEN g.quarter = 3 THEN g.grade END) as quarter3_avg, "
@@ -230,12 +124,14 @@ public class MarksSheet {
                 + "FROM student_strand ss "
                 + "JOIN strands s ON ss.strand_id = s.strand_id "
                 + "LEFT JOIN grade g ON ss.student_id = g.student_id "
-                + "WHERE ss.student_id = ? "
-                + "GROUP BY ss.student_id, ss.grade_level, s.strand_name, ss.section_name";
+                + "JOIN subject subj ON g.subject_id = subj.subject_id " // ✅ link to subject
+                + "WHERE ss.student_id = ? AND subj.grade_level = ? " // ✅ filter by chosen grade level
+                + "GROUP BY ss.student_id, subj.grade_level, s.strand_name, ss.section_name"; // ✅ use subj.grade_level
 
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, studentId);
+            ps.setInt(2, gradeLevel);
             return ps.executeQuery();
         } catch (SQLException ex) {
             System.getLogger(MarksSheet.class.getName()).log(System.Logger.Level.ERROR, "Error getting student marks details", ex);

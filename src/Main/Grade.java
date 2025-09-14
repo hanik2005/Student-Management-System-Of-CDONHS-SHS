@@ -182,43 +182,69 @@ public class Grade {
 
     }
 
-    public boolean isSidGradeLevelStrandQuarterExist(int id, int quarter) {
+    public boolean isSidGradeLevelStrandQuarterExist(int studentId, int gradeLevel, String strandName, int quarter) {
         try {
-            ps = con.prepareStatement("SELECT * FROM grade WHERE student_id = ?"
-                    + " AND quarter = ?");
-            ps.setInt(1, id);
-            ps.setInt(2, quarter);
+            String sql = "SELECT 1 FROM grade g "
+                    + "JOIN subject subj ON g.subject_id = subj.subject_id "
+                    + "JOIN strands s ON subj.strand_id = s.strand_id "
+                    + "WHERE g.student_id = ? "
+                    + "AND subj.grade_level = ? " // ✅ keep grade_level from subject table
+                    + "AND s.strand_name = ? "
+                    + "AND g.quarter = ? "
+                    + "LIMIT 1";
+
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, studentId);
+            ps.setInt(2, gradeLevel);
+            ps.setString(3, strandName);
+            ps.setInt(4, quarter);
+
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException ex) {
+            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, "Error checking grade existence", ex);
+            return false;
+        }
+    }
+
+    public int getExistingGradeLevelWithGrades(int studentId, String strandName, int quarter) {
+        String sql = "SELECT subj.grade_level FROM grade g "
+                + "JOIN subject subj ON g.subject_id = subj.subject_id "
+                + "JOIN strands s ON subj.strand_id = s.strand_id "
+                + "WHERE g.student_id = ? AND s.strand_name = ? AND g.quarter = ? "
+                + "LIMIT 1";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            ps.setString(2, strandName);
+            ps.setInt(3, quarter);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return true; // found a record with same sid, grade level, strand, section, and quarter
+                return rs.getInt("grade_level");
             }
         } catch (SQLException ex) {
-            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            System.out.println("Error getting existing grade level: " + ex.getMessage());
         }
-        return false;
+        return -1;
     }
 
-    // Insert new Grade
     public void insert(int studentId, List<Integer> subjectIds, List<Double> grades, int quarter) {
-        String sql = "INSERT INTO grade(student_id, subject_id, quarter, grade) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO grade (student_id, subject_id, grade, quarter) VALUES (?, ?, ?, ?)";
 
-        try {
-            ps = con.prepareStatement(sql);
-
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
             for (int i = 0; i < subjectIds.size(); i++) {
                 ps.setInt(1, studentId);
                 ps.setInt(2, subjectIds.get(i));
-                ps.setInt(3, quarter);
-                ps.setDouble(4, grades.get(i));
-                ps.addBatch(); // add each insert into batch
+                ps.setDouble(3, grades.get(i));
+                ps.setInt(4, quarter);
+                ps.addBatch(); // batch insert for efficiency
             }
-
-            ps.executeBatch(); // insert all at once
-            JOptionPane.showMessageDialog(null, "Grades added successfully");
-
+            ps.executeBatch();
         } catch (SQLException ex) {
-            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR,
+                    "Error inserting grades", ex);
+            JOptionPane.showMessageDialog(null, "Error inserting grades: " + ex.getMessage());
         }
     }
 
@@ -246,7 +272,7 @@ public class Grade {
 
     public void getGradeValue(JTable table, String searchValue) {
         String sql = "SELECT g.student_id, "
-                + "ss.grade_level, "
+                + "subj.grade_level, " // ✅ use from subject, not student_strand
                 + "s.strand_name, "
                 + "ss.section_name, "
                 + "g.quarter, "
@@ -270,9 +296,9 @@ public class Grade {
                 + "FROM grade g "
                 + "JOIN subject subj ON g.subject_id = subj.subject_id "
                 + "LEFT JOIN student_strand ss ON g.student_id = ss.student_id "
-                + "LEFT JOIN strands s ON ss.strand_id = s.strand_id "
-                + "WHERE CONCAT(g.student_id, ss.grade_level, s.strand_name, ss.section_name, g.quarter) LIKE ? "
-                + "GROUP BY g.student_id, ss.grade_level, s.strand_name, ss.section_name, g.quarter "
+                + "LEFT JOIN strands s ON subj.strand_id = s.strand_id " //-- ✅ strand tied to subject
+                + "WHERE CONCAT(g.student_id, subj.grade_level, s.strand_name, ss.section_name, g.quarter) LIKE ? "
+                + "GROUP BY g.student_id, subj.grade_level, s.strand_name, ss.section_name, g.quarter "
                 + "ORDER BY g.student_id DESC";
 
         try {

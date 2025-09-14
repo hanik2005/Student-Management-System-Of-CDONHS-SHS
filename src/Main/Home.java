@@ -267,6 +267,8 @@ public class Home extends javax.swing.JFrame {
         jLabel69 = new javax.swing.JLabel();
         stuMarksSearchField = new javax.swing.JTextField();
         stuMarksSearchBt = new javax.swing.JButton();
+        jLabel70 = new javax.swing.JLabel();
+        stuGradeLevelMarkSheet = new javax.swing.JComboBox<>();
         jPanel34 = new javax.swing.JPanel();
         Final_Average = new javax.swing.JLabel();
         jPanel30 = new javax.swing.JPanel();
@@ -478,14 +480,16 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        stuBirthCer.setBackground(java.awt.Color.white);
+        stuBirthCer.setEditable(false);
+        stuBirthCer.setBackground(new java.awt.Color(204, 204, 204));
         stuBirthCer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stuBirthCerActionPerformed(evt);
             }
         });
 
-        stuForm137.setBackground(java.awt.Color.white);
+        stuForm137.setEditable(false);
+        stuForm137.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -629,12 +633,12 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(browseBirthCertificate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(stuBirthCer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(stuBirthCer, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(browseForm137)
                     .addComponent(jLabel14)
-                    .addComponent(browseForm137, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(stuForm137, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stuForm137, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -717,6 +721,11 @@ public class Home extends javax.swing.JFrame {
 
         stuLRN.setBackground(java.awt.Color.white);
         stuLRN.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        stuLRN.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                stuLRNKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel39Layout = new javax.swing.GroupLayout(jPanel39);
         jPanel39.setLayout(jPanel39Layout);
@@ -871,9 +880,9 @@ public class Home extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(66, Short.MAX_VALUE))
         );
 
@@ -2277,6 +2286,15 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jLabel70.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel70.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel70.setText("Grade Level");
+
+        stuGradeLevelMarkSheet.setBackground(new java.awt.Color(255, 255, 255));
+        stuGradeLevelMarkSheet.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        stuGradeLevelMarkSheet.setForeground(new java.awt.Color(0, 0, 0));
+        stuGradeLevelMarkSheet.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11", "12" }));
+
         javax.swing.GroupLayout jPanel38Layout = new javax.swing.GroupLayout(jPanel38);
         jPanel38.setLayout(jPanel38Layout);
         jPanel38Layout.setHorizontalGroup(
@@ -2288,7 +2306,10 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(jLabel69)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel38Layout.createSequentialGroup()
-                        .addComponent(stuMarksSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(stuMarksSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel70)
+                            .addComponent(stuGradeLevelMarkSheet, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(stuMarksSearchBt, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -2300,8 +2321,13 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jLabel69)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(stuMarksSearchBt, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                    .addComponent(stuMarksSearchField))
+                    .addGroup(jPanel38Layout.createSequentialGroup()
+                        .addComponent(stuMarksSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel70)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(stuGradeLevelMarkSheet, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+                    .addComponent(stuMarksSearchBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -2347,7 +2373,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel38, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 415, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 352, Short.MAX_VALUE)
                 .addComponent(jPanel34, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -2533,9 +2559,9 @@ public class Home extends javax.swing.JFrame {
             .addGap(0, 660, Short.MAX_VALUE)
             .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel25Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 3, Short.MAX_VALUE)
                     .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 4, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("Marks Sheet", jPanel25);
@@ -2833,7 +2859,6 @@ public class Home extends javax.swing.JFrame {
             String strandName = stuStrand.getSelectedItem().toString();
             String sectionSelect = stuSection.getSelectedItem().toString();
 
-            // Convert strand name to strand_id
             int strandId = strand.convertStrandNameToId(strandName);
             if (strandId == -1) {
                 JOptionPane.showMessageDialog(this, "Invalid strand selected");
@@ -2846,31 +2871,132 @@ public class Home extends javax.swing.JFrame {
                 return;
             }
 
-            // Check if student is already enrolled in the same grade level and strand
-            if (strand.isStudentAlreadyEnrolled(studentId, gradeLevel, strandId)) {
-                JOptionPane.showMessageDialog(this, "This student is already enrolled in " + gradeLevel + "-" + strandName);
+            // Check if student already has this exact enrollment (same strand + same grade level)
+            if (strand.isStudentEnrolledInStrandAndGrade(studentId, strandId, gradeLevel)) {
+                Object[] currentEnrollment = strand.getCurrentEnrollment(studentId);
+                String currentStrand = (String) currentEnrollment[1];
+                String currentSection = (String) currentEnrollment[2];
+
+                JOptionPane.showMessageDialog(this,
+                        "Student is already enrolled in " + currentStrand
+                        + " Grade " + gradeLevel
+                        + " Section " + currentSection);
                 return;
             }
 
-            // Check if student is already enrolled in any strand (optional - depends on your requirements)
+            // Check if student is already enrolled in ANY strand
             if (strand.isStudentEnrolledInAnyStrand(studentId)) {
-                int response = JOptionPane.showConfirmDialog(this,
-                        "This student is already enrolled in another strand/grade. Do you want to continue?",
-                        "Confirm Enrollment", JOptionPane.YES_NO_OPTION);
-                if (response != JOptionPane.YES_OPTION) {
-                    return;
+                // Get current enrollment details
+                Object[] currentEnrollment = strand.getCurrentEnrollment(studentId);
+                int currentGradeLevel = (int) currentEnrollment[0];
+                String currentStrand = (String) currentEnrollment[1];
+                String currentSection = (String) currentEnrollment[2];
+
+                // Check if it's the same strand but different grade level (promotion)
+                if (currentStrand.equals(strandName)) {
+                    // Same strand, different grade level - PROMOTION (INSERT NEW RECORD)
+                    int response = JOptionPane.showConfirmDialog(
+                            this,
+                            "Student Promotion:\n\n"
+                            + "Current: " + currentStrand + " - Grade " + currentGradeLevel + " - Section " + currentSection
+                            + "\nNew: " + strandName + " - Grade " + gradeLevel + " - Section " + sectionSelect
+                            + "\n\nPromote student to next grade level?\n"
+                            + "(A new enrollment record will be created)",
+                            "Confirm Student Promotion",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE
+                    );
+
+                    if (response == JOptionPane.YES_OPTION) {
+                        // INSERT new enrollment record for promotion
+                        boolean success = strand.insertStudentStrand(studentId, strandId, gradeLevel, sectionSelect);
+                        if (success) {
+                            JOptionPane.showMessageDialog(this, "Student promoted to Grade " + gradeLevel);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Failed to promote student");
+                        }
+                    }
+                } else {
+                    // Different strand - TRANSFER
+                    int response = JOptionPane.showConfirmDialog(
+                            this,
+                            "Student Strand Transfer:\n\n"
+                            + "Student ID: " + studentId
+                            + "\nCurrent: " + currentStrand + " - Grade " + currentGradeLevel + " - Section " + currentSection
+                            + "\nNew: " + strandName + " - Grade " + gradeLevel + " - Section " + sectionSelect
+                            + "\n\nConfirm to transfer this student?\n"
+                            + "⚠ This will DELETE all existing records in " + currentStrand
+                            + " (Grade " + currentGradeLevel + ") before inserting new enrollment.",
+                            "Confirm Strand Transfer",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE
+                    );
+
+                    if (response == JOptionPane.YES_OPTION) {
+                        // ✅ Get current strandId
+                        int currentStrandId = strand.convertStrandNameToId(currentStrand);
+
+                        // ✅ Delete old grades + strand under this strandId and grade level
+                        boolean deleted = strand.deleteStudentStrandAndGrades(studentId, currentStrandId, currentGradeLevel);
+
+                        if (deleted) {
+                            // ✅ Insert new enrollment for transfer
+                            boolean success = strand.insertStudentStrand(studentId, strandId, gradeLevel, sectionSelect);
+                            if (success) {
+                                JOptionPane.showMessageDialog(this,
+                                        "Student ID " + studentId + " transferred successfully:\n"
+                                        + "From " + currentStrand + " (Grade " + currentGradeLevel + ")\n"
+                                        + "To " + strandName + " (Grade " + gradeLevel + ")");
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Failed to insert new enrollment after transfer");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Failed to transfer student (delete failed)");
+                        }
+                    }
+                }
+            } else {
+                // New enrollment - student not enrolled in any strand yet
+                int response = JOptionPane.showConfirmDialog(
+                        this,
+                        "New Student Enrollment:\n\n"
+                        + "Student ID: " + studentId
+                        + "\nStrand: " + strandName
+                        + "\nGrade Level: " + gradeLevel
+                        + "\nSection: " + sectionSelect
+                        + "\n\nConfirm enrollment?",
+                        "Confirm New Enrollment",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                if (response == JOptionPane.YES_OPTION) {
+                    boolean success = strand.insertStudentStrand(studentId, strandId, gradeLevel, sectionSelect);
+                    if (success) {
+                        JOptionPane.showMessageDialog(this, "Student enrolled in " + strandName);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to enroll student");
+                    }
                 }
             }
 
-            // Insert into student_strand table
-            strand.insertStudentStrand(studentId, strandId, gradeLevel, sectionSelect);
-
-            JOptionPane.showMessageDialog(this, "Student successfully enrolled in " + strandName);
-
-            // Refresh table
-            StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"Strand_ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
+            // Refresh table and clear fields
+            StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
             strand.loadStudentStrandsTable(StudentTrackTable, "");
             clearStrand();
+
+            // Refresh table and clear fields
+            StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
+                "Student ID", "Grade Level", "Strand", "Section",
+                "Subject 1", "Score 1", "Subject 2", "Score 2",
+                "Subject 3", "Score 3", "Subject 4", "Score 4",
+                "Subject 5", "Score 5", "Subject 6", "Score 6",
+                "Subject 7", "Score 7", "Subject 8", "Score 8",
+                "Quarter", "Average"
+            }));
+
+            grade.getGradeValue(StudentGradeManagementTable, "");
+            clearGradeManage();
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Please enter a valid numeric Student ID");
@@ -3036,9 +3162,10 @@ public class Home extends javax.swing.JFrame {
                 String section = stuGradeManageSection.getText();
                 int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
 
-                // Check if record already exists
-                if (!grade.isSidGradeLevelStrandQuarterExist(sid, quarter)) {
+                // Check if grades already exist for THIS specific grade level and quarter
+                boolean gradesExist = grade.isSidGradeLevelStrandQuarterExist(sid, gradeLevel, strand, quarter);
 
+                if (!gradesExist) {
                     // Validate numeric scores
                     if (!(isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
                             && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
@@ -3048,8 +3175,7 @@ public class Home extends javax.swing.JFrame {
                         return;
                     }
 
-                    //int id = grade.getMax();
-                    // ✅ Collect subject names from UI
+                    // Collect subject names
                     String[] subjectNames = {
                         stuGradeManageSub1.getText(), stuGradeManageSub2.getText(),
                         stuGradeManageSub3.getText(), stuGradeManageSub4.getText(),
@@ -3064,69 +3190,78 @@ public class Home extends javax.swing.JFrame {
                         Double.parseDouble(subScore7.getText()), Double.parseDouble(subScore8.getText())
                     };
 
-                    // ✅ Fetch subject_ids from DB based on subject_name, grade_level, strand
+                    // Fetch subject_ids
                     List<Integer> subjectIds = new ArrayList<>();
                     for (String subjectName : subjectNames) {
-                        int subjectId = grade.getSubjectId(subjectName, gradeLevel, strand);
-                        if (subjectId == -1) {
-                            JOptionPane.showMessageDialog(this, "Subject " + subjectName + " not found in database.");
-                            return;
+                        if (subjectName != null && !subjectName.trim().isEmpty()) {
+                            int subjectId = grade.getSubjectId(subjectName, gradeLevel, strand);
+                            if (subjectId == -1) {
+                                JOptionPane.showMessageDialog(this, "Subject '" + subjectName
+                                        + "' not found in database for Grade " + gradeLevel + " " + strand);
+                                return;
+                            }
+                            subjectIds.add(subjectId);
                         }
-                        subjectIds.add(subjectId);
                     }
 
-                    // ✅ Convert scores array → List<Double>
+                    // Convert scores to List<Double>
                     List<Double> gradeList = new ArrayList<>();
                     for (double s : scores) {
                         gradeList.add(s);
                     }
 
-                    // ✅ Insert all subject grades at once
+                    // Insert all subject grades (no return value)
                     grade.insert(sid, subjectIds, gradeList, quarter);
 
-                    double total = 0;
-                    for (double g : scores) {
-                        total += g;
-                    }
+                    JOptionPane.showMessageDialog(this, "Grades successfully saved for Grade "
+                            + gradeLevel + " Quarter " + quarter);
 
+                    // Calculate average
+//                    double total = 0;
+//                    for (double g : scores) {
+//                        total += g;
+//                    }
+//                    double average = total / scores.length;
+                    // Update general average if needed
                     //marksSheet.insertUpdateGeneralAverage(sid);
-                    // ✅ Refresh table
+                    // Refresh table
                     StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
-                        "Student ID", // 0
-                        "Grade Level", // 1
-                        "Strand", // 2
-                        "Section", // 3
-                        "Subject 1", // 5
-                        "Score 1", // 6
-                        "Subject 2", // 7
-                        "Score 2", // 8
-                        "Subject 3", // 9
-                        "Score 3", // 10
-                        "Subject 4", // 11
-                        "Score 4", // 12
-                        "Subject 5", // 13
-                        "Score 5", // 14
-                        "Subject 6", // 15
-                        "Score 6", // 16
-                        "Subject 7", // 17
-                        "Score 7", // 18
-                        "Subject 8", // 19
-                        "Score 8", // 20
-                        "Quarter",
-                        "average"
+                        "Student ID", "Grade Level", "Strand", "Section",
+                        "Subject 1", "Score 1", "Subject 2", "Score 2",
+                        "Subject 3", "Score 3", "Subject 4", "Score 4",
+                        "Subject 5", "Score 5", "Subject 6", "Score 6",
+                        "Subject 7", "Score 7", "Subject 8", "Score 8",
+                        "Quarter", "Average"
                     }));
 
                     grade.getGradeValue(StudentGradeManagementTable, "");
                     clearGradeManage();
 
                 } else {
-                    JOptionPane.showMessageDialog(this, "Grade Level " + gradeLevel
-                            + " | Strand: " + strand + " | Section: " + section
-                            + " | Quarter: " + quarter + " already exists for this student.");
+                    // Provide better error message
+                    int existingGradeWithGrades = grade.getExistingGradeLevelWithGrades(sid, strand, quarter);
+                    if (existingGradeWithGrades == gradeLevel) {
+                        JOptionPane.showMessageDialog(this,
+                                "Grades already exist for:\n"
+                                + "Student ID: " + sid + "\n"
+                                + "Grade Level: " + gradeLevel + "\n"
+                                + "Strand: " + strand + "\n"
+                                + "Quarter: " + quarter + "\n\n"
+                                + "Please update existing grades instead.");
+                    } else {
+                        JOptionPane.showMessageDialog(this,
+                                "Student has grades for " + strand + " in Quarter " + quarter
+                                + " but in Grade " + existingGradeWithGrades
+                                + " instead of Grade " + gradeLevel
+                                + ".\n\nPlease check the grade level selection.");
+                    }
                 }
 
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "One or more fields are empty or not numeric.");
+                JOptionPane.showMessageDialog(this, "One or more fields are empty or not numeric: " + e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+                e.printStackTrace();
             }
         } else {
             JOptionPane.showMessageDialog(this, "No student is selected");
@@ -3192,78 +3327,82 @@ public class Home extends javax.swing.JFrame {
 
         try {
             int sid = Integer.parseInt(stuMarksSearchField.getText());
+            int selectedGradeLevel = Integer.parseInt(stuGradeLevelMarkSheet.getSelectedItem().toString());
 
-            if (marksSheet.isidExist(sid)) {
-                // Set up table structure
-                StudentMarksSheetTable.setModel(new DefaultTableModel(null, new Object[]{
-                    "Student_ID", "Grade_Level", "Strand", "Section",
-                    "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average",
-                    "Average", "Status"
-                }));
+            // ✅ Check if student exists in that grade level
+            if (!marksSheet.isIdExistInGradeLevel(sid, selectedGradeLevel)) {
+                JOptionPane.showMessageDialog(this, "Student ID " + sid + " is not enrolled in Grade " + selectedGradeLevel);
+                return;
+            }
 
-                // Get student marks details
-                ResultSet rs = marksSheet.getStudentMarksDetails(sid);
-                DefaultTableModel model = (DefaultTableModel) StudentMarksSheetTable.getModel();
-                model.setRowCount(0); // Clear existing data
+            // ✅ If exists, build table
+            StudentMarksSheetTable.setModel(new DefaultTableModel(null, new Object[]{
+                "Student_ID", "Grade_Level", "Strand", "Section",
+                "Quarter1_average", "Quarter2_average", "Quarter3_average", "Quarter4_average",
+                "Average", "Status"
+            }));
 
-                if (rs != null && rs.next()) {
-                    int studentId = rs.getInt("student_id");
-                    int gradeLevel = rs.getInt("grade_level");
-                    String strand = rs.getString("strand_name");
-                    String section = rs.getString("section_name");
+            // ✅ Get student marks (filtered by grade level)
+            ResultSet rs = marksSheet.getStudentMarksDetails(sid, selectedGradeLevel);
+            DefaultTableModel model = (DefaultTableModel) StudentMarksSheetTable.getModel();
+            model.setRowCount(0);
 
-                    double q1 = rs.getDouble("quarter1_avg");
-                    double q2 = rs.getDouble("quarter2_avg");
-                    double q3 = rs.getDouble("quarter3_avg");
-                    double q4 = rs.getDouble("quarter4_avg");
+            if (rs != null && rs.next()) {
+                int studentId = rs.getInt("student_id");
+                int gradeLevelFromDB = rs.getInt("grade_level");
+                String strand = rs.getString("strand_name");
+                String section = rs.getString("section_name");
 
-                    // Calculate final average
-                    Double finalAverage = marksSheet.calculateFinalAverageFromQuarters(q1, q2, q3, q4);
+                double q1 = rs.getDouble("quarter1_avg");
+                double q2 = rs.getDouble("quarter2_avg");
+                double q3 = rs.getDouble("quarter3_avg");
+                double q4 = rs.getDouble("quarter4_avg");
 
-                    // Determine status
-                    String status;
-                    if (finalAverage == null) {
-                        status = "Incomplete";
-                    } else if (finalAverage >= 75) {
-                        status = "Pass";
+                // Calculate final average
+                Double finalAverage = marksSheet.calculateFinalAverageFromQuarters(q1, q2, q3, q4);
+
+                // Determine status
+                String status;
+                if (finalAverage == null) {
+                    status = "Incomplete";
+                } else if (finalAverage >= 75) {
+                    status = "Pass";
+                } else {
+                    status = "Fail";
+                }
+
+                // Add row
+                Object[] row = {
+                    studentId,
+                    gradeLevelFromDB,
+                    strand,
+                    section,
+                    q1 > 0 ? String.format("%.2f", q1) : "N/A",
+                    q2 > 0 ? String.format("%.2f", q2) : "N/A",
+                    q3 > 0 ? String.format("%.2f", q3) : "N/A",
+                    q4 > 0 ? String.format("%.2f", q4) : "N/A",
+                    finalAverage != null ? String.format("%.2f", finalAverage) : "Incomplete",
+                    status
+                };
+                model.addRow(row);
+
+                // Update G.A. label
+                if (finalAverage != null) {
+                    String GA = String.format("%.2f", finalAverage);
+                    Final_Average.setText("G.A.: " + GA);
+                    if (finalAverage >= 75) {
+                        Final_Average.setForeground(Color.GREEN);
                     } else {
-                        status = "Fail";
-                    }
-
-                    // Add row to table
-                    Object[] row = {
-                        studentId,
-                        gradeLevel,
-                        strand,
-                        section,
-                        q1 > 0 ? String.format("%.2f", q1) : "N/A",
-                        q2 > 0 ? String.format("%.2f", q2) : "N/A",
-                        q3 > 0 ? String.format("%.2f", q3) : "N/A",
-                        q4 > 0 ? String.format("%.2f", q4) : "N/A",
-                        finalAverage != null ? String.format("%.2f", finalAverage) : "Incomplete",
-                        status
-                    };
-                    model.addRow(row);
-
-                    // Update Final_Average label
-                    if (finalAverage != null) {
-                        String GA = String.format("%.2f", finalAverage);
-                        Final_Average.setText("G.A.: " + GA);
-                        if (finalAverage >= 75) {
-                            Final_Average.setForeground(Color.GREEN);
-                        } else {
-                            Final_Average.setForeground(Color.RED);
-                        }
-                    } else {
-                        Final_Average.setText("G.A.: Incomplete");
-                        Final_Average.setForeground(Color.ORANGE);
+                        Final_Average.setForeground(Color.RED);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "No student record found for ID: " + sid);
+                    Final_Average.setText("G.A.: Incomplete");
+                    Final_Average.setForeground(Color.ORANGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "No Grades Found for Student ID: " + sid);
+                JOptionPane.showMessageDialog(this, "No grades found for Student ID: " + sid + " in Grade " + selectedGradeLevel);
             }
+
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Please enter a valid numeric Student ID");
         } catch (SQLException ex) {
@@ -3835,9 +3974,12 @@ public class Home extends javax.swing.JFrame {
 //            return;
 //        }
         int stuId = Integer.parseInt(stuGradeManageID.getText());
+        int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
         int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
+        String strand = stuGradeManageStrand.getText();
+        String section = stuGradeManageSection.getText();
 
-        if (grade.isSidGradeLevelStrandQuarterExist(stuId, quarter)) {
+        if (grade.isSidGradeLevelStrandQuarterExist(stuId, gradeLevel, strand, quarter)) {
             try {
                 // ✅ Validate numeric scores
                 if (!(isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
@@ -3854,9 +3996,6 @@ public class Home extends javax.swing.JFrame {
                 }
 
                 int sid = Integer.parseInt(stuGradeManageID.getText());
-                int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
-                String strand = stuGradeManageStrand.getText();
-                String section = stuGradeManageSection.getText();
 
                 // ✅ Collect subject names
                 String[] subjectNames = {
@@ -4047,6 +4186,12 @@ public class Home extends javax.swing.JFrame {
         sorter.sort();
     }//GEN-LAST:event_stuSort_3ActionPerformed
 
+    private void stuLRNKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stuLRNKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_stuLRNKeyTyped
+
     public ImageIcon imageAdjust(String path, byte[] pic, JLabel targetLabel) {
         ImageIcon myImage = null;
 
@@ -4164,6 +4309,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel67;
     private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel69;
+    private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -4225,6 +4371,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> stuGender;
     private javax.swing.JTextField stuGradeIDSearchField;
     private javax.swing.JComboBox<String> stuGradeLevel;
+    private javax.swing.JComboBox<String> stuGradeLevelMarkSheet;
     private javax.swing.JButton stuGradeManageClearBt;
     public static javax.swing.JTextField stuGradeManageGradeLevel;
     private javax.swing.JComboBox<String> stuGradeManageGradeLevelSearchField;
