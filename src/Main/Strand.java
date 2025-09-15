@@ -27,6 +27,7 @@ public class Strand {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Home.stuStrandId.setText(String.valueOf(rs.getInt(1)));
+                AdminFrame.stuStrandId.setText(String.valueOf(rs.getInt(1)));
                 return true;
             } else {
                 JOptionPane.showMessageDialog(null, "Student Id doesnt exist");
@@ -38,6 +39,8 @@ public class Strand {
 
         return false;
     }
+    
+   
 
     public Object[] getCurrentEnrollment(int studentId) {
         String sql = "SELECT ss.grade_level, s.strand_name, ss.section_name "

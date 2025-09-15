@@ -64,14 +64,21 @@ public class StudentPortal extends javax.swing.JFrame {
 
     public void setInformationStrandDatabase() {
         try {
-            ps = con.prepareStatement("SELECT * FROM strand WHERE student_id = ?");
+            String sql = "SELECT ss.grade_level, s.strand_name, ss.section_name "
+                    + "FROM student_strand ss "
+                    + "JOIN strands s ON ss.strand_id = s.strand_id "
+                    + "WHERE ss.student_id = ?";
+            ps = con.prepareStatement(sql);
             ps.setInt(1, studentId);
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                gradeLevelTxt.setText("grade_level");
-                strandTxt.setText("strand");
-                sectionTxt.setText("section");
+               String strandName = rs.getString("strand_name");
+
+                if (strandTxt != null) {
+                    strandTxt.setText(strandName);
+                }
+
             }
         } catch (SQLException ex) {
             System.getLogger(StudentPortal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -215,10 +222,8 @@ public class StudentPortal extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         IdTxt = new javax.swing.JTextField();
         nameTxt = new javax.swing.JTextField();
@@ -230,9 +235,7 @@ public class StudentPortal extends javax.swing.JFrame {
         motherTxt = new javax.swing.JTextField();
         address1Txt = new javax.swing.JTextField();
         address2Txt = new javax.swing.JTextField();
-        gradeLevelTxt = new javax.swing.JTextField();
         strandTxt = new javax.swing.JTextField();
-        sectionTxt = new javax.swing.JTextField();
         stuLrn = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
@@ -420,10 +423,6 @@ public class StudentPortal extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Address Line 1: ");
 
-        jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel10.setText("Grade Level:");
-
         jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Address Line 2: ");
@@ -431,10 +430,6 @@ public class StudentPortal extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Strand:");
-
-        jLabel14.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel14.setText("Section:");
 
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
@@ -470,14 +465,8 @@ public class StudentPortal extends javax.swing.JFrame {
         address2Txt.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         address2Txt.setEnabled(false);
 
-        gradeLevelTxt.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        gradeLevelTxt.setEnabled(false);
-
         strandTxt.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         strandTxt.setEnabled(false);
-
-        sectionTxt.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        sectionTxt.setEnabled(false);
 
         stuLrn.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         stuLrn.setEnabled(false);
@@ -493,18 +482,6 @@ public class StudentPortal extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(strandTxt))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(gradeLevelTxt))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(address2Txt))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -542,13 +519,17 @@ public class StudentPortal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(address2Txt))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
+                            .addComponent(jLabel13)
                             .addComponent(jLabel19))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sectionTxt)
-                            .addComponent(stuLrn))))
+                            .addComponent(stuLrn)
+                            .addComponent(strandTxt))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -594,23 +575,15 @@ public class StudentPortal extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(address2Txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(gradeLevelTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(strandTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sectionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stuLrn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         jPanel14.setBackground(new java.awt.Color(153, 255, 204));
@@ -1286,8 +1259,7 @@ public class StudentPortal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(jTabbedPane1))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1396,17 +1368,14 @@ public class StudentPortal extends javax.swing.JFrame {
     private javax.swing.JTextField fatherTxt;
     private javax.swing.JPanel formPanel;
     private javax.swing.JTextField genderTxt;
-    private javax.swing.JTextField gradeLevelTxt;
     private javax.swing.JLabel imagePanel;
     private javax.swing.JLabel imagePanel1;
     private javax.swing.JLabel imagePanel2;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -1452,7 +1421,6 @@ public class StudentPortal extends javax.swing.JFrame {
     private javax.swing.JTextField motherTxt;
     private javax.swing.JTextField nameTxt;
     private javax.swing.JTextField phoneTxt;
-    private javax.swing.JTextField sectionTxt;
     private javax.swing.JTextField strandTxt;
     private javax.swing.JComboBox<String> stuGradeLevel;
     private javax.swing.JButton stuGradeManageClearBt;

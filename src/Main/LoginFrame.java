@@ -22,6 +22,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginFrame.class.getName());
     int xx, xy;
     private boolean passwordVisible = false;
+    User user = new User();
 
     public LoginFrame() {
         //this.setLocationRelativeTo(null);
@@ -29,11 +30,12 @@ public class LoginFrame extends javax.swing.JFrame {
         init();
         setLocationRelativeTo(null);
     }
-    public void init(){
+
+    public void init() {
         //setBackgroundPanel();
     }
-    
-     public void setBackgroundPanel() {
+
+    public void setBackgroundPanel() {
         // Create background panel with image
         BackgroundPanel bgPanel = new BackgroundPanel("/assets/background.jpg");
         bgPanel.setLayout(new BorderLayout());
@@ -41,7 +43,6 @@ public class LoginFrame extends javax.swing.JFrame {
         // Replace jPanel2 with background panel
         jPanel1.setLayout(new BorderLayout());
         jPanel1.add(bgPanel, BorderLayout.CENTER);
-
 
         jPanel1.revalidate();
         jPanel1.repaint();
@@ -258,46 +259,77 @@ public class LoginFrame extends javax.swing.JFrame {
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
         if (isEmpty()) {
             Connection con = MyConnection.getConnection();
-            PreparedStatement ps;
+            PreparedStatement ps = null;
+            ResultSet rs = null;
 
-            int userId = Integer.parseInt(userID.getText());
-            String password = String.valueOf(userPass.getPassword());
-            String type = userType.getSelectedItem().toString();
             try {
-                ps = con.prepareStatement("select * from user where user_id = ? and password=? and type=?");
-                ps.setInt(1, userId);
+                String username = userID.getText(); // Now using username instead of user_id
+                String password = String.valueOf(userPass.getPassword());
+                String selectedType = userType.getSelectedItem().toString();
+
+                // Convert the selected type to type_id
+                int typeId = user.convertUserTypeToId(selectedType);
+                if (typeId == -1) {
+                    JOptionPane.showMessageDialog(this, "Invalid user type selected");
+                    return;
+                }
+
+                // Updated query for new database structure
+                String sql = "SELECT u.*, t.type_name FROM user u "
+                        + "JOIN type t ON u.type_id = t.type_id "
+                        + "WHERE u.username = ? AND u.password = ? AND u.type_id = ?";
+
+                ps = con.prepareStatement(sql);
+                ps.setString(1, username);
                 ps.setString(2, password);
-                ps.setString(3, type);
-                ResultSet rs = ps.executeQuery();
+                ps.setInt(3, typeId);
+
+                rs = ps.executeQuery();
+
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(this, "Login complete");
-                    if (type.equals("Student")) {
+
+                    int userId = rs.getInt("user_id");
+                    String actualType = rs.getString("type_name");
+
+                    if ("Student".equals(actualType)) {
                         StudentPortal portal = new StudentPortal(userId);
                         portal.setVisible(true);
                         portal.pack();
-                        //this.dispose();
-                    }
-                    if (type.equals("Teacher")) {
+                    } else if ("Teacher".equals(actualType)) {
                         Home home = new Home();
                         home.setVisible(true);
                         home.pack();
-                        //this.dispose();
-                    }
-                    if (type.equals("Admin")) {
+                    } else if ("Admin".equals(actualType)) {
                         Home home = new Home();
                         home.setVisible(true);
                         home.pack();
-                        //this.dispose();
                     }
+
                     this.dispose();
-
                 } else {
-                    JOptionPane.showMessageDialog(this, "User doesnt Exist");
+                    JOptionPane.showMessageDialog(this, "Invalid username, password, or user type");
                 }
-            } catch (SQLException ex) {
-                System.getLogger(LoginFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
 
+            } catch (SQLException ex) {
+                System.getLogger(LoginFrame.class.getName()).log(System.Logger.Level.ERROR, "Login error", ex);
+                JOptionPane.showMessageDialog(this, "Database error during login");
+            } finally {
+                // Close resources
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (ps != null) {
+                        ps.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (SQLException ex) {
+                    System.getLogger(LoginFrame.class.getName()).log(System.Logger.Level.ERROR, "Error closing resources", ex);
+                }
+            }
         }
 
 

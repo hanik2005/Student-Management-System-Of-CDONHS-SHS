@@ -630,15 +630,17 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(stuAddress2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(browseBirthCertificate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(stuBirthCer, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(stuBirthCer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel13)
+                        .addComponent(browseBirthCertificate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(12, 12, 12)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(browseForm137)
-                    .addComponent(jLabel14)
-                    .addComponent(stuForm137, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(stuForm137, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(browseForm137)
+                        .addComponent(jLabel14)))
                 .addContainerGap())
         );
 
@@ -1140,6 +1142,11 @@ public class Home extends javax.swing.JFrame {
         stuStrandId.setBackground(new java.awt.Color(204, 204, 204));
         stuStrandId.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
         stuStrandId.setForeground(new java.awt.Color(0, 0, 0));
+        stuStrandId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stuStrandIdActionPerformed(evt);
+            }
+        });
 
         jLabel19.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(0, 0, 0));
@@ -2616,7 +2623,7 @@ public class Home extends javax.swing.JFrame {
         //idGradeManage.setText(String.valueOf(grade.getMax()));
     }
 
-    private void tableViewStudent() {
+    public void tableViewStudent() {
         student.getStudentValue(StudentTable, "");
         model = (DefaultTableModel) StudentTable.getModel();
         StudentTable.setRowHeight(30);
@@ -2651,7 +2658,7 @@ public class Home extends javax.swing.JFrame {
         StudentMarksSheetTable.setBackground(Color.white);
     }
 
-    private void clearStudent() {
+    public void clearStudent() {
         stuID.setText(String.valueOf(student.getMax()));
         stuFname.setText(null);
         stuMiddleName.setText(null);
@@ -2673,7 +2680,7 @@ public class Home extends javax.swing.JFrame {
 
     }
 
-    private void clearStrand() {
+    public void clearStrand() {
         //strandId.setText(String.valueOf(strand.getMax()));
         stuStrandId.setText(null);
         stuGradeLevel.setSelectedIndex(0);
@@ -3630,7 +3637,7 @@ public class Home extends javax.swing.JFrame {
 
     }
 
-    private void updateSection() {
+    public void updateSection() {
         String gradeLevel = (String) stuGradeLevel.getSelectedItem();
         String strand = (String) stuStrand.getSelectedItem();
 
@@ -4191,6 +4198,10 @@ public class Home extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_stuLRNKeyTyped
+
+    private void stuStrandIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuStrandIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stuStrandIdActionPerformed
 
     public ImageIcon imageAdjust(String path, byte[] pic, JLabel targetLabel) {
         ImageIcon myImage = null;

@@ -114,7 +114,8 @@ public class Student {
 
     //get all student values from database student table
     public void getStudentValue(JTable table, String searchValue) {
-        String sql = "select * from student where concat(first_name,middle_name,last_name,email,phone_number) like ? order by student_id desc";
+        String sql = "select * from student where concat(first_name,middle_name,last_name,email,phone_number) "
+                + "like ? order by student_id desc";
 
         try {
             ps = con.prepareStatement(sql);

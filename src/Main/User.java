@@ -20,7 +20,7 @@ public class User {
 
     Connection con = MyConnection.getConnection();
     PreparedStatement ps;
-    
+
     public int getMax() {
         int id = 0;
         Statement st;
@@ -57,19 +57,33 @@ public class User {
         }
 
     }
-     public void delete(int id) {
-            try {
-                ps = con.prepareStatement("delete from user where user_id = ?");
-                ps.setInt(1, id);
-                if (ps.executeUpdate() > 0) {
-                    //JOptionPane.showMessageDialog(null, "Student data deleted successfully ");
 
-                }
-            } catch (SQLException ex) {
-                System.getLogger(User.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+    public void delete(int id) {
+        try {
+            ps = con.prepareStatement("delete from user where username = ?");
+            ps.setInt(1, id);
+            if (ps.executeUpdate() > 0) {
+                //JOptionPane.showMessageDialog(null, "Student data deleted successfully ");
+
             }
-
+        } catch (SQLException ex) {
+            System.getLogger(User.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
 
-    
+    }
+    // Helper method to convert user type string to type_id
+
+    public int convertUserTypeToId(String userType) {
+        switch (userType) {
+            case "Student":
+                return 2;
+            case "Teacher":
+                return 3;
+            case "Admin":
+                return 1;
+            default:
+                return -1;
+        }
+    }
+
 }
