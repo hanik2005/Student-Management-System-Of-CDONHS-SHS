@@ -6,6 +6,7 @@ package Main;
 
 import model.SubjectGrade;
 import db.MyConnection;
+import design.BackgroundPanel;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.image.BufferedImage;
@@ -42,6 +43,9 @@ public class StudentPortal extends javax.swing.JFrame {
     private String imagePath;
     Home home = new Home();
     Grade grade = new Grade();
+    String imagePathDB;
+    String birthCertPathDB;
+    String form137PathDB;
 
     /**
      * Creates new form StudentPortal
@@ -56,10 +60,27 @@ public class StudentPortal extends javax.swing.JFrame {
     }
 
     public void init() {
+        //setBackgroundPanel();
         home.setTime();
         home.setDate();
         setInformationStudentsDatabase();
         setInformationStrandDatabase();
+    }
+
+    public void setBackgroundPanel() {
+        BackgroundPanel bgPanel2 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel2.setLayout(new BorderLayout());
+        jPanel2.setLayout(new BorderLayout());
+        jPanel2.add(bgPanel2, BorderLayout.CENTER);
+        jPanel2.revalidate();
+        jPanel2.repaint();
+
+        BackgroundPanel bgPanel3 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel3.setLayout(new BorderLayout());
+        jPanel6.setLayout(new BorderLayout());
+        jPanel6.add(bgPanel3, BorderLayout.CENTER);
+        jPanel6.revalidate();
+        jPanel6.repaint();
     }
 
     public void setInformationStrandDatabase() {
@@ -73,7 +94,7 @@ public class StudentPortal extends javax.swing.JFrame {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-               String strandName = rs.getString("strand_name");
+                String strandName = rs.getString("strand_name");
 
                 if (strandTxt != null) {
                     strandTxt.setText(strandName);
@@ -117,9 +138,9 @@ public class StudentPortal extends javax.swing.JFrame {
                 address2Txt.setText(rs.getString("address2"));
                 stuLrn.setText(rs.getString("LRN"));
 
-                String imagePathDB = rs.getString("image_path");
-                String birthCertPathDB = rs.getString("birth_certificate");
-                String form137PathDB = rs.getString("form_137");
+                imagePathDB = rs.getString("image_path");
+                birthCertPathDB = rs.getString("birth_certificate");
+                form137PathDB = rs.getString("form_137");
                 String defaultImagePath = getClass().getResource("/assets/default.png").getPath();
                 String existPdfImage = getClass().getResource("/assets/pdf.png").getPath();
 
@@ -593,6 +614,12 @@ public class StudentPortal extends javax.swing.JFrame {
         birthPanel.setBackground(new java.awt.Color(204, 204, 204));
         birthPanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 2, true));
 
+        imagePanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                imagePanel1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout birthPanelLayout = new javax.swing.GroupLayout(birthPanel);
         birthPanel.setLayout(birthPanelLayout);
         birthPanelLayout.setHorizontalGroup(
@@ -640,6 +667,12 @@ public class StudentPortal extends javax.swing.JFrame {
         formPanel.setBackground(new java.awt.Color(204, 204, 204));
         formPanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 2, true));
 
+        imagePanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                imagePanel2MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout formPanelLayout = new javax.swing.GroupLayout(formPanel);
         formPanel.setLayout(formPanelLayout);
         formPanelLayout.setHorizontalGroup(
@@ -686,6 +719,15 @@ public class StudentPortal extends javax.swing.JFrame {
 
         jPanel19.setBackground(new java.awt.Color(204, 204, 204));
         jPanel19.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 2, true));
+
+        imagePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                imagePanelMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                imagePanelMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
@@ -1353,6 +1395,41 @@ public class StudentPortal extends javax.swing.JFrame {
     private void stuGradeManageSub8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSub8ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_stuGradeManageSub8ActionPerformed
+
+    private void imagePanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagePanelMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_imagePanelMousePressed
+
+    private void imagePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagePanelMouseClicked
+
+    }//GEN-LAST:event_imagePanelMouseClicked
+
+    private void imagePanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagePanel1MouseClicked
+        openPdfFile(birthCertPathDB);
+    }//GEN-LAST:event_imagePanel1MouseClicked
+
+    private void imagePanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagePanel2MouseClicked
+        openPdfFile(form137PathDB);
+    }//GEN-LAST:event_imagePanel2MouseClicked
+
+    private void openPdfFile(String fileName) {
+    try {
+        if (fileName != null) {
+            // Always prepend DOCUMENTATION folder
+            String baseDir = "D:\\DOCUMENTATION\\";
+            File pdfFile = new File(baseDir + fileName);
+
+            if (pdfFile.exists() && pdfFile.isFile() && fileName.toLowerCase().endsWith(".pdf")) {
+                Desktop.getDesktop().open(pdfFile); // opens in default PDF reader
+            } else {
+                JOptionPane.showMessageDialog(null, 
+                    "PDF file not found in D:\\DOCUMENTATION\\");
+            }
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Unable to open file: " + e.getMessage());
+    }
+}
 
     /**
      * @param args the command line arguments

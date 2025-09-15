@@ -27,6 +27,24 @@ public class Strand {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Home.stuStrandId.setText(String.valueOf(rs.getInt(1)));
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Student Id doesnt exist");
+
+            }
+        } catch (SQLException ex) {
+            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+
+        return false;
+    }
+    
+    public boolean getIdFromAdmin(int id) {
+        try {
+            ps = con.prepareStatement("select * from student where student_id= ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
                 AdminFrame.stuStrandId.setText(String.valueOf(rs.getInt(1)));
                 return true;
             } else {
@@ -320,7 +338,7 @@ public class Strand {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0); // Clear existing data
 
-        String sql = "SELECT ss.strand_id, ss.student_id, ss.grade_level, s.strand_name, ss.section_name "
+        String sql = "SELECT ss.student_strand_id, ss.student_id, ss.grade_level, s.strand_name, ss.section_name "
                 + "FROM student_strand ss "
                 + "JOIN strands s ON ss.strand_id = s.strand_id "
                 + "WHERE ss.student_id LIKE ? OR s.strand_name LIKE ? "
@@ -333,7 +351,7 @@ public class Strand {
 
             while (rs.next()) {
                 model.addRow(new Object[]{
-                    rs.getInt("strand_id"),
+                    rs.getInt("student_strand_id"),
                     rs.getInt("student_id"),
                     rs.getInt("grade_level"),
                     rs.getString("strand_name"),

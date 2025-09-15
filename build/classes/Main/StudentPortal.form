@@ -761,6 +761,9 @@
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="imagePanel1">
+                          <Events>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="imagePanel1MouseClicked"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -854,6 +857,9 @@
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="imagePanel2">
+                          <Events>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="imagePanel2MouseClicked"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -944,6 +950,10 @@
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="imagePanel">
+                          <Events>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="imagePanelMouseClicked"/>
+                            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="imagePanelMousePressed"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>

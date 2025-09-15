@@ -82,7 +82,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     public void init() {
 
-        //setBackgroundPanel();
+        setBackgroundPanel();
         setTime();
         setDate();
         tableViewStudent();
@@ -94,6 +94,43 @@ public class AdminFrame extends javax.swing.JFrame {
         teacherID.setText(String.valueOf(teacher.getMax()));
         //strandId.setText(String.valueOf(strand.getMax()));
         //idGradeManage.setText(String.valueOf(grade.getMax()));
+    }
+
+    public void setBackgroundPanel() {
+        BackgroundPanel bgPanel2 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel2.setLayout(new BorderLayout());
+        jPanel2.setLayout(new BorderLayout());
+        jPanel2.add(bgPanel2, BorderLayout.CENTER);
+        jPanel2.revalidate();
+        jPanel2.repaint();
+
+        BackgroundPanel bgPanel3 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel3.setLayout(new BorderLayout());
+        jPanel10.setLayout(new BorderLayout());
+        jPanel10.add(bgPanel3, BorderLayout.CENTER);
+        jPanel10.revalidate();
+        jPanel10.repaint();
+
+        BackgroundPanel bgPanel4 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel4.setLayout(new BorderLayout());
+        jPanel6.setLayout(new BorderLayout());
+        jPanel6.add(bgPanel4, BorderLayout.CENTER);
+        jPanel6.revalidate();
+        jPanel6.repaint();
+
+        BackgroundPanel bgPanel5 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel5.setLayout(new BorderLayout());
+        jPanel19.setLayout(new BorderLayout());
+        jPanel19.add(bgPanel5, BorderLayout.CENTER);
+        jPanel19.revalidate();
+        jPanel19.repaint();
+
+        BackgroundPanel bgPanel6 = new BackgroundPanel("/assets/background.jpg");
+        bgPanel6.setLayout(new BorderLayout());
+        jPanel27.setLayout(new BorderLayout());
+        jPanel27.add(bgPanel6, BorderLayout.CENTER);
+        jPanel27.revalidate();
+        jPanel27.repaint();
     }
 
     public void tableViewStudent() {
@@ -143,50 +180,87 @@ public class AdminFrame extends javax.swing.JFrame {
 
     public boolean isEmptyTeacher() {
         if (teacherFirstName.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Student name is missing");
+            JOptionPane.showMessageDialog(this, "Teacher first name is missing");
             return false;
-
         }
-        if (teacherBirth.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Student date of birth is missing");
+        if (teacherFirstName.getText().length() > 50) {
+            JOptionPane.showMessageDialog(this, "Teacher first name must not exceed 50 characters");
             return false;
+        }
 
+        if (teacherMidName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Teacher middle name is missing");
+            return false;
+        }
+        if (teacherMidName.getText().length() > 50) {
+            JOptionPane.showMessageDialog(this, "Teacher middle name must not exceed 50 characters");
+            return false;
+        }
+
+        if (teacherLastName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Teacher last name is missing");
+            return false;
+        }
+        if (teacherLastName.getText().length() > 50) {
+            JOptionPane.showMessageDialog(this, "Teacher last name must not exceed 50 characters");
+            return false;
+        }
+
+        if (teacherBirth.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Teacher date of birth is missing");
+            return false;
         }
         if (teacherBirth.getDate().compareTo(new Date()) > 0) {
-            JOptionPane.showMessageDialog(this, "No Student from the future are allowed");
+            JOptionPane.showMessageDialog(this, "No Teacher from the future is allowed");
             return false;
-
         }
+
         if (teacherEmail.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Student email is missing");
+            JOptionPane.showMessageDialog(this, "Teacher email is missing");
             return false;
         }
         if (!teacherEmail.getText().matches("^.+@.+\\..+$")) {
             JOptionPane.showMessageDialog(this, "Invalid Email Address");
             return false;
         }
+        if (teacherEmail.getText().length() > 50) {
+            JOptionPane.showMessageDialog(this, "Teacher email must not exceed 50 characters");
+            return false;
+        }
+
         if (teacherPhone.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Student phone number is missing");
+            JOptionPane.showMessageDialog(this, "Teacher phone number is missing");
             return false;
         }
-        if (teacherPhone.getText().length() >= 15) {
-            JOptionPane.showMessageDialog(this, "Phone number is to long");
+        if (teacherPhone.getText().length() != 11) {
+            JOptionPane.showMessageDialog(this, "Phone number must be exactly 11 digits");
             return false;
         }
+
         if (teacherAddress1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Address Line 1 is missing");
             return false;
         }
+        if (teacherAddress1.getText().length() > 50) {
+            JOptionPane.showMessageDialog(this, "Address Line 1 must not exceed 50 characters");
+            return false;
+        }
+
         if (teacherAddress2.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Address Line 2 is missing");
             return false;
         }
+        if (teacherAddress2.getText().length() > 50) {
+            JOptionPane.showMessageDialog(this, "Address Line 2 must not exceed 50 characters");
+            return false;
+        }
+
         if (imagePath == null) {
             JOptionPane.showMessageDialog(this, "Please add your image");
             return false;
         }
-        return true;
 
+        return true;
     }
 
     public boolean check() {
@@ -379,6 +453,11 @@ public class AdminFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(135, 255, 204));
 
@@ -2589,7 +2668,7 @@ public class AdminFrame extends javax.swing.JFrame {
         } else {
             System.out.println(stuStrandSearchAdminField.getText());
             int id = Integer.parseInt(stuStrandSearchAdminField.getText());
-            strand.getId(id);
+            strand.getIdFromAdmin(id);
             stuGradeLevel.setSelectedIndex(0);
 
         }
@@ -2608,7 +2687,7 @@ public class AdminFrame extends javax.swing.JFrame {
         }
     }
     private void stuGradeLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeLevelActionPerformed
-       updateSection();
+        updateSection();
 
         //stuStrand.addItem("TVL-ICT"); //how to add item inside combo box
     }//GEN-LAST:event_stuGradeLevelActionPerformed
@@ -2626,14 +2705,14 @@ public class AdminFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Search field is empty");
 
         } else {
-            StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
+            StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"Student_Strand_ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
             strand.loadStudentStrandsTable(StudentTrackTable, stuSearchField_2.getText());
 
         }
     }//GEN-LAST:event_stuSearchBt_2ActionPerformed
 
     private void stuRefresh_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuRefresh_2ActionPerformed
-        StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
+        StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"Student_Strand_ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
         strand.loadStudentStrandsTable(StudentTrackTable, "");
         stuSearchField_2.setText(null);
     }//GEN-LAST:event_stuRefresh_2ActionPerformed
@@ -2676,126 +2755,13 @@ public class AdminFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_stuStrandClearBtActionPerformed
 
     private void stuPrint_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuPrint_2ActionPerformed
-//        try {
-//            // === 1. Ask user to select a strand ===
-//            String[] strands = {"STEM", "ABM", "HUMSS", "TVL-ICT", "TVL-EIM", "TVL-HE", "GAS"};
-//            String selectedStrand = (String) JOptionPane.showInputDialog(
-//                this,
-//                "Select Strand to Print:",
-//                "Choose Strand",
-//                JOptionPane.QUESTION_MESSAGE,
-//                null,
-//                strands,
-//                strands[0] // default
-//            );
-//
-//            if (selectedStrand == null) {
-//                return; // user cancelled
-//            }
-//
-//            // === 2. Create new model for combined report ===
-//            DefaultTableModel combinedModel = new DefaultTableModel(
-//                new Object[]{"Student ID", "Student Name", "Gender", "Strand", "Grade Level", "Section"}, 0);
-//
-//            DefaultTableModel studentModel = (DefaultTableModel) StudentTable.getModel();
-//            DefaultTableModel trackModel = (DefaultTableModel) StudentTrackTable.getModel();
-//
-//            // === 2a. Get column indexes ===
-//            int trackIdCol = getColumnIndex(trackModel, "Student_ID");
-//            int trackStrandCol = getColumnIndex(trackModel, "Strand");
-//            int gradeLevelCol = getColumnIndex(trackModel, "Grade Level");
-//            int sectionCol = getColumnIndex(trackModel, "Section");
-//
-//            int studentIdCol = getColumnIndex(studentModel, "Student_ID");
-//            int firstNameCol = getColumnIndex(studentModel, "First_Name");
-//            int middleNameCol = getColumnIndex(studentModel, "Middle_Name");
-//            int lastNameCol = getColumnIndex(studentModel, "Last_Name");
-//            int genderCol = getColumnIndex(studentModel, "Gender");
-//
-//            // === 3. Loop and join tables ===
-//            for (int i = 0; i < studentModel.getRowCount(); i++) {
-//                Object studentId = studentModel.getValueAt(i, studentIdCol);
-//                String studentName = studentModel.getValueAt(i, firstNameCol) + " "
-//                + studentModel.getValueAt(i, middleNameCol) + " "
-//                + studentModel.getValueAt(i, lastNameCol);
-//                Object gender = studentModel.getValueAt(i, genderCol);
-//
-//                Object strand = "";
-//                Object gradeLevel = "";
-//                Object section = "";
-//
-//                for (int j = 0; j < trackModel.getRowCount(); j++) {
-//                    Object trackId = trackModel.getValueAt(j, trackIdCol);
-//                    Object trackStrand = trackModel.getValueAt(j, trackStrandCol);
-//
-//                    if (studentId.toString().equals(trackId.toString())
-//                        && selectedStrand.equalsIgnoreCase(trackStrand.toString().trim())) {
-//                        strand = trackStrand;
-//                        gradeLevel = trackModel.getValueAt(j, gradeLevelCol);
-//                        section = trackModel.getValueAt(j, sectionCol);
-//
-//                        combinedModel.addRow(new Object[]{studentId, studentName, gender, strand, gradeLevel, section});
-//                        break;
-//                    }
-//                }
-//            }
-//
-//            if (combinedModel.getRowCount() == 0) {
-//                JOptionPane.showMessageDialog(this, "No students found for strand: " + selectedStrand);
-//                return;
-//            }
-//
-//            // === 4. Ask user where to save the PDF ===
-//            JFileChooser fileChooser = new JFileChooser();
-//            fileChooser.setDialogTitle("Save PDF Report");
-//            fileChooser.setSelectedFile(new java.io.File("StudentReport_" + selectedStrand + ".pdf"));
-//
-//            int userSelection = fileChooser.showSaveDialog(this);
-//            if (userSelection != JFileChooser.APPROVE_OPTION) {
-//                return; // user cancelled
-//            }
-//
-//            java.io.File pdfFile = fileChooser.getSelectedFile();
-//
-//            // Ensure file has .pdf extension
-//            if (!pdfFile.getName().toLowerCase().endsWith(".pdf")) {
-//                pdfFile = new java.io.File(pdfFile.getAbsolutePath() + ".pdf");
-//            }
-//
-//            // === 5. Generate PDF ===
-//            Document document = new Document();
-//            PdfWriter.getInstance(document, new java.io.FileOutputStream(pdfFile));
-//            document.open();
-//
-//            // Title
-//            document.add(new com.itextpdf.text.Paragraph("Student Information Report - " + selectedStrand));
-//            document.add(new com.itextpdf.text.Paragraph(" "));
-//
-//            // Table
-//            PdfPTable pdfTable = new PdfPTable(combinedModel.getColumnCount());
-//
-//            // Add headers
-//            for (int col = 0; col < combinedModel.getColumnCount(); col++) {
-//                pdfTable.addCell(new com.itextpdf.text.Phrase(combinedModel.getColumnName(col)));
-//            }
-//
-//            // Add rows
-//            for (int row = 0; row < combinedModel.getRowCount(); row++) {
-//                for (int col = 0; col < combinedModel.getColumnCount(); col++) {
-//                    Object value = combinedModel.getValueAt(row, col);
-//                    pdfTable.addCell(new com.itextpdf.text.Phrase(value != null ? value.toString() : ""));
-//                }
-//            }
-//
-//            document.add(pdfTable);
-//            document.close();
-//
-//            JOptionPane.showMessageDialog(this, "PDF saved successfully:\n" + pdfFile.getAbsolutePath());
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-//        }
+        try {
+            MessageFormat header = new MessageFormat("Students Strand Information");
+            MessageFormat footer = new MessageFormat("Page{0,number,integer}");
+            StudentTrackTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+        } catch (PrinterException ex) {
+            System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }//GEN-LAST:event_stuPrint_2ActionPerformed
 
     private void stuSaveBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuSaveBtActionPerformed
@@ -2889,7 +2855,6 @@ public class AdminFrame extends javax.swing.JFrame {
 
                         // ✅ Delete old grades + strand under this strandId and grade level
                         boolean deleted = strand.deleteStudentStrandAndGrades(studentId, currentStrandId, currentGradeLevel);
-
                         if (deleted) {
                             // ✅ Insert new enrollment for transfer
                             boolean success = strand.insertStudentStrand(studentId, strandId, gradeLevel, sectionSelect);
@@ -2932,7 +2897,7 @@ public class AdminFrame extends javax.swing.JFrame {
             }
 
             // Refresh table and clear fields
-            StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
+            StudentTrackTable.setModel(new DefaultTableModel(null, new Object[]{"Student_Strand_ID", "Student_ID", "Grade_Level", "Strand", "Section"}));
             strand.loadStudentStrandsTable(StudentTrackTable, "");
             home.clearStrand();
 
@@ -3003,7 +2968,7 @@ public class AdminFrame extends javax.swing.JFrame {
                     String addressLine2 = teacherAddress2.getText();
                     String teacherStrandOption = teacherStrand.getSelectedItem().toString();
                     int strandId = strand.convertStrandNameToId(teacherStrandOption);
-                    
+
                     teacher.update(id, tfname, tMidName, tLastName, date, gender, email, phone, addressLine1, addressLine2, imagePath, strandId);
 
                     TeacherTable.setModel(new DefaultTableModel(null, new Object[]{"Teacher ID", "User_ID", "First Name", "Middle Name", "Last Name", "Date of Birth", "Gender", "Email", "Phone Number",
@@ -3216,6 +3181,19 @@ public class AdminFrame extends javax.swing.JFrame {
     private void teacherStrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherStrandActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_teacherStrandActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        for (double i = 0.1; i <= 1.0; i += 0.1) {
+            String s = i + "";
+            float f = Float.valueOf(s);
+            this.setOpacity(f);
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException ex) {
+                System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     private ImageIcon imageAdjust(String path, byte[] pic) {
         ImageIcon myImage = null;
