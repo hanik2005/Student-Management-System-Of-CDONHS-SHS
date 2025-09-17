@@ -38,7 +38,7 @@ public class Strand {
 
         return false;
     }
-    
+
     public boolean getIdFromAdmin(int id) {
         try {
             ps = con.prepareStatement("select * from student where student_id= ?");
@@ -57,8 +57,6 @@ public class Strand {
 
         return false;
     }
-    
-   
 
     public Object[] getCurrentEnrollment(int studentId) {
         String sql = "SELECT ss.grade_level, s.strand_name, ss.section_name "
@@ -122,35 +120,76 @@ public class Strand {
         }
     }
 
-    public String getNextSection(String gradeLevel, String strandName) {
-        String section = "A";
+    public String getNextSection(int gradeLevel, String strandName) {
+        String nextSectionName = "A";
         try {
-            // First, get the strand_id from the strand name
             int strandId = getStrandIdByName(strandName);
             if (strandId == -1) {
-                return section; // Return default if strand not found
+                return nextSectionName;
             }
 
-            // Count students in the given grade level and strand
-            String sql = "SELECT COUNT(*) FROM student_strand ss "
-                    + "WHERE ss.grade_level = ? AND ss.strand_id = ?";
+            // Get all existing sections for this grade and strand, ordered by name
+            String sectionSql = "SELECT section_id, section_name FROM section "
+                    + "WHERE grade_level = ? AND strand_id = ? ORDER BY section_name";
+            PreparedStatement psSection = con.prepareStatement(sectionSql);
+            psSection.setInt(1, gradeLevel);
+            psSection.setInt(2, strandId);
+            ResultSet rsSections = psSection.executeQuery();
 
-            ps = con.prepareStatement(sql);
-            ps.setString(1, gradeLevel);
-            ps.setInt(2, strandId);
+            while (rsSections.next()) {
+                int sectionId = rsSections.getInt("section_id");
+                String sectionName = rsSections.getString("section_name");
 
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                int index = count / 50; // Assuming 50 students per section
-
-                // Convert index to letters (Excel-style: A, B, ..., Z, AA, AB...)
-                section = convertIndexToSectionName(index);
+                // Count students in this section
+                String countSql = "SELECT COUNT(*) FROM student_strand WHERE section_id = ?";
+                PreparedStatement psCount = con.prepareStatement(countSql);
+                psCount.setInt(1, sectionId);
+                ResultSet rsCount = psCount.executeQuery();
+                if (rsCount.next()) {
+                    int studentCount = rsCount.getInt(1);
+                    if (studentCount < 50) {
+                        // Found a section with space
+                        return sectionName;
+                    }
+                }
             }
+
+            // If all sections are full, create a new section next in sequence
+            // Get last section name
+            String lastSectionSql = "SELECT section_name FROM section "
+                    + "WHERE grade_level = ? AND strand_id = ? ORDER BY section_name DESC LIMIT 1";
+            PreparedStatement psLast = con.prepareStatement(lastSectionSql);
+            psLast.setInt(1, gradeLevel);
+            psLast.setInt(2, strandId);
+            ResultSet rsLast = psLast.executeQuery();
+
+            String lastName = "D"; // default if no section exists
+            if (rsLast.next()) {
+                lastName = rsLast.getString("section_name");
+            }
+
+            // Generate next section name (E, F, ...)
+            nextSectionName = generateNextSectionName(lastName);
+
+            // Insert new section into the section table
+            String insertSql = "INSERT INTO section (section_name, grade_level, strand_id) VALUES (?, ?, ?)";
+            PreparedStatement psInsert = con.prepareStatement(insertSql);
+            psInsert.setString(1, nextSectionName);
+            psInsert.setInt(2, gradeLevel);
+            psInsert.setInt(3, strandId);
+            psInsert.executeUpdate();
+
         } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, "Error getting next section", ex);
+            ex.printStackTrace();
         }
-        return section;
+
+        return nextSectionName;
+    }
+
+    private String generateNextSectionName(String lastSection) {
+        char lastChar = lastSection.charAt(0);
+        char nextChar = (char) (lastChar + 1);
+        return String.valueOf(nextChar);
     }
 
     private int getStrandIdByName(String strandName) {
@@ -248,53 +287,64 @@ public class Strand {
     /**
      * Insert into student_strand table
      */
-    public boolean insertStudentStrand(int studentId, int strandId, int gradeLevel, String section) {
+    public boolean insertStudentStrand(int studentId, int strandId, int gradeLevel, String sectionName) {
         // Validate inputs
         if (gradeLevel < 11 || gradeLevel > 12) {
             System.out.println("Invalid grade level: " + gradeLevel);
             return false;
         }
 
-        if (section == null || section.trim().isEmpty()) {
+        if (sectionName == null || sectionName.trim().isEmpty()) {
             System.out.println("Section cannot be empty");
             return false;
         }
 
-        String sql = "INSERT INTO student_strand (strand_id, student_id, grade_level, section_name) VALUES (?, ?, ?, ?)";
+        try {
+            // Get section_id from section table
+            String sectionSql = "SELECT section_id FROM section WHERE grade_level = ? AND strand_id = ? AND section_name = ?";
+            PreparedStatement psSection = con.prepareStatement(sectionSql);
+            psSection.setInt(1, gradeLevel);
+            psSection.setInt(2, strandId);
+            psSection.setString(3, sectionName.trim());
+            ResultSet rs = psSection.executeQuery();
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            if (!rs.next()) {
+                System.out.println("Section not found: " + sectionName);
+                return false;
+            }
+
+            int sectionId = rs.getInt("section_id");
+
+            // Insert into student_strand
+            String sql = "INSERT INTO student_strand (strand_id, student_id, grade_level, section_id) VALUES (?, ?, ?, ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, strandId);
             ps.setInt(2, studentId);
             ps.setInt(3, gradeLevel);
-            ps.setString(4, section.trim());
+            ps.setInt(4, sectionId);
 
             int rowsAffected = ps.executeUpdate();
-
             if (rowsAffected > 0) {
                 System.out.println("Successfully enrolled Student " + studentId
                         + " in Strand " + strandId
                         + " Grade " + gradeLevel
-                        + " Section " + section);
+                        + " Section " + sectionName);
                 return true;
             }
 
-            return false;
-
         } catch (SQLException ex) {
-            // Handle specific error cases
             if (ex.getErrorCode() == 1062 || ex.getMessage().contains("Duplicate entry")) {
                 System.out.println("Duplicate enrollment: Student " + studentId
                         + " is already enrolled in Strand " + strandId
                         + " Grade " + gradeLevel);
-                return false;
             } else if (ex.getErrorCode() == 1452) {
-                System.out.println("Foreign key violation: Invalid student_id or strand_id");
-                return false;
+                System.out.println("Foreign key violation: Invalid student_id, strand_id, or section_id");
             } else {
-                System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, "SQL Error inserting student strand", ex);
-                return false;
+                ex.printStackTrace();
             }
         }
+
+        return false;
     }
 
     public boolean updateStudentStrand(int studentId, int strandId, int gradeLevel, String section) {
@@ -338,15 +388,17 @@ public class Strand {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0); // Clear existing data
 
-        String sql = "SELECT ss.student_strand_id, ss.student_id, ss.grade_level, s.strand_name, ss.section_name "
+        String sql = "SELECT ss.student_strand_id, ss.student_id, ss.grade_level, st.strand_name, sec.section_name "
                 + "FROM student_strand ss "
-                + "JOIN strands s ON ss.strand_id = s.strand_id "
-                + "WHERE ss.student_id LIKE ? OR s.strand_name LIKE ? "
+                + "JOIN strands st ON ss.strand_id = st.strand_id "
+                + "JOIN section sec ON ss.section_id = sec.section_id "
+                + "WHERE ss.student_id LIKE ? OR st.strand_name LIKE ? OR sec.section_name LIKE ? "
                 + "ORDER BY ss.student_id";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, "%" + search + "%");
             ps.setString(2, "%" + search + "%");
+            ps.setString(3, "%" + search + "%");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

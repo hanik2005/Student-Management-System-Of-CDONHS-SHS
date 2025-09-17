@@ -14,9 +14,11 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import model.ComboItem;
 
 /**
  *
@@ -45,329 +47,160 @@ public class Grade {
 
     }
 
-    public boolean getDetails(int sid, int gradeLevel) {
-        try {
-            // Step 1: Get student strand & section from student_strand table joined with strands
-            String strandSql = "SELECT ss.student_id, ss.grade_level, ss.section_name, s.strand_name, s.strand_id "
-                    + "FROM student_strand ss "
-                    + "JOIN strands s ON ss.strand_id = s.strand_id "
-                    + "WHERE ss.student_id = ? AND ss.grade_level = ?";
-
-            ps = con.prepareStatement(strandSql);
-            ps.setInt(1, sid);
-            ps.setInt(2, gradeLevel);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                // Fill UI
-                Home.stuGradeManageID.setText(String.valueOf(rs.getInt("student_id")));
-                Home.stuGradeManageGradeLevel.setText(String.valueOf(rs.getInt("grade_level")));
-                String strandName = rs.getString("strand_name");
-                int strandId = rs.getInt("strand_id");
-                Home.stuGradeManageStrand.setText(strandName);
-                Home.stuGradeManageSection.setText(rs.getString("section_name"));
-
-                // Step 2: Get subjects dynamically from subject table using strand_id
-                String subjectSql = "SELECT subject_name FROM subject "
-                        + "WHERE grade_level = ? AND strand_id = ? "
-                        + "ORDER BY subject_order ASC";
-
-                PreparedStatement ps2 = con.prepareStatement(subjectSql);
-                ps2.setInt(1, gradeLevel);
-                ps2.setInt(2, strandId);
-                ResultSet rs2 = ps2.executeQuery();
-
-                // Step 3: Fill subjects into UI fields
-                int index = 1;
-                while (rs2.next() && index <= 8) {
-                    String subject = rs2.getString("subject_name");
-
-                    switch (index) {
-                        case 1 ->
-                            Home.stuGradeManageSub1.setText(subject);
-                        case 2 ->
-                            Home.stuGradeManageSub2.setText(subject);
-                        case 3 ->
-                            Home.stuGradeManageSub3.setText(subject);
-                        case 4 ->
-                            Home.stuGradeManageSub4.setText(subject);
-                        case 5 ->
-                            Home.stuGradeManageSub5.setText(subject);
-                        case 6 ->
-                            Home.stuGradeManageSub6.setText(subject);
-                        case 7 ->
-                            Home.stuGradeManageSub7.setText(subject);
-                        case 8 ->
-                            Home.stuGradeManageSub8.setText(subject);
-                    }
-                    index++;
-                }
-
-                // Clear any remaining subject fields if there are fewer than 8 subjects
-                for (int i = index; i <= 8; i++) {
-                    switch (i) {
-                        case 1 ->
-                            Home.stuGradeManageSub1.setText("");
-                        case 2 ->
-                            Home.stuGradeManageSub2.setText("");
-                        case 3 ->
-                            Home.stuGradeManageSub3.setText("");
-                        case 4 ->
-                            Home.stuGradeManageSub4.setText("");
-                        case 5 ->
-                            Home.stuGradeManageSub5.setText("");
-                        case 6 ->
-                            Home.stuGradeManageSub6.setText("");
-                        case 7 ->
-                            Home.stuGradeManageSub7.setText("");
-                        case 8 ->
-                            Home.stuGradeManageSub8.setText("");
-                    }
-                }
-
-                if (index <= 8) {
-                    JOptionPane.showMessageDialog(null, "⚠ Not enough subjects found in database for this strand.");
-                }
-
-                return true;
-            } else {
-                JOptionPane.showMessageDialog(null, "❌ Student ID or Grade level doesn't exist.");
-            }
-        } catch (SQLException ex) {
-            System.getLogger(Strand.class.getName()).log(System.Logger.Level.ERROR, "Error getting student details", ex);
-            JOptionPane.showMessageDialog(null, "❌ Database error: " + ex.getMessage());
-        }
-
-        return false;
+    public int getSelectedSectionId(JComboBox sectionBox) {
+        ComboItem item = (ComboItem) sectionBox.getSelectedItem();
+        return item != null ? item.getId() : -1;
     }
 
-    public int getSubjectId(String subjectName, int gradeLevel, String strandName) {
-        int subjectId = -1; // default if not found
-
-        String sql = "SELECT subject_id FROM subject subj "
-                + "JOIN strands s ON subj.strand_id = s.strand_id "
-                + "WHERE subj.subject_name = ? AND subj.grade_level = ? AND s.strand_name = ?";
-
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setString(1, subjectName);
-            ps.setInt(2, gradeLevel);
-            ps.setString(3, strandName);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                subjectId = rs.getInt("subject_id");
-            }
-        } catch (SQLException ex) {
-            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, "Error getting subject ID", ex);
-        }
-
-        return subjectId;
+    public int getSelectedSubjectId(JComboBox subjectBox) {
+        ComboItem item = (ComboItem) subjectBox.getSelectedItem();
+        return item != null ? item.getId() : -1;
     }
 
-    //check student id already exist
-    public boolean isstuIdExist(int id) {
-        try {
-            ps = con.prepareStatement("select * from grade where student_id = ?");
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return true;
+    public void loadStrands(JComboBox strandBox, int gradeLevel) {
+        strandBox.removeAllItems();
+        try (PreparedStatement pst = con.prepareStatement(
+                "SELECT strand_id, strand_name FROM strands WHERE strand_id IN "
+                + "(SELECT DISTINCT strand_id FROM section WHERE grade_level = ?)")) {
 
-            }
-        } catch (SQLException ex) {
-            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        return false;
-
-    }
-
-    public boolean isSidGradeLevelStrandQuarterExist(int studentId, int gradeLevel, String strandName, int quarter) {
-        try {
-            String sql = "SELECT 1 FROM grade g "
-                    + "JOIN subject subj ON g.subject_id = subj.subject_id "
-                    + "JOIN strands s ON subj.strand_id = s.strand_id "
-                    + "WHERE g.student_id = ? "
-                    + "AND subj.grade_level = ? " // ✅ keep grade_level from subject table
-                    + "AND s.strand_name = ? "
-                    + "AND g.quarter = ? "
-                    + "LIMIT 1";
-
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, studentId);
-            ps.setInt(2, gradeLevel);
-            ps.setString(3, strandName);
-            ps.setInt(4, quarter);
-
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException ex) {
-            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, "Error checking grade existence", ex);
-            return false;
-        }
-    }
-
-    public int getExistingGradeLevelWithGrades(int studentId, String strandName, int quarter) {
-        String sql = "SELECT subj.grade_level FROM grade g "
-                + "JOIN subject subj ON g.subject_id = subj.subject_id "
-                + "JOIN strands s ON subj.strand_id = s.strand_id "
-                + "WHERE g.student_id = ? AND s.strand_name = ? AND g.quarter = ? "
-                + "LIMIT 1";
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, studentId);
-            ps.setString(2, strandName);
-            ps.setInt(3, quarter);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("grade_level");
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error getting existing grade level: " + ex.getMessage());
-        }
-        return -1;
-    }
-
-    public void insert(int studentId, List<Integer> subjectIds, List<Double> grades, int quarter) {
-        String sql = "INSERT INTO grade (student_id, subject_id, grade, quarter) VALUES (?, ?, ?, ?)";
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            for (int i = 0; i < subjectIds.size(); i++) {
-                ps.setInt(1, studentId);
-                ps.setInt(2, subjectIds.get(i));
-                ps.setDouble(3, grades.get(i));
-                ps.setInt(4, quarter);
-                ps.addBatch(); // batch insert for efficiency
-            }
-            ps.executeBatch();
-        } catch (SQLException ex) {
-            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR,
-                    "Error inserting grades", ex);
-            JOptionPane.showMessageDialog(null, "Error inserting grades: " + ex.getMessage());
-        }
-    }
-
-    public void update(int studentId, List<Integer> subjectIds, List<Double> grades, int quarter) {
-        String sql = "UPDATE grade SET grade=? WHERE student_id=? AND subject_id=? AND quarter=?";
-
-        try {
-            ps = con.prepareStatement(sql);
-
-            for (int i = 0; i < subjectIds.size(); i++) {
-                ps.setDouble(1, grades.get(i));       // grade
-                ps.setInt(2, studentId);             // student_id
-                ps.setInt(3, subjectIds.get(i));     // subject_id
-                ps.setInt(4, quarter);               // quarter
-                ps.addBatch();
-            }
-
-            ps.executeBatch();
-            JOptionPane.showMessageDialog(null, "Grades updated successfully");
-
-        } catch (SQLException ex) {
-            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-    }
-
-    public void getGradeValue(JTable table, String searchValue) {
-        String sql = "SELECT g.student_id, "
-                + "subj.grade_level, " // ✅ use from subject, not student_strand
-                + "s.strand_name, "
-                + "ss.section_name, "
-                + "g.quarter, "
-                + "AVG(g.grade) AS quarter_average, "
-                + "MAX(CASE WHEN subj.subject_order = 1 THEN subj.subject_name END) AS subject1, "
-                + "MAX(CASE WHEN subj.subject_order = 1 THEN g.grade END) AS score1, "
-                + "MAX(CASE WHEN subj.subject_order = 2 THEN subj.subject_name END) AS subject2, "
-                + "MAX(CASE WHEN subj.subject_order = 2 THEN g.grade END) AS score2, "
-                + "MAX(CASE WHEN subj.subject_order = 3 THEN subj.subject_name END) AS subject3, "
-                + "MAX(CASE WHEN subj.subject_order = 3 THEN g.grade END) AS score3, "
-                + "MAX(CASE WHEN subj.subject_order = 4 THEN subj.subject_name END) AS subject4, "
-                + "MAX(CASE WHEN subj.subject_order = 4 THEN g.grade END) AS score4, "
-                + "MAX(CASE WHEN subj.subject_order = 5 THEN subj.subject_name END) AS subject5, "
-                + "MAX(CASE WHEN subj.subject_order = 5 THEN g.grade END) AS score5, "
-                + "MAX(CASE WHEN subj.subject_order = 6 THEN subj.subject_name END) AS subject6, "
-                + "MAX(CASE WHEN subj.subject_order = 6 THEN g.grade END) AS score6, "
-                + "MAX(CASE WHEN subj.subject_order = 7 THEN subj.subject_name END) AS subject7, "
-                + "MAX(CASE WHEN subj.subject_order = 7 THEN g.grade END) AS score7, "
-                + "MAX(CASE WHEN subj.subject_order = 8 THEN subj.subject_name END) AS subject8, "
-                + "MAX(CASE WHEN subj.subject_order = 8 THEN g.grade END) AS score8 "
-                + "FROM grade g "
-                + "JOIN subject subj ON g.subject_id = subj.subject_id "
-                + "LEFT JOIN student_strand ss ON g.student_id = ss.student_id "
-                + "LEFT JOIN strands s ON subj.strand_id = s.strand_id " //-- ✅ strand tied to subject
-                + "WHERE CONCAT(g.student_id, subj.grade_level, s.strand_name, ss.section_name, g.quarter) LIKE ? "
-                + "GROUP BY g.student_id, subj.grade_level, s.strand_name, ss.section_name, g.quarter "
-                + "ORDER BY g.student_id DESC";
-
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setString(1, "%" + searchValue + "%");
-            ResultSet rs = ps.executeQuery();
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.setRowCount(0); // Clear old data
-
-            Object[] row;
+            pst.setInt(1, gradeLevel);
+            ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                row = new Object[23];
-                row[0] = rs.getInt("student_id");
-                row[1] = rs.getInt("grade_level");
-                row[2] = rs.getString("strand_name"); // Changed from "strand" to "strand_name"
-                row[3] = rs.getString("section_name");
+                strandBox.addItem(new ComboItem(rs.getInt("strand_id"), rs.getString("strand_name")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-                // subjects + scores
-                row[4] = rs.getString("subject1");
-                row[5] = rs.getDouble("score1");
-                row[6] = rs.getString("subject2");
-                row[7] = rs.getDouble("score2");
-                row[8] = rs.getString("subject3");
-                row[9] = rs.getDouble("score3");
-                row[10] = rs.getString("subject4");
-                row[11] = rs.getDouble("score4");
-                row[12] = rs.getString("subject5");
-                row[13] = rs.getDouble("score5");
-                row[14] = rs.getString("subject6");
-                row[15] = rs.getDouble("score6");
-                row[16] = rs.getString("subject7");
-                row[17] = rs.getDouble("score7");
-                row[18] = rs.getString("subject8");
-                row[19] = rs.getDouble("score8");
+    public void loadSections(JComboBox sectionBox, int strandId, int gradeLevel) {
+        sectionBox.removeAllItems();
+        try (PreparedStatement pst = con.prepareStatement(
+                "SELECT section_id, section_name FROM section WHERE strand_id = ? AND grade_level = ?")) {
+            pst.setInt(1, strandId);
+            pst.setInt(2, gradeLevel);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                sectionBox.addItem(new ComboItem(rs.getInt("section_id"), rs.getString("section_name")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-                // quarter + average
-                row[20] = rs.getInt("quarter");
-                row[21] = rs.getDouble("quarter_average");
+    public void loadSubjects(JComboBox subjectBox, int strandId, int gradeLevel) {
+        subjectBox.removeAllItems();
+        try (PreparedStatement pst = con.prepareStatement(
+                "SELECT subject_id, subject_name FROM subject WHERE strand_id = ? AND grade_level = ? ORDER BY subject_order")) {
+            pst.setInt(1, strandId);
+            pst.setInt(2, gradeLevel);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                subjectBox.addItem(new ComboItem(rs.getInt("subject_id"), rs.getString("subject_name")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public DefaultTableModel getStudentGrades(int gradeLevel, int strandId, int sectionId, int subjectId, int quarter) {
+        DefaultTableModel model = new DefaultTableModel(
+                null,
+                new Object[]{"Student ID", "Student Name", "Grade"}
+        );
+
+        try {
+            Connection conn = MyConnection.getConnection();
+            String sql = "SELECT s.student_id, "
+                    + "CONCAT(s.last_name, ', ', s.first_name, ' ', COALESCE(s.middle_name, '')) AS student_name, "
+                    + "g.grade "
+                    + "FROM student s "
+                    + "INNER JOIN student_strand ss ON s.student_id = ss.student_id "
+                    + "INNER JOIN section sec ON ss.section_id = sec.section_id "
+                    + "LEFT JOIN grade_entry g ON g.student_id = s.student_id "
+                    + "AND g.section_id = ss.section_id "
+                    + "AND g.subject_id = ? "
+                    + "AND g.quarter = ? "
+                    + "WHERE ss.grade_level = ? "
+                    + "AND ss.strand_id = ? "
+                    + "AND ss.section_id = ? "
+                    + "ORDER BY s.last_name";
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setInt(1, subjectId);
+            pst.setInt(2, quarter);
+            pst.setInt(3, gradeLevel);
+            pst.setInt(4, strandId);
+            pst.setInt(5, sectionId);
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Object[] row = new Object[]{
+                    rs.getInt("student_id"),
+                    rs.getString("student_name"),
+                    rs.getObject("grade") // grade may be null if not encoded yet
+                };
                 model.addRow(row);
             }
-        } catch (SQLException ex) {
-            System.getLogger(Grade.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return model;
     }
 
-    public Map<Integer, SubjectGrade> getStudentGrades(int studentId, int quarter, int gradeLevel) {
-        Map<Integer, SubjectGrade> grades = new HashMap<>();
-        String sql = "SELECT subj.subject_order, subj.subject_name, g.grade "
-                + "FROM grade g "
-                + "JOIN subject subj ON g.subject_id = subj.subject_id "
-                + "WHERE g.student_id = ? AND g.quarter = ? AND subj.grade_level = ? "
-                + "ORDER BY subj.subject_order";
+    public void saveStudentGrades(int subjectId, int sectionId, int quarter, DefaultTableModel model) {
+        try {
+            Connection conn = MyConnection.getConnection();
+            conn.setAutoCommit(false); // For transaction safety
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, studentId);
-            ps.setInt(2, quarter);
-            ps.setInt(3, gradeLevel);
+            String checkSql = "SELECT entry_id FROM grade_entry WHERE student_id = ? AND subject_id = ? AND section_id = ? AND quarter = ?";
+            String insertSql = "INSERT INTO grade_entry (student_id, subject_id, section_id, quarter, grade) VALUES (?, ?, ?, ?, ?)";
+            String updateSql = "UPDATE grade_entry SET grade = ? WHERE entry_id = ?";
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int order = rs.getInt("subject_order");
-                String subjectName = rs.getString("subject_name");
-                double grade = rs.getDouble("grade");
-                grades.put(order, new SubjectGrade(subjectName, grade));
+            PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+            PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+            PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+                int studentId = (int) model.getValueAt(i, 0);
+                Object gradeObj = model.getValueAt(i, 2);
+                Double grade = gradeObj != null ? Double.parseDouble(gradeObj.toString()) : null;
+
+                // Check if grade entry exists
+                checkStmt.setInt(1, studentId);
+                checkStmt.setInt(2, subjectId);
+                checkStmt.setInt(3, sectionId);
+                checkStmt.setInt(4, quarter);
+                ResultSet rs = checkStmt.executeQuery();
+
+                if (rs.next()) {
+                    // Update existing grade
+                    int entryId = rs.getInt("entry_id");
+                    updateStmt.setObject(1, grade);
+                    updateStmt.setInt(2, entryId);
+                    updateStmt.executeUpdate();
+                } else {
+                    // Insert new grade
+                    insertStmt.setInt(1, studentId);
+                    insertStmt.setInt(2, subjectId);
+                    insertStmt.setInt(3, sectionId);
+                    insertStmt.setInt(4, quarter);
+                    insertStmt.setObject(5, grade);
+                    insertStmt.executeUpdate();
+                }
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+
+            conn.commit();
+            conn.close();
+            JOptionPane.showMessageDialog(null, "Grades saved successfully!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error saving grades: " + e.getMessage());
         }
-        return grades;
     }
+
 }

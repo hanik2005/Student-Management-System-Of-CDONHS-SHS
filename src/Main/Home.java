@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import javax.naming.spi.DirStateFactory.Result;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -51,6 +52,7 @@ import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import model.ComboItem;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -199,64 +201,37 @@ public class Home extends javax.swing.JFrame {
         jPanel21 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         jPanel37 = new javax.swing.JPanel();
-        jLabel67 = new javax.swing.JLabel();
-        stuGradeIDSearchField = new javax.swing.JTextField();
         stuGradeManageSearchButton = new javax.swing.JButton();
         jLabel68 = new javax.swing.JLabel();
-        stuGradeManageGradeLevelSearchField = new javax.swing.JComboBox<>();
-        jLabel24 = new javax.swing.JLabel();
-        stuGradeManageID = new javax.swing.JTextField();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
-        stuGradeManageGradeLevel = new javax.swing.JTextField();
-        stuGradeManageSection = new javax.swing.JTextField();
-        stuGradeManageStrand = new javax.swing.JTextField();
-        jLabel30 = new javax.swing.JLabel();
-        stuGradeManageSub1 = new javax.swing.JTextField();
-        stuGradeManageSub2 = new javax.swing.JTextField();
-        jLabel31 = new javax.swing.JLabel();
-        stuGradeManageSub3 = new javax.swing.JTextField();
-        jLabel32 = new javax.swing.JLabel();
-        stuGradeManageSub4 = new javax.swing.JTextField();
-        jLabel33 = new javax.swing.JLabel();
-        stuGradeManageSub5 = new javax.swing.JTextField();
-        jLabel34 = new javax.swing.JLabel();
-        subScore2 = new javax.swing.JTextField();
-        subScore4 = new javax.swing.JTextField();
-        subScore1 = new javax.swing.JTextField();
-        subScore5 = new javax.swing.JTextField();
-        subScore3 = new javax.swing.JTextField();
-        jPanel23 = new javax.swing.JPanel();
-        jPanel19 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
-        stuGradeManageSave = new javax.swing.JButton();
-        stuGradeManageUpdateBt = new javax.swing.JButton();
-        stuGradeManageClearBt = new javax.swing.JButton();
-        jPanel43 = new javax.swing.JPanel();
-        jLabel36 = new javax.swing.JLabel();
-        stuGradeManageSub6 = new javax.swing.JTextField();
-        subScore6 = new javax.swing.JTextField();
-        jLabel37 = new javax.swing.JLabel();
-        stuGradeManageSub7 = new javax.swing.JTextField();
-        subScore7 = new javax.swing.JTextField();
-        jLabel38 = new javax.swing.JLabel();
-        stuGradeManageSub8 = new javax.swing.JTextField();
-        subScore8 = new javax.swing.JTextField();
-        jLabel39 = new javax.swing.JLabel();
-        stuGradeManageQuarter = new javax.swing.JComboBox<>();
+        gradeLevelBox = new javax.swing.JComboBox<>();
+        subjectBox = new javax.swing.JComboBox<>();
+        jLabel71 = new javax.swing.JLabel();
+        quarterBox = new javax.swing.JComboBox<>();
+        jLabel72 = new javax.swing.JLabel();
+        strandBox = new javax.swing.JComboBox<>();
+        jLabel73 = new javax.swing.JLabel();
+        sectionBox = new javax.swing.JComboBox<>();
+        jLabel74 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        GradeSectioningManageTable = new javax.swing.JTable();
+        jPanel44 = new javax.swing.JPanel();
+        gradeSaveBt = new javax.swing.JButton();
+        gradeLogout = new javax.swing.JButton();
+        gradeClear = new javax.swing.JButton();
+        gradeSort = new javax.swing.JButton();
         jPanel28 = new javax.swing.JPanel();
         jPanel26 = new javax.swing.JPanel();
         jPanel27 = new javax.swing.JPanel();
         jPanel40 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        StudentGradeManagementTable = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable();
         jPanel41 = new javax.swing.JPanel();
         jLabel35 = new javax.swing.JLabel();
-        stuGradeManageSearchStuField = new javax.swing.JTextField();
+        stuGradeIDManage = new javax.swing.JTextField();
         stuGradeManageSearchTableBt = new javax.swing.JButton();
+        jLabel36 = new javax.swing.JLabel();
+        gradeLevelStudentBox = new javax.swing.JComboBox<>();
         stuGradeManageRefreshTable = new javax.swing.JButton();
-        stuSort_3 = new javax.swing.JButton();
         jPanel42 = new javax.swing.JPanel();
         jButton13 = new javax.swing.JButton();
         stuGradeManagePrint = new javax.swing.JButton();
@@ -307,7 +282,7 @@ public class Home extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 43)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("STUDENT MANAGEMENT SYSTEM");
+        jLabel1.setText("TEACHER PANEL");
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo_resized_50x50.jpg"))); // NOI18N
 
@@ -1502,24 +1477,6 @@ public class Home extends javax.swing.JFrame {
         jPanel37.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
         jPanel37.setForeground(new java.awt.Color(0, 0, 0));
 
-        jLabel67.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel67.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel67.setText("Student's ID");
-
-        stuGradeIDSearchField.setBackground(new java.awt.Color(255, 255, 255));
-        stuGradeIDSearchField.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        stuGradeIDSearchField.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeIDSearchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stuGradeIDSearchFieldActionPerformed(evt);
-            }
-        });
-        stuGradeIDSearchField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                stuGradeIDSearchFieldKeyTyped(evt);
-            }
-        });
-
         stuGradeManageSearchButton.setBackground(new java.awt.Color(153, 255, 204));
         stuGradeManageSearchButton.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         stuGradeManageSearchButton.setForeground(new java.awt.Color(0, 0, 0));
@@ -1534,162 +1491,198 @@ public class Home extends javax.swing.JFrame {
         jLabel68.setForeground(new java.awt.Color(0, 0, 0));
         jLabel68.setText("Grade Level");
 
-        stuGradeManageGradeLevelSearchField.setBackground(new java.awt.Color(255, 255, 255));
-        stuGradeManageGradeLevelSearchField.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        stuGradeManageGradeLevelSearchField.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeManageGradeLevelSearchField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11", "12" }));
+        gradeLevelBox.setBackground(new java.awt.Color(255, 255, 255));
+        gradeLevelBox.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        gradeLevelBox.setForeground(new java.awt.Color(0, 0, 0));
+        gradeLevelBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11", "12" }));
+        gradeLevelBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gradeLevelBoxActionPerformed(evt);
+            }
+        });
+
+        subjectBox.setBackground(new java.awt.Color(255, 255, 255));
+        subjectBox.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        subjectBox.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel71.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel71.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel71.setText("Subject");
+
+        quarterBox.setBackground(new java.awt.Color(255, 255, 255));
+        quarterBox.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        quarterBox.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel72.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel72.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel72.setText("Quarter");
+
+        strandBox.setBackground(new java.awt.Color(255, 255, 255));
+        strandBox.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        strandBox.setForeground(new java.awt.Color(0, 0, 0));
+        strandBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                strandBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel73.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel73.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel73.setText("Strand");
+
+        sectionBox.setBackground(new java.awt.Color(255, 255, 255));
+        sectionBox.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        sectionBox.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel74.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel74.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel74.setText("Section");
 
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
         jPanel37Layout.setHorizontalGroup(
             jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel37Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel68)
+                    .addComponent(gradeLevelBox, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel68))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel37Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(stuGradeIDSearchField, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
-                            .addComponent(stuGradeManageGradeLevelSearchField, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(stuGradeManageSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+                        .addComponent(strandBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel37Layout.createSequentialGroup()
+                        .addComponent(jLabel73)
+                        .addGap(208, 208, 208)))
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel74)
+                    .addComponent(sectionBox, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel71)
+                    .addComponent(subjectBox, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(quarterBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel72, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(stuGradeManageSearchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(jPanel37Layout.createSequentialGroup()
-                .addComponent(jLabel67)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel37Layout.setVerticalGroup(
             jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel37Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel67)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel68)
+                    .addComponent(jLabel71)
+                    .addComponent(jLabel72)
+                    .addComponent(jLabel73)
+                    .addComponent(jLabel74))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(stuGradeManageSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel37Layout.createSequentialGroup()
-                        .addComponent(stuGradeIDSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel68)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stuGradeManageGradeLevelSearchField, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                        .addContainerGap())))
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(gradeLevelBox)
+                    .addComponent(quarterBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(strandBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(subjectBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sectionBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+            .addGroup(jPanel37Layout.createSequentialGroup()
+                .addComponent(stuGradeManageSearchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jLabel24.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel24.setText("Student's ID");
+        GradeSectioningManageTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Student ID", "Student Name", "Grade"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
 
-        stuGradeManageID.setEditable(false);
-        stuGradeManageID.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageID.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageID.setForeground(new java.awt.Color(0, 0, 0));
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(GradeSectioningManageTable);
 
-        jLabel26.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel26.setText("Grade Level");
+        jPanel44.setBackground(new java.awt.Color(153, 255, 204));
+        jPanel44.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
 
-        jLabel27.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel27.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel27.setText("Strand");
-
-        jLabel28.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel28.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel28.setText("Section");
-
-        stuGradeManageGradeLevel.setEditable(false);
-        stuGradeManageGradeLevel.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageGradeLevel.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageGradeLevel.setForeground(new java.awt.Color(0, 0, 0));
-
-        stuGradeManageSection.setEditable(false);
-        stuGradeManageSection.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageSection.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageSection.setForeground(new java.awt.Color(0, 0, 0));
-
-        stuGradeManageStrand.setEditable(false);
-        stuGradeManageStrand.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageStrand.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageStrand.setForeground(new java.awt.Color(0, 0, 0));
-
-        jLabel30.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel30.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel30.setText("Subject 1");
-
-        stuGradeManageSub1.setEditable(false);
-        stuGradeManageSub1.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageSub1.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageSub1.setForeground(new java.awt.Color(0, 0, 0));
-
-        stuGradeManageSub2.setEditable(false);
-        stuGradeManageSub2.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageSub2.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageSub2.setForeground(new java.awt.Color(0, 0, 0));
-
-        jLabel31.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel31.setText("Subject2");
-
-        stuGradeManageSub3.setEditable(false);
-        stuGradeManageSub3.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageSub3.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageSub3.setForeground(new java.awt.Color(0, 0, 0));
-
-        jLabel32.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel32.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel32.setText("Subject 3");
-
-        stuGradeManageSub4.setEditable(false);
-        stuGradeManageSub4.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageSub4.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageSub4.setForeground(new java.awt.Color(0, 0, 0));
-
-        jLabel33.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel33.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel33.setText("Subject 4");
-
-        stuGradeManageSub5.setEditable(false);
-        stuGradeManageSub5.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageSub5.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageSub5.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeManageSub5.addActionListener(new java.awt.event.ActionListener() {
+        gradeSaveBt.setBackground(new java.awt.Color(102, 255, 255));
+        gradeSaveBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        gradeSaveBt.setForeground(new java.awt.Color(0, 0, 0));
+        gradeSaveBt.setText("Save");
+        gradeSaveBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stuGradeManageSub5ActionPerformed(evt);
+                gradeSaveBtActionPerformed(evt);
             }
         });
 
-        jLabel34.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel34.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel34.setText("Subject 5");
+        gradeLogout.setBackground(new java.awt.Color(102, 255, 255));
+        gradeLogout.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        gradeLogout.setForeground(new java.awt.Color(0, 0, 0));
+        gradeLogout.setText("Logout");
+        gradeLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gradeLogoutActionPerformed(evt);
+            }
+        });
 
-        subScore2.setBackground(new java.awt.Color(255, 255, 255));
-        subScore2.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        subScore2.setForeground(new java.awt.Color(0, 0, 0));
-        subScore2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        subScore2.setText("0.0");
+        gradeClear.setBackground(new java.awt.Color(102, 255, 255));
+        gradeClear.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        gradeClear.setForeground(new java.awt.Color(0, 0, 0));
+        gradeClear.setText("Clear");
+        gradeClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gradeClearActionPerformed(evt);
+            }
+        });
 
-        subScore4.setBackground(new java.awt.Color(255, 255, 255));
-        subScore4.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        subScore4.setForeground(new java.awt.Color(0, 0, 0));
-        subScore4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        subScore4.setText("0.0");
+        gradeSort.setBackground(new java.awt.Color(102, 255, 255));
+        gradeSort.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        gradeSort.setForeground(new java.awt.Color(0, 0, 0));
+        gradeSort.setText("Sort");
+        gradeSort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gradeSortActionPerformed(evt);
+            }
+        });
 
-        subScore1.setBackground(new java.awt.Color(255, 255, 255));
-        subScore1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        subScore1.setForeground(new java.awt.Color(0, 0, 0));
-        subScore1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        subScore1.setText("0.0");
-
-        subScore5.setBackground(new java.awt.Color(255, 255, 255));
-        subScore5.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        subScore5.setForeground(new java.awt.Color(0, 0, 0));
-        subScore5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        subScore5.setText("0.0");
-
-        subScore3.setBackground(new java.awt.Color(255, 255, 255));
-        subScore3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        subScore3.setForeground(new java.awt.Color(0, 0, 0));
-        subScore3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        subScore3.setText("0.0");
+        javax.swing.GroupLayout jPanel44Layout = new javax.swing.GroupLayout(jPanel44);
+        jPanel44.setLayout(jPanel44Layout);
+        jPanel44Layout.setHorizontalGroup(
+            jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel44Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(gradeSaveBt, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(gradeClear, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(gradeSort, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(gradeLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(285, 285, 285))
+        );
+        jPanel44Layout.setVerticalGroup(
+            jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel44Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(gradeSaveBt, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                    .addComponent(gradeLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                    .addComponent(gradeClear, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                    .addComponent(gradeSort, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
         jPanel22.setLayout(jPanel22Layout);
@@ -1699,53 +1692,8 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel37, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel22Layout.createSequentialGroup()
-                        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel22Layout.createSequentialGroup()
-                                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(55, 55, 55)
-                                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(stuGradeManageStrand)
-                                    .addComponent(stuGradeManageSection)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel22Layout.createSequentialGroup()
-                                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(stuGradeManageID)
-                                    .addComponent(stuGradeManageGradeLevel)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel22Layout.createSequentialGroup()
-                                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel22Layout.createSequentialGroup()
-                                        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(55, 55, 55)
-                                        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(stuGradeManageSub5)
-                                            .addComponent(stuGradeManageSub4, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)))
-                                    .addGroup(jPanel22Layout.createSequentialGroup()
-                                        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(stuGradeManageSub2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
-                                            .addComponent(stuGradeManageSub1, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(stuGradeManageSub3))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(subScore2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(subScore1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(subScore4, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(subScore5, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(subScore3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(2, 2, 2)))
-                        .addGap(6, 6, 6)))
+                    .addComponent(jScrollPane3)
+                    .addComponent(jPanel44, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel22Layout.setVerticalGroup(
@@ -1753,272 +1701,11 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel22Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel37, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(stuGradeManageID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel24))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel26)
-                    .addComponent(stuGradeManageGradeLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel27)
-                    .addComponent(stuGradeManageStrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stuGradeManageSection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel30)
-                    .addComponent(stuGradeManageSub1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(subScore1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(stuGradeManageSub2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel31)
-                    .addComponent(subScore2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel32)
-                    .addComponent(stuGradeManageSub3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(subScore3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel33)
-                    .addComponent(stuGradeManageSub4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(subScore4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stuGradeManageSub5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(subScore5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(61, Short.MAX_VALUE))
-        );
-
-        jPanel23.setBackground(new java.awt.Color(153, 255, 204));
-        jPanel23.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
-
-        jPanel19.setBackground(new java.awt.Color(153, 255, 204));
-        jPanel19.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
-
-        jButton7.setBackground(new java.awt.Color(102, 255, 255));
-        jButton7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(0, 0, 0));
-        jButton7.setText("Logout");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
-        stuGradeManageSave.setBackground(new java.awt.Color(102, 255, 255));
-        stuGradeManageSave.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        stuGradeManageSave.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeManageSave.setText("Save");
-        stuGradeManageSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stuGradeManageSaveActionPerformed(evt);
-            }
-        });
-
-        stuGradeManageUpdateBt.setBackground(new java.awt.Color(102, 255, 255));
-        stuGradeManageUpdateBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        stuGradeManageUpdateBt.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeManageUpdateBt.setText("Update");
-        stuGradeManageUpdateBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stuGradeManageUpdateBtActionPerformed(evt);
-            }
-        });
-
-        stuGradeManageClearBt.setBackground(new java.awt.Color(102, 255, 255));
-        stuGradeManageClearBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        stuGradeManageClearBt.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeManageClearBt.setText("Clear");
-        stuGradeManageClearBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stuGradeManageClearBtActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
-        jPanel19.setLayout(jPanel19Layout);
-        jPanel19Layout.setHorizontalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(stuGradeManageSave, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(stuGradeManageUpdateBt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(stuGradeManageClearBt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel19Layout.setVerticalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(stuGradeManageUpdateBt, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(stuGradeManageSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(stuGradeManageClearBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel43.setBackground(new java.awt.Color(153, 255, 204));
-        jPanel43.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
-
-        jLabel36.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel36.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel36.setText("Subject 6");
-
-        stuGradeManageSub6.setEditable(false);
-        stuGradeManageSub6.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageSub6.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageSub6.setForeground(new java.awt.Color(0, 0, 0));
-
-        subScore6.setBackground(new java.awt.Color(255, 255, 255));
-        subScore6.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        subScore6.setForeground(new java.awt.Color(0, 0, 0));
-        subScore6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        subScore6.setText("0.0");
-        subScore6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subScore6ActionPerformed(evt);
-            }
-        });
-
-        jLabel37.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel37.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel37.setText("Subject 7");
-
-        stuGradeManageSub7.setEditable(false);
-        stuGradeManageSub7.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageSub7.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageSub7.setForeground(new java.awt.Color(0, 0, 0));
-
-        subScore7.setBackground(new java.awt.Color(255, 255, 255));
-        subScore7.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        subScore7.setForeground(new java.awt.Color(0, 0, 0));
-        subScore7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        subScore7.setText("0.0");
-
-        jLabel38.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel38.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel38.setText("Subject 8");
-
-        stuGradeManageSub8.setEditable(false);
-        stuGradeManageSub8.setBackground(new java.awt.Color(204, 204, 204));
-        stuGradeManageSub8.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        stuGradeManageSub8.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeManageSub8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stuGradeManageSub8ActionPerformed(evt);
-            }
-        });
-
-        subScore8.setBackground(new java.awt.Color(255, 255, 255));
-        subScore8.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        subScore8.setForeground(new java.awt.Color(0, 0, 0));
-        subScore8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        subScore8.setText("0.0");
-
-        jLabel39.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel39.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel39.setText("Quarter");
-
-        stuGradeManageQuarter.setBackground(new java.awt.Color(255, 255, 255));
-        stuGradeManageQuarter.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        stuGradeManageQuarter.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeManageQuarter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4" }));
-
-        javax.swing.GroupLayout jPanel43Layout = new javax.swing.GroupLayout(jPanel43);
-        jPanel43.setLayout(jPanel43Layout);
-        jPanel43Layout.setHorizontalGroup(
-            jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel43Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel43Layout.createSequentialGroup()
-                        .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stuGradeManageSub6, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel43Layout.createSequentialGroup()
-                        .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(55, 55, 55)
-                        .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(stuGradeManageSub8)
-                            .addComponent(stuGradeManageSub7)
-                            .addComponent(stuGradeManageQuarter, 0, 263, Short.MAX_VALUE))))
-                .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel43Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(subScore6, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel43Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(subScore7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(subScore8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
-        );
-        jPanel43Layout.setVerticalGroup(
-            jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel43Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel36)
-                    .addComponent(stuGradeManageSub6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(subScore6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel37)
-                    .addComponent(stuGradeManageSub7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(subScore7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stuGradeManageSub8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(subScore8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stuGradeManageQuarter, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(108, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
-        jPanel23.setLayout(jPanel23Layout);
-        jPanel23Layout.setHorizontalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel23Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel23Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanel43, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(247, Short.MAX_VALUE)))
-        );
-        jPanel23Layout.setVerticalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel23Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
-            .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel23Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanel43, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(293, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
@@ -2027,19 +1714,15 @@ public class Home extends javax.swing.JFrame {
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel21Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel21Layout.setVerticalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel21Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Grade Management", jPanel21);
@@ -2056,29 +1739,26 @@ public class Home extends javax.swing.JFrame {
         jPanel40.setBackground(new java.awt.Color(153, 255, 204));
         jPanel40.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
 
-        StudentGradeManagementTable.setModel(new javax.swing.table.DefaultTableModel(
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Student_ID", "Grade Level", "Strand", "Section", "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5", "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"
+                "Subjects", "First Quarter", "Second Quarter", "Third Quarter", "Fourth Quarter", "Remarks"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        StudentGradeManagementTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        StudentGradeManagementTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                StudentGradeManagementTableMouseClicked(evt);
-            }
-        });
-        jScrollPane4.setViewportView(StudentGradeManagementTable);
+        jScrollPane4.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel40Layout = new javax.swing.GroupLayout(jPanel40);
         jPanel40.setLayout(jPanel40Layout);
@@ -2093,7 +1773,7 @@ public class Home extends javax.swing.JFrame {
             jPanel40Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel40Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -2102,9 +1782,9 @@ public class Home extends javax.swing.JFrame {
 
         jLabel35.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel35.setText("Search Student");
+        jLabel35.setText("Grade Level");
 
-        stuGradeManageSearchStuField.setBackground(new java.awt.Color(255, 255, 255));
+        stuGradeIDManage.setBackground(new java.awt.Color(255, 255, 255));
 
         stuGradeManageSearchTableBt.setBackground(new java.awt.Color(153, 255, 204));
         stuGradeManageSearchTableBt.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
@@ -2113,6 +1793,20 @@ public class Home extends javax.swing.JFrame {
         stuGradeManageSearchTableBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stuGradeManageSearchTableBtActionPerformed(evt);
+            }
+        });
+
+        jLabel36.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel36.setText("Student ID");
+
+        gradeLevelStudentBox.setBackground(new java.awt.Color(255, 255, 255));
+        gradeLevelStudentBox.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        gradeLevelStudentBox.setForeground(new java.awt.Color(0, 0, 0));
+        gradeLevelStudentBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11", "12" }));
+        gradeLevelStudentBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gradeLevelStudentBoxActionPerformed(evt);
             }
         });
 
@@ -2126,45 +1820,39 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        stuSort_3.setBackground(new java.awt.Color(153, 255, 204));
-        stuSort_3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        stuSort_3.setForeground(new java.awt.Color(0, 0, 0));
-        stuSort_3.setText("Sort");
-        stuSort_3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stuSort_3ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel41Layout = new javax.swing.GroupLayout(jPanel41);
         jPanel41.setLayout(jPanel41Layout);
         jPanel41Layout.setHorizontalGroup(
             jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel41Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel35)
+                .addComponent(jLabel36)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(stuGradeManageSearchStuField, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stuGradeIDManage, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel35)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(gradeLevelStudentBox, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(stuGradeManageSearchTableBt, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(stuSort_3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(stuGradeManageRefreshTable, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(306, Short.MAX_VALUE))
         );
         jPanel41Layout.setVerticalGroup(
             jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel41Layout.createSequentialGroup()
+            .addGroup(jPanel41Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(stuSort_3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(stuGradeManageSearchStuField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(stuGradeManageSearchTableBt)
-                        .addComponent(stuGradeManageRefreshTable)))
-                .addGap(16, 16, 16))
+                .addGroup(jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel41Layout.createSequentialGroup()
+                        .addGroup(jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(stuGradeManageSearchTableBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(stuGradeIDManage, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(gradeLevelStudentBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(stuGradeManageRefreshTable)
+                            .addComponent(jLabel36))
+                        .addContainerGap())
+                    .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         jPanel42.setBackground(new java.awt.Color(153, 255, 204));
@@ -2195,18 +1883,18 @@ public class Home extends javax.swing.JFrame {
         jPanel42Layout.setHorizontalGroup(
             jPanel42Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel42Layout.createSequentialGroup()
-                .addContainerGap(438, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(stuGradeManagePrint, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addGap(48, 48, 48)
                 .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(509, 509, 509))
+                .addGap(512, 512, 512))
         );
         jPanel42Layout.setVerticalGroup(
             jPanel42Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel42Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel42Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(stuGradeManagePrint, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                .addGroup(jPanel42Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(stuGradeManagePrint, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -2227,7 +1915,7 @@ public class Home extends javax.swing.JFrame {
             jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel27Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel41, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -2617,6 +2305,7 @@ public class Home extends javax.swing.JFrame {
         tableViewStudent();
         tableViewStrand();
         tableViewGrades();
+        tableViewSectioningGrade();
         tableViewFinalGrade();
         stuID.setText(String.valueOf(student.getMax()));
         //strandId.setText(String.valueOf(strand.getMax()));
@@ -2640,14 +2329,21 @@ public class Home extends javax.swing.JFrame {
         StudentTrackTable.setGridColor(Color.black);
         StudentTrackTable.setBackground(Color.white);
     }
+    private void tableViewSectioningGrade(){
+        model = (DefaultTableModel) GradeSectioningManageTable.getModel();
+        GradeSectioningManageTable.setRowHeight(30);
+        GradeSectioningManageTable.setShowGrid(true);
+        GradeSectioningManageTable.setGridColor(Color.black);
+        GradeSectioningManageTable.setBackground(Color.white);
+    }
 
     private void tableViewGrades() {
-        grade.getGradeValue(StudentGradeManagementTable, "");
-        model = (DefaultTableModel) StudentGradeManagementTable.getModel();
-        StudentGradeManagementTable.setRowHeight(30);
-        StudentGradeManagementTable.setShowGrid(true);
-        StudentGradeManagementTable.setGridColor(Color.black);
-        StudentGradeManagementTable.setBackground(Color.white);
+//        //grade.getGradeValue(StudentGradeManagementTable, "");
+//        model = (DefaultTableModel) StudentGradeManagementTable.getModel();
+//        StudentGradeManagementTable.setRowHeight(30);
+//        StudentGradeManagementTable.setShowGrid(true);
+//        StudentGradeManagementTable.setGridColor(Color.black);
+//        StudentGradeManagementTable.setBackground(Color.white);
     }
 
     private void tableViewFinalGrade() {
@@ -2692,32 +2388,13 @@ public class Home extends javax.swing.JFrame {
     }
 
     private void clearGradeManage() {
-        //idGradeManage.setText(String.valueOf(grade.getMax()));
-        stuGradeIDSearchField.setText(null);
-        stuGradeManageGradeLevelSearchField.setSelectedIndex(0);
-        //idGradeManage.setText(null);
-        stuGradeManageID.setText(null);
-        stuGradeManageGradeLevel.setText(null);
-        stuGradeManageStrand.setText(null);
-        stuGradeManageSection.setText(null);
-        stuGradeManageSub1.setText(null);
-        stuGradeManageSub2.setText(null);
-        stuGradeManageSub3.setText(null);
-        stuGradeManageSub4.setText(null);
-        stuGradeManageSub5.setText(null);
-        stuGradeManageSub6.setText(null);
-        stuGradeManageSub7.setText(null);
-        stuGradeManageSub8.setText(null);
-        stuGradeManageQuarter.setSelectedIndex(0);
-        subScore1.setText("0.0");
-        subScore2.setText("0.0");
-        subScore3.setText("0.0");
-        subScore4.setText("0.0");
-        subScore5.setText("0.0");
-        subScore6.setText("0.0");
-        subScore7.setText("0.0");
-        subScore8.setText("0.0");
-        StudentGradeManagementTable.clearSelection();
+        gradeLevelBox.setSelectedIndex(0);
+        strandBox.removeAllItems();
+        sectionBox.removeAllItems();
+        subjectBox.removeAllItems();
+        quarterBox.removeAllItems();
+
+        GradeSectioningManageTable.setModel(new DefaultTableModel(null, new Object[]{"Student_ID", "Student_Name", "Grade"}));
 
     }
 
@@ -2904,20 +2581,6 @@ public class Home extends javax.swing.JFrame {
     }
 
 
-    private void stuGradeManageSub5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSub5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_stuGradeManageSub5ActionPerformed
-
-    private void stuGradeManageSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSearchButtonActionPerformed
-        if (stuGradeIDSearchField.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Student id is missing");
-        } else {
-            int sid = Integer.parseInt(stuGradeIDSearchField.getText());
-            int gradeLevel = Integer.parseInt(stuGradeManageGradeLevelSearchField.getSelectedItem().toString());
-            grade.getDetails(sid, gradeLevel);
-        }
-    }//GEN-LAST:event_stuGradeManageSearchButtonActionPerformed
-
     private void stuSaveBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuSaveBtActionPerformed
         if (stuStrandId.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Student ID is missing");
@@ -3056,17 +2719,17 @@ public class Home extends javax.swing.JFrame {
             strand.loadStudentStrandsTable(StudentTrackTable, "");
             clearStrand();
 
-            // Refresh table and clear fields
-            StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
-                "Student ID", "Grade Level", "Strand", "Section",
-                "Subject 1", "Score 1", "Subject 2", "Score 2",
-                "Subject 3", "Score 3", "Subject 4", "Score 4",
-                "Subject 5", "Score 5", "Subject 6", "Score 6",
-                "Subject 7", "Score 7", "Subject 8", "Score 8",
-                "Quarter", "Average"
-            }));
-
-            grade.getGradeValue(StudentGradeManagementTable, "");
+//            // Refresh table and clear fields
+//            StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
+//                "Student ID", "Grade Level", "Strand", "Section",
+//                "Subject 1", "Score 1", "Subject 2", "Score 2",
+//                "Subject 3", "Score 3", "Subject 4", "Score 4",
+//                "Subject 5", "Score 5", "Subject 6", "Score 6",
+//                "Subject 7", "Score 7", "Subject 8", "Score 8",
+//                "Quarter", "Average"
+//            }));
+//
+//            grade.getGradeValue(StudentGradeManagementTable, "");
             clearGradeManage();
 
         } catch (NumberFormatException ex) {
@@ -3204,140 +2867,14 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void stuGradeManagePrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManagePrintActionPerformed
-        try {
-            MessageFormat header = new MessageFormat("Students Grade Information");
-            MessageFormat footer = new MessageFormat("Page{0,number,integer}");
-            StudentGradeManagementTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
-        } catch (PrinterException ex) {
-            System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+//        try {
+//            MessageFormat header = new MessageFormat("Students Grade Information");
+//            MessageFormat footer = new MessageFormat("Page{0,number,integer}");
+//            StudentGradeManagementTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+//        } catch (PrinterException ex) {
+//            System.getLogger(Home.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+//        }
     }//GEN-LAST:event_stuGradeManagePrintActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        //LOGOUT
-        int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
-        if (a == 0) {
-            this.dispose();
-            LoginFrame frame = new LoginFrame();
-            frame.setVisible(true);
-            frame.setLocationRelativeTo(null);
-        }
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void stuGradeManageSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSaveActionPerformed
-        if (!stuGradeManageID.getText().isEmpty()) {
-            try {
-                int sid = Integer.parseInt(stuGradeManageID.getText());
-                int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
-                String strand = stuGradeManageStrand.getText();
-                String section = stuGradeManageSection.getText();
-                int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
-
-                // Check if grades already exist for THIS specific grade level and quarter
-                boolean gradesExist = grade.isSidGradeLevelStrandQuarterExist(sid, gradeLevel, strand, quarter);
-
-                if (!gradesExist) {
-                    // Validate numeric scores
-                    if (!(isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
-                            && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
-                            && isNumeric(subScore5.getText()) && isNumeric(subScore6.getText())
-                            && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText()))) {
-                        JOptionPane.showMessageDialog(this, "Please fill in all subject scores with valid numbers");
-                        return;
-                    }
-
-                    // Collect subject names
-                    String[] subjectNames = {
-                        stuGradeManageSub1.getText(), stuGradeManageSub2.getText(),
-                        stuGradeManageSub3.getText(), stuGradeManageSub4.getText(),
-                        stuGradeManageSub5.getText(), stuGradeManageSub6.getText(),
-                        stuGradeManageSub7.getText(), stuGradeManageSub8.getText()
-                    };
-
-                    double[] scores = {
-                        Double.parseDouble(subScore1.getText()), Double.parseDouble(subScore2.getText()),
-                        Double.parseDouble(subScore3.getText()), Double.parseDouble(subScore4.getText()),
-                        Double.parseDouble(subScore5.getText()), Double.parseDouble(subScore6.getText()),
-                        Double.parseDouble(subScore7.getText()), Double.parseDouble(subScore8.getText())
-                    };
-
-                    // Fetch subject_ids
-                    List<Integer> subjectIds = new ArrayList<>();
-                    for (String subjectName : subjectNames) {
-                        if (subjectName != null && !subjectName.trim().isEmpty()) {
-                            int subjectId = grade.getSubjectId(subjectName, gradeLevel, strand);
-                            if (subjectId == -1) {
-                                JOptionPane.showMessageDialog(this, "Subject '" + subjectName
-                                        + "' not found in database for Grade " + gradeLevel + " " + strand);
-                                return;
-                            }
-                            subjectIds.add(subjectId);
-                        }
-                    }
-
-                    // Convert scores to List<Double>
-                    List<Double> gradeList = new ArrayList<>();
-                    for (double s : scores) {
-                        gradeList.add(s);
-                    }
-
-                    // Insert all subject grades (no return value)
-                    grade.insert(sid, subjectIds, gradeList, quarter);
-
-                    JOptionPane.showMessageDialog(this, "Grades successfully saved for Grade "
-                            + gradeLevel + " Quarter " + quarter);
-
-                    // Calculate average
-//                    double total = 0;
-//                    for (double g : scores) {
-//                        total += g;
-//                    }
-//                    double average = total / scores.length;
-                    // Update general average if needed
-                    //marksSheet.insertUpdateGeneralAverage(sid);
-                    // Refresh table
-                    StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
-                        "Student ID", "Grade Level", "Strand", "Section",
-                        "Subject 1", "Score 1", "Subject 2", "Score 2",
-                        "Subject 3", "Score 3", "Subject 4", "Score 4",
-                        "Subject 5", "Score 5", "Subject 6", "Score 6",
-                        "Subject 7", "Score 7", "Subject 8", "Score 8",
-                        "Quarter", "Average"
-                    }));
-
-                    grade.getGradeValue(StudentGradeManagementTable, "");
-                    clearGradeManage();
-
-                } else {
-                    // Provide better error message
-                    int existingGradeWithGrades = grade.getExistingGradeLevelWithGrades(sid, strand, quarter);
-                    if (existingGradeWithGrades == gradeLevel) {
-                        JOptionPane.showMessageDialog(this,
-                                "Grades already exist for:\n"
-                                + "Student ID: " + sid + "\n"
-                                + "Grade Level: " + gradeLevel + "\n"
-                                + "Strand: " + strand + "\n"
-                                + "Quarter: " + quarter + "\n\n"
-                                + "Please update existing grades instead.");
-                    } else {
-                        JOptionPane.showMessageDialog(this,
-                                "Student has grades for " + strand + " in Quarter " + quarter
-                                + " but in Grade " + existingGradeWithGrades
-                                + " instead of Grade " + gradeLevel
-                                + ".\n\nPlease check the grade level selection.");
-                    }
-                }
-
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "One or more fields are empty or not numeric: " + e.getMessage());
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-                e.printStackTrace();
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "No student is selected");
-        }
-    }//GEN-LAST:event_stuGradeManageSaveActionPerformed
 
 //    public void insertUpdateMarkSheet(int quarter, double average, int sid, int gradeLevel, String strand, String section) {
 //        try {
@@ -3371,14 +2908,6 @@ public class Home extends javax.swing.JFrame {
             return false;
         }
     }
-    private void stuGradeManageSub8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSub8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_stuGradeManageSub8ActionPerformed
-
-    private void subScore6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subScore6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_subScore6ActionPerformed
-
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         //LOGOUT
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
@@ -3702,15 +3231,22 @@ public class Home extends javax.swing.JFrame {
     }
 
     public void updateSection() {
-        String gradeLevel = (String) stuGradeLevel.getSelectedItem();
+        String gradeLevelStr = (String) stuGradeLevel.getSelectedItem();
         String strand = (String) stuStrand.getSelectedItem();
 
-        if (gradeLevel != null && strand != null) {
-            Strand strandObj = new Strand();
-            String section = strandObj.getNextSection(gradeLevel, strand);
+        if (gradeLevelStr != null && strand != null) {
+            try {
+                int gradeLevel = Integer.parseInt(gradeLevelStr); // Convert to int
+                Strand strandObj = new Strand();
+                String section = strandObj.getNextSection(gradeLevel, strand);
 
-            stuSection.removeAllItems(); // Clear old items
-            stuSection.addItem(section); // Set new section
+                stuSection.removeAllItems(); // Clear old items
+                stuSection.addItem(section);  // Add the new section
+
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Invalid grade level selected.");
+            }
         }
     }
     private void StudentTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentTableMouseClicked
@@ -3859,201 +3395,30 @@ public class Home extends javax.swing.JFrame {
         throw new IllegalArgumentException("Column '" + columnName + "' not found in table model.");
     }
 
-    private void stuGradeIDSearchFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stuGradeIDSearchFieldKeyTyped
-        if (!Character.isDigit(evt.getKeyChar())) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_stuGradeIDSearchFieldKeyTyped
-
     private void stuStrandSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuStrandSearchFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_stuStrandSearchFieldActionPerformed
 
-    private void stuGradeIDSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeIDSearchFieldActionPerformed
-
-    }//GEN-LAST:event_stuGradeIDSearchFieldActionPerformed
-
-    private void stuGradeManageClearBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageClearBtActionPerformed
-        clearGradeManage();
-    }//GEN-LAST:event_stuGradeManageClearBtActionPerformed
-
-    private void StudentGradeManagementTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StudentGradeManagementTableMouseClicked
-        model = (DefaultTableModel) StudentGradeManagementTable.getModel();
-        rowIndex = StudentGradeManagementTable.getSelectedRow();
-
-        // Basic info
-        stuGradeManageID.setText(model.getValueAt(rowIndex, 0).toString());   // student_id
-        stuGradeManageGradeLevel.setText(model.getValueAt(rowIndex, 1).toString());
-        stuGradeManageStrand.setText(model.getValueAt(rowIndex, 2).toString());
-        stuGradeManageSection.setText(model.getValueAt(rowIndex, 3).toString());
-
-        // Subjects + Scores
-        stuGradeManageSub1.setText(model.getValueAt(rowIndex, 4) != null ? model.getValueAt(rowIndex, 4).toString() : "");
-        subScore1.setText(model.getValueAt(rowIndex, 5) != null ? model.getValueAt(rowIndex, 5).toString() : "");
-
-        stuGradeManageSub2.setText(model.getValueAt(rowIndex, 6) != null ? model.getValueAt(rowIndex, 6).toString() : "");
-        subScore2.setText(model.getValueAt(rowIndex, 7) != null ? model.getValueAt(rowIndex, 7).toString() : "");
-
-        stuGradeManageSub3.setText(model.getValueAt(rowIndex, 8) != null ? model.getValueAt(rowIndex, 8).toString() : "");
-        subScore3.setText(model.getValueAt(rowIndex, 9) != null ? model.getValueAt(rowIndex, 9).toString() : "");
-
-        stuGradeManageSub4.setText(model.getValueAt(rowIndex, 10) != null ? model.getValueAt(rowIndex, 10).toString() : "");
-        subScore4.setText(model.getValueAt(rowIndex, 11) != null ? model.getValueAt(rowIndex, 11).toString() : "");
-
-        stuGradeManageSub5.setText(model.getValueAt(rowIndex, 12) != null ? model.getValueAt(rowIndex, 12).toString() : "");
-        subScore5.setText(model.getValueAt(rowIndex, 13) != null ? model.getValueAt(rowIndex, 13).toString() : "");
-
-        stuGradeManageSub6.setText(model.getValueAt(rowIndex, 14) != null ? model.getValueAt(rowIndex, 14).toString() : "");
-        subScore6.setText(model.getValueAt(rowIndex, 15) != null ? model.getValueAt(rowIndex, 15).toString() : "");
-
-        stuGradeManageSub7.setText(model.getValueAt(rowIndex, 16) != null ? model.getValueAt(rowIndex, 16).toString() : "");
-        subScore7.setText(model.getValueAt(rowIndex, 17) != null ? model.getValueAt(rowIndex, 17).toString() : "");
-
-        stuGradeManageSub8.setText(model.getValueAt(rowIndex, 18) != null ? model.getValueAt(rowIndex, 18).toString() : "");
-        subScore8.setText(model.getValueAt(rowIndex, 19) != null ? model.getValueAt(rowIndex, 19).toString() : "");
-
-        // Quarter
-        String quarter = model.getValueAt(rowIndex, 20).toString();
-        if (quarter.equals("1")) {
-            stuGradeManageQuarter.setSelectedIndex(0);
-        } else if (quarter.equals("2")) {
-            stuGradeManageQuarter.setSelectedIndex(1);
-        } else if (quarter.equals("3")) {
-            stuGradeManageQuarter.setSelectedIndex(2);
-        } else {
-            stuGradeManageQuarter.setSelectedIndex(3);
-        }
-
-    }//GEN-LAST:event_StudentGradeManagementTableMouseClicked
-
-    private void stuGradeManageUpdateBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageUpdateBtActionPerformed
-//        if (!isNumeric(idGradeManage.getText())) {
-//            JOptionPane.showMessageDialog(this, "Please enter a valid Grade ID");
-//            return;
-//        }
-        int stuId = Integer.parseInt(stuGradeManageID.getText());
-        int gradeLevel = Integer.parseInt(stuGradeManageGradeLevel.getText());
-        int quarter = Integer.parseInt(stuGradeManageQuarter.getSelectedItem().toString());
-        String strand = stuGradeManageStrand.getText();
-        String section = stuGradeManageSection.getText();
-
-        if (grade.isSidGradeLevelStrandQuarterExist(stuId, gradeLevel, strand, quarter)) {
-            try {
-                // ✅ Validate numeric scores
-                if (!(isNumeric(subScore1.getText()) && isNumeric(subScore2.getText())
-                        && isNumeric(subScore3.getText()) && isNumeric(subScore4.getText())
-                        && isNumeric(subScore5.getText()) && isNumeric(subScore6.getText())
-                        && isNumeric(subScore7.getText()) && isNumeric(subScore8.getText()))) {
-                    JOptionPane.showMessageDialog(this, "Please fill in all subject scores with valid numbers");
-                    return;
-                }
-
-                if (!isNumeric(stuGradeManageID.getText()) || !isNumeric(stuGradeManageGradeLevel.getText())) {
-                    JOptionPane.showMessageDialog(this, "Please enter valid Student ID and Grade Level");
-                    return;
-                }
-
-                int sid = Integer.parseInt(stuGradeManageID.getText());
-
-                // ✅ Collect subject names
-                String[] subjectNames = {
-                    stuGradeManageSub1.getText(), stuGradeManageSub2.getText(),
-                    stuGradeManageSub3.getText(), stuGradeManageSub4.getText(),
-                    stuGradeManageSub5.getText(), stuGradeManageSub6.getText(),
-                    stuGradeManageSub7.getText(), stuGradeManageSub8.getText()
-                };
-
-                // ✅ Collect scores
-                double[] scoresArr = {
-                    Double.parseDouble(subScore1.getText()), Double.parseDouble(subScore2.getText()),
-                    Double.parseDouble(subScore3.getText()), Double.parseDouble(subScore4.getText()),
-                    Double.parseDouble(subScore5.getText()), Double.parseDouble(subScore6.getText()),
-                    Double.parseDouble(subScore7.getText()), Double.parseDouble(subScore8.getText())
-                };
-
-                // ✅ Get subject IDs
-                List<Integer> subjectIds = new ArrayList<>();
-                for (String subjectName : subjectNames) {
-                    int subjectId = grade.getSubjectId(subjectName, gradeLevel, strand);
-                    if (subjectId == -1) {
-                        JOptionPane.showMessageDialog(this, "Subject " + subjectName + " not found in database.");
-                        return;
-                    }
-                    subjectIds.add(subjectId);
-                }
-
-                // ✅ Convert scores to List<Double>
-                List<Double> scores = new ArrayList<>();
-                for (double s : scoresArr) {
-                    scores.add(s);
-                }
-
-                // ✅ Update grades
-                grade.update(sid, subjectIds, scores, quarter);
-
-                // ✅ Compute new average
-                double total = 0;
-                for (double s : scores) {
-                    total += s;
-                }
-
-                //marksSheet.insertUpdateGeneralAverage(sid);
-                StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{
-                    "Student ID", // 0
-                    "Grade Level", // 1
-                    "Strand", // 2
-                    "Section", // 3
-                    "Subject 1", // 5
-                    "Score 1", // 6
-                    "Subject 2", // 7
-                    "Score 2", // 8
-                    "Subject 3", // 9
-                    "Score 3", // 10
-                    "Subject 4", // 11
-                    "Score 4", // 12
-                    "Subject 5", // 13
-                    "Score 5", // 14
-                    "Subject 6", // 15
-                    "Score 6", // 16
-                    "Subject 7", // 17
-                    "Score 7", // 18
-                    "Subject 8", // 19
-                    "Score 8", // 20
-                    "Quarter",
-                    "average"
-                }));
-
-                grade.getGradeValue(StudentGradeManagementTable, "");
-                clearGradeManage();
-
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "One or more fields are empty or not numeric.");
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Student ID from Quarter doesn't exist or wrong input");
-        }
-    }//GEN-LAST:event_stuGradeManageUpdateBtActionPerformed
-
 
     private void stuGradeManageSearchTableBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSearchTableBtActionPerformed
-        if (stuGradeManageSearchStuField.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Search field is empty");
-
-        } else {
-            StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
-                "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
-                "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
-            grade.getGradeValue(StudentGradeManagementTable, stuGradeManageSearchStuField.getText());
-
-        }
+//        if (stuGradeIDManage.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(this, "Search field is empty");
+//
+//        } else {
+//            StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
+//                "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
+//                "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+//            //grade.getGradeValue(StudentGradeManagementTable, stuGradeManageSearchStuField.getText());
+//
+//        }
     }//GEN-LAST:event_stuGradeManageSearchTableBtActionPerformed
 
     private void stuGradeManageRefreshTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageRefreshTableActionPerformed
-        StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
-            "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
-            "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
-        grade.getGradeValue(StudentGradeManagementTable, "");
-        stuGradeManageSearchStuField.setText(null);
+//        StudentGradeManagementTable.setModel(new DefaultTableModel(null, new Object[]{"ID", "Student_ID", "Grade_Level", "Strand", "Section",
+//            "Subject 1", "Score 1", "Subject 2", "Score 2", "Subject 3", "Score 3", "Subject 4", "Score 4", "Subject 5", "Score 5",
+//            "Subject 6", "Score 6", "Subject 7", "Score 7", "Subject 8", "Score 8", "Quarter", "Average"}));
+//        // grade.getGradeValue(StudentGradeManagementTable, "");
+//        stuGradeIDManage.setText(null);
     }//GEN-LAST:event_stuGradeManageRefreshTableActionPerformed
 
     private void stuMarksClearBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuMarksClearBtActionPerformed
@@ -4125,25 +3490,6 @@ public class Home extends javax.swing.JFrame {
         sorter.sort();
     }//GEN-LAST:event_stuSort_2ActionPerformed
 
-    private void stuSort_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuSort_3ActionPerformed
-        DefaultTableModel model = (DefaultTableModel) StudentGradeManagementTable.getModel();
-
-        // Attach TableRowSorter to your table
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-        StudentGradeManagementTable.setRowSorter(sorter);
-
-        // Example: Sort by Student ID (numerically) and then by Student Name (alphabetically)
-        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-
-        int stuIdCol = 0;  // Student ID is column 0
-
-        // First sort by ID (ascending)
-        sortKeys.add(new RowSorter.SortKey(stuIdCol, SortOrder.ASCENDING));
-
-        sorter.setSortKeys(sortKeys);
-        sorter.sort();
-    }//GEN-LAST:event_stuSort_3ActionPerformed
-
     private void stuLRNKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stuLRNKeyTyped
         if (!Character.isDigit(evt.getKeyChar())) {
             evt.consume();
@@ -4153,6 +3499,140 @@ public class Home extends javax.swing.JFrame {
     private void stuStrandIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuStrandIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_stuStrandIdActionPerformed
+
+    private void stuGradeManageSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSearchButtonActionPerformed
+        try {
+            // Get grade level safely
+            String gradeLevelStr = gradeLevelBox.getSelectedItem().toString();
+            int gradeLevel = Integer.parseInt(gradeLevelStr.split(" - ")[0]);
+
+            // Get strand id
+            int strandId = getSelectedStrandId();
+
+            // Get section id
+            int sectionId = grade.getSelectedSectionId(sectionBox);
+
+            // Get subject id
+            int subjectId = grade.getSelectedSubjectId(subjectBox);
+
+            // Get quarter safely
+            String quarterStr = quarterBox.getSelectedItem().toString();
+            int quarter = Integer.parseInt(quarterStr.split(" - ")[0]);
+
+            // Call the query
+            DefaultTableModel model = grade.getStudentGrades(
+                    gradeLevel, strandId, sectionId, subjectId, quarter
+            );
+
+            // Apply to JTable
+            GradeSectioningManageTable.setModel(model);
+
+            // If no rows were returned
+            if (model.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "No results found. Check DB values.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error fetching grades: " + e.getMessage());
+        }
+    }//GEN-LAST:event_stuGradeManageSearchButtonActionPerformed
+
+    private void gradeSaveBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeSaveBtActionPerformed
+        int subjectId = grade.getSelectedSubjectId(subjectBox);   // pass the subject JComboBox
+        int sectionId = grade.getSelectedSectionId(sectionBox);   // pass the section JComboBox
+        int strandId = getSelectedStrandId();              // uses strandBox internally
+        int quarter = Integer.parseInt(quarterBox.getSelectedItem().toString()); // assuming quarterBox has quarter numbers
+        DefaultTableModel model = (DefaultTableModel) GradeSectioningManageTable.getModel(); // your JTable containing the grades
+
+        grade.saveStudentGrades(subjectId, sectionId, quarter, model);
+    }//GEN-LAST:event_gradeSaveBtActionPerformed
+
+    private void gradeLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeLogoutActionPerformed
+        int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
+        if (a == 0) {
+            this.dispose();
+            LoginFrame frame = new LoginFrame();
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
+        }
+    }//GEN-LAST:event_gradeLogoutActionPerformed
+
+    private void strandBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_strandBoxActionPerformed
+        // When strand changes, update sections, subjects, and quarters
+        try {
+            int gradeLevel = Integer.parseInt(gradeLevelBox.getSelectedItem().toString());
+            int strandId = getSelectedStrandId(); // helper to parse "1 - STEM"
+
+            // Update dependent dropdowns
+            grade.loadSections(sectionBox, strandId, gradeLevel);
+            grade.loadSubjects(subjectBox, strandId, gradeLevel);
+            loadQuarters(quarterBox);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading sections/subjects.");
+        }
+    }//GEN-LAST:event_strandBoxActionPerformed
+
+    public int getSelectedStrandId() {
+        ComboItem selectedItem = (ComboItem) strandBox.getSelectedItem();
+        if (selectedItem != null) {
+            return selectedItem.getId(); // assuming ComboItem has getId()
+        }
+        return -1; // or handle appropriately if nothing is selected
+    }
+
+    private void loadQuarters(JComboBox<String> quarterBox) {
+        quarterBox.removeAllItems();
+        quarterBox.addItem("1");
+        quarterBox.addItem("2");
+        quarterBox.addItem("3");
+        quarterBox.addItem("4");
+    }
+    private void gradeLevelBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeLevelBoxActionPerformed
+        try {
+            int gradeLevel = Integer.parseInt(gradeLevelBox.getSelectedItem().toString());
+
+            // 1. Load strands available for that grade level
+            grade.loadStrands(strandBox, gradeLevel);
+
+            if (strandBox.getItemCount() > 0) {
+                int strandId = getSelectedStrandId();
+
+                grade.loadSections(sectionBox, strandId, gradeLevel);
+                grade.loadSubjects(subjectBox, strandId, gradeLevel);
+                loadQuarters(quarterBox);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading strands/sections/subjects.");
+        }
+    }//GEN-LAST:event_gradeLevelBoxActionPerformed
+
+    private void gradeClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeClearActionPerformed
+        clearGradeManage();
+    }//GEN-LAST:event_gradeClearActionPerformed
+
+    private void gradeSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeSortActionPerformed
+        DefaultTableModel model = (DefaultTableModel) GradeSectioningManageTable.getModel();
+
+        // Create a TableRowSorter for your model
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        GradeSectioningManageTable.setRowSorter(sorter);
+
+        // Specify sort key: Student Name column (1), ascending
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+
+        sorter.setSortKeys(sortKeys);
+        sorter.sort();
+    }//GEN-LAST:event_gradeSortActionPerformed
+
+    private void gradeLevelStudentBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeLevelStudentBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gradeLevelStudentBoxActionPerformed
 
     public ImageIcon imageAdjust(String path, byte[] pic, JLabel targetLabel) {
         ImageIcon myImage = null;
@@ -4214,7 +3694,7 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Clear;
     private javax.swing.JLabel Final_Average;
-    private javax.swing.JTable StudentGradeManagementTable;
+    private javax.swing.JTable GradeSectioningManageTable;
     private javax.swing.JTable StudentMarksSheetTable;
     private javax.swing.JTable StudentTable;
     private javax.swing.JTable StudentTrackTable;
@@ -4223,13 +3703,18 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton browseForm137;
     private javax.swing.JButton browseImg;
     private javax.swing.JButton delBt;
+    private javax.swing.JButton gradeClear;
+    private javax.swing.JComboBox<String> gradeLevelBox;
+    private javax.swing.JComboBox<String> gradeLevelStudentBox;
+    private javax.swing.JButton gradeLogout;
+    private javax.swing.JButton gradeSaveBt;
+    private javax.swing.JButton gradeSort;
     private javax.swing.JLabel imagePanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -4244,22 +3729,10 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel61;
@@ -4268,10 +3741,13 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel64;
     private javax.swing.JLabel jLabel65;
     private javax.swing.JLabel jLabel66;
-    private javax.swing.JLabel jLabel67;
     private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel70;
+    private javax.swing.JLabel jLabel71;
+    private javax.swing.JLabel jLabel72;
+    private javax.swing.JLabel jLabel73;
+    private javax.swing.JLabel jLabel74;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -4283,12 +3759,10 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
-    private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
@@ -4310,7 +3784,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel41;
     private javax.swing.JPanel jPanel42;
-    private javax.swing.JPanel jPanel43;
+    private javax.swing.JPanel jPanel44;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -4318,10 +3792,15 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JComboBox<String> quarterBox;
     private javax.swing.JButton searchBt_1;
+    public static javax.swing.JComboBox<String> sectionBox;
+    private javax.swing.JComboBox<String> strandBox;
     private javax.swing.JTextField stuAddress1;
     private javax.swing.JTextField stuAddress2;
     private com.toedter.calendar.JDateChooser stuBirth;
@@ -4331,31 +3810,13 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField stuFname;
     private javax.swing.JTextField stuForm137;
     private javax.swing.JComboBox<String> stuGender;
-    private javax.swing.JTextField stuGradeIDSearchField;
+    private javax.swing.JTextField stuGradeIDManage;
     private javax.swing.JComboBox<String> stuGradeLevel;
     private javax.swing.JComboBox<String> stuGradeLevelMarkSheet;
-    private javax.swing.JButton stuGradeManageClearBt;
-    public static javax.swing.JTextField stuGradeManageGradeLevel;
-    private javax.swing.JComboBox<String> stuGradeManageGradeLevelSearchField;
-    public static javax.swing.JTextField stuGradeManageID;
     private javax.swing.JButton stuGradeManagePrint;
-    private javax.swing.JComboBox<String> stuGradeManageQuarter;
     private javax.swing.JButton stuGradeManageRefreshTable;
-    private javax.swing.JButton stuGradeManageSave;
     private javax.swing.JButton stuGradeManageSearchButton;
-    private javax.swing.JTextField stuGradeManageSearchStuField;
     private javax.swing.JButton stuGradeManageSearchTableBt;
-    public static javax.swing.JTextField stuGradeManageSection;
-    public static javax.swing.JTextField stuGradeManageStrand;
-    public static javax.swing.JTextField stuGradeManageSub1;
-    public static javax.swing.JTextField stuGradeManageSub2;
-    public static javax.swing.JTextField stuGradeManageSub3;
-    public static javax.swing.JTextField stuGradeManageSub4;
-    public static javax.swing.JTextField stuGradeManageSub5;
-    public static javax.swing.JTextField stuGradeManageSub6;
-    public static javax.swing.JTextField stuGradeManageSub7;
-    public static javax.swing.JTextField stuGradeManageSub8;
-    private javax.swing.JButton stuGradeManageUpdateBt;
     private javax.swing.JTextField stuID;
     private javax.swing.JTextField stuLRN;
     private javax.swing.JTextField stuLastName;
@@ -4376,20 +3837,12 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> stuSection;
     private javax.swing.JButton stuSort_1;
     private javax.swing.JButton stuSort_2;
-    private javax.swing.JButton stuSort_3;
     private javax.swing.JComboBox<String> stuStrand;
     private javax.swing.JButton stuStrandClearBt;
     public static javax.swing.JTextField stuStrandId;
     private javax.swing.JButton stuStrandSearchBt;
     private javax.swing.JTextField stuStrandSearchField;
-    private javax.swing.JTextField subScore1;
-    private javax.swing.JTextField subScore2;
-    private javax.swing.JTextField subScore3;
-    private javax.swing.JTextField subScore4;
-    private javax.swing.JTextField subScore5;
-    private javax.swing.JTextField subScore6;
-    private javax.swing.JTextField subScore7;
-    private javax.swing.JTextField subScore8;
+    public static javax.swing.JComboBox<String> subjectBox;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtTime;
     private javax.swing.JButton updateBt;

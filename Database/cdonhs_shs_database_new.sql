@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2025 at 10:38 AM
+-- Generation Time: Sep 17, 2025 at 12:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,69 +37,107 @@ CREATE TABLE `admin` (
   `email` varchar(50) DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
   `address1` varchar(100) NOT NULL,
-  `address2` varchar(100) NOT NULL,
-  `role` enum('Super Admin','Registrar','Guidance Admin','Finance Admin') NOT NULL
+  `address2` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grade`
+-- Table structure for table `grade_entry`
 --
 
-CREATE TABLE `grade` (
-  `grade_id` int(11) NOT NULL,
-  `student_id` int(10) NOT NULL,
+CREATE TABLE `grade_entry` (
+  `entry_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
   `subject_id` int(11) NOT NULL,
-  `quarter` int(1) NOT NULL,
+  `section_id` int(11) NOT NULL,
+  `quarter` int(11) NOT NULL,
   `grade` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `grade`
+-- Dumping data for table `grade_entry`
 --
 
-INSERT INTO `grade` (`grade_id`, `student_id`, `subject_id`, `quarter`, `grade`) VALUES
-(337, 4, 57, 1, 99.00),
-(338, 4, 58, 1, 99.00),
-(339, 4, 59, 1, 100.00),
-(340, 4, 60, 1, 100.00),
-(341, 4, 61, 1, 100.00),
-(342, 4, 62, 1, 0.00),
-(343, 4, 63, 1, 0.00),
-(344, 4, 64, 1, 0.00),
-(345, 4, 1, 1, 90.00),
-(346, 4, 2, 1, 100.00),
-(347, 4, 3, 1, 88.00),
-(348, 4, 4, 1, 90.00),
-(349, 4, 5, 1, 80.00),
-(350, 4, 6, 1, 90.00),
-(351, 4, 7, 1, 77.00),
-(352, 4, 8, 1, 75.90),
-(353, 4, 1, 2, 90.00),
-(354, 4, 2, 2, 100.00),
-(355, 4, 3, 2, 88.00),
-(356, 4, 4, 2, 77.00),
-(357, 4, 5, 2, 80.00),
-(358, 4, 6, 2, 90.00),
-(359, 4, 7, 2, 77.00),
-(360, 4, 8, 2, 75.00),
-(361, 4, 1, 3, 90.00),
-(362, 4, 2, 3, 100.00),
-(363, 4, 3, 3, 88.00),
-(364, 4, 4, 3, 77.00),
-(365, 4, 5, 3, 80.00),
-(366, 4, 6, 3, 90.00),
-(367, 4, 7, 3, 77.00),
-(368, 4, 8, 3, 75.00),
-(369, 4, 1, 4, 90.00),
-(370, 4, 2, 4, 100.00),
-(371, 4, 3, 4, 88.00),
-(372, 4, 4, 4, 77.00),
-(373, 4, 5, 4, 80.00),
-(374, 4, 6, 4, 90.00),
-(375, 4, 7, 4, 77.00),
-(376, 4, 8, 4, 75.00);
+INSERT INTO `grade_entry` (`entry_id`, `student_id`, `subject_id`, `section_id`, `quarter`, `grade`) VALUES
+(3, 4, 1, 1, 1, 80.00),
+(4, 2, 1, 1, 1, 90.00),
+(5, 1, 1, 1, 1, 100.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `section`
+--
+
+CREATE TABLE `section` (
+  `section_id` int(11) NOT NULL,
+  `section_name` varchar(30) NOT NULL,
+  `grade_level` int(2) NOT NULL,
+  `strand_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `section`
+--
+
+INSERT INTO `section` (`section_id`, `section_name`, `grade_level`, `strand_id`) VALUES
+(1, 'A', 11, 1),
+(2, 'B', 11, 1),
+(3, 'C', 11, 1),
+(4, 'D', 11, 1),
+(5, 'A', 12, 1),
+(6, 'B', 12, 1),
+(7, 'C', 12, 1),
+(8, 'D', 12, 1),
+(9, 'A', 11, 2),
+(10, 'B', 11, 2),
+(11, 'C', 11, 2),
+(12, 'D', 11, 2),
+(13, 'A', 12, 2),
+(14, 'B', 12, 2),
+(15, 'C', 12, 2),
+(16, 'D', 12, 2),
+(17, 'A', 11, 3),
+(18, 'B', 11, 3),
+(19, 'C', 11, 3),
+(20, 'D', 11, 3),
+(21, 'A', 12, 3),
+(22, 'B', 12, 3),
+(23, 'C', 12, 3),
+(24, 'D', 12, 3),
+(25, 'A', 11, 4),
+(26, 'B', 11, 4),
+(27, 'C', 11, 4),
+(28, 'D', 11, 4),
+(29, 'A', 12, 4),
+(30, 'B', 12, 4),
+(31, 'C', 12, 4),
+(32, 'D', 12, 4),
+(33, 'A', 11, 5),
+(34, 'B', 11, 5),
+(35, 'C', 11, 5),
+(36, 'D', 11, 5),
+(37, 'A', 12, 5),
+(38, 'B', 12, 5),
+(39, 'C', 12, 5),
+(40, 'D', 12, 5),
+(41, 'A', 11, 6),
+(42, 'B', 11, 6),
+(43, 'C', 11, 6),
+(44, 'D', 11, 6),
+(45, 'A', 12, 6),
+(46, 'B', 12, 6),
+(47, 'C', 12, 6),
+(48, 'D', 12, 6),
+(49, 'A', 11, 7),
+(50, 'B', 11, 7),
+(51, 'C', 11, 7),
+(52, 'D', 11, 7),
+(53, 'A', 12, 7),
+(54, 'B', 12, 7),
+(55, 'C', 12, 7),
+(56, 'D', 12, 7);
 
 -- --------------------------------------------------------
 
@@ -173,20 +211,18 @@ CREATE TABLE `student_strand` (
   `student_id` int(10) NOT NULL,
   `strand_id` int(11) NOT NULL,
   `grade_level` int(2) NOT NULL,
-  `section_name` varchar(30) NOT NULL
+  `section_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `student_strand`
 --
 
-INSERT INTO `student_strand` (`student_strand_id`, `student_id`, `strand_id`, `grade_level`, `section_name`) VALUES
-(4, 3, 4, 11, 'A'),
-(27, 1, 5, 11, 'A'),
-(28, 2, 4, 11, 'A'),
-(30, 4, 1, 12, 'A'),
-(31, 4, 1, 11, 'A'),
-(32, 5, 1, 11, 'A');
+INSERT INTO `student_strand` (`student_strand_id`, `student_id`, `strand_id`, `grade_level`, `section_id`) VALUES
+(6, 4, 1, 11, 1),
+(7, 1, 1, 11, 1),
+(8, 2, 1, 11, 1),
+(9, 3, 7, 11, 49);
 
 -- --------------------------------------------------------
 
@@ -410,12 +446,20 @@ ALTER TABLE `admin`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `grade`
+-- Indexes for table `grade_entry`
 --
-ALTER TABLE `grade`
-  ADD PRIMARY KEY (`grade_id`),
+ALTER TABLE `grade_entry`
+  ADD PRIMARY KEY (`entry_id`),
   ADD KEY `student_id` (`student_id`),
-  ADD KEY `subject_id` (`subject_id`);
+  ADD KEY `subject_id` (`subject_id`),
+  ADD KEY `section_id` (`section_id`);
+
+--
+-- Indexes for table `section`
+--
+ALTER TABLE `section`
+  ADD PRIMARY KEY (`section_id`),
+  ADD KEY `strand_id` (`strand_id`);
 
 --
 -- Indexes for table `strands`
@@ -438,7 +482,8 @@ ALTER TABLE `student_strand`
   ADD PRIMARY KEY (`student_strand_id`),
   ADD UNIQUE KEY `unique_student_strand_grade` (`student_id`,`strand_id`,`grade_level`),
   ADD KEY `student_id` (`student_id`),
-  ADD KEY `fk_student_strand_strand` (`strand_id`);
+  ADD KEY `fk_student_strand_strand` (`strand_id`),
+  ADD KEY `section_id` (`section_id`);
 
 --
 -- Indexes for table `subject`
@@ -481,10 +526,16 @@ ALTER TABLE `admin`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `grade`
+-- AUTO_INCREMENT for table `grade_entry`
 --
-ALTER TABLE `grade`
-  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=377;
+ALTER TABLE `grade_entry`
+  MODIFY `entry_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `section`
+--
+ALTER TABLE `section`
+  MODIFY `section_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `strands`
@@ -502,7 +553,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `student_strand`
 --
 ALTER TABLE `student_strand`
-  MODIFY `student_strand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `student_strand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `subject`
@@ -539,11 +590,18 @@ ALTER TABLE `admin`
   ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
--- Constraints for table `grade`
+-- Constraints for table `grade_entry`
 --
-ALTER TABLE `grade`
-  ADD CONSTRAINT `grade_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
-  ADD CONSTRAINT `grade_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`);
+ALTER TABLE `grade_entry`
+  ADD CONSTRAINT `grade_entry_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
+  ADD CONSTRAINT `grade_entry_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`),
+  ADD CONSTRAINT `grade_entry_ibfk_3` FOREIGN KEY (`section_id`) REFERENCES `section` (`section_id`);
+
+--
+-- Constraints for table `section`
+--
+ALTER TABLE `section`
+  ADD CONSTRAINT `section_ibfk_1` FOREIGN KEY (`strand_id`) REFERENCES `strands` (`strand_id`);
 
 --
 -- Constraints for table `student`
@@ -556,7 +614,8 @@ ALTER TABLE `student`
 --
 ALTER TABLE `student_strand`
   ADD CONSTRAINT `student_strand_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
-  ADD CONSTRAINT `student_strand_ibfk_2` FOREIGN KEY (`strand_id`) REFERENCES `strands` (`strand_id`);
+  ADD CONSTRAINT `student_strand_ibfk_2` FOREIGN KEY (`strand_id`) REFERENCES `strands` (`strand_id`),
+  ADD CONSTRAINT `student_strand_ibfk_3` FOREIGN KEY (`section_id`) REFERENCES `section` (`section_id`);
 
 --
 -- Constraints for table `subject`

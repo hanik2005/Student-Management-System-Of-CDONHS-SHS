@@ -2674,18 +2674,25 @@ public class AdminFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_stuStrandSearchBtActionPerformed
 
-    public void updateSection() {
-        String gradeLevel = (String) stuGradeLevel.getSelectedItem();
-        String strand = (String) stuStrand.getSelectedItem();
+   public void updateSection() {
+    String gradeLevelStr = (String) stuGradeLevel.getSelectedItem();
+    String strand = (String) stuStrand.getSelectedItem();
 
-        if (gradeLevel != null && strand != null) {
+    if (gradeLevelStr != null && strand != null) {
+        try {
+            int gradeLevel = Integer.parseInt(gradeLevelStr); // Convert to int
             Strand strandObj = new Strand();
             String section = strandObj.getNextSection(gradeLevel, strand);
 
             stuSection.removeAllItems(); // Clear old items
-            stuSection.addItem(section); // Set new section
+            stuSection.addItem(section);  // Add the new section
+
+        } catch (NumberFormatException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Invalid grade level selected.");
         }
     }
+}
     private void stuGradeLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeLevelActionPerformed
         updateSection();
 

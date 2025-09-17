@@ -174,45 +174,7 @@ public class StudentPortal extends javax.swing.JFrame {
     }
 
     public void displayStudentGrades(int studentId, int quarter, int gradeLevel) {
-        Map<Integer, SubjectGrade> grades = grade.getStudentGrades(studentId, quarter, gradeLevel);
-
-        // Subject name text fields
-        JTextField[] subjectFields = {
-            stuGradeManageSub1, stuGradeManageSub2, stuGradeManageSub3, stuGradeManageSub4,
-            stuGradeManageSub5, stuGradeManageSub6, stuGradeManageSub7, stuGradeManageSub8
-        };
-
-        // Score text fields
-        JTextField[] scoreFields = {
-            subScore1, subScore2, subScore3, subScore4,
-            subScore5, subScore6, subScore7, subScore8
-        };
-
-        double total = 0.0;
-        int count = 0;
-
-        for (int i = 1; i <= 8; i++) {
-            if (grades.containsKey(i)) {
-                SubjectGrade sg = grades.get(i);
-
-                subjectFields[i - 1].setText(sg.getSubjectName());
-                scoreFields[i - 1].setText(String.valueOf(sg.getGrade()));
-
-                total += sg.getGrade();
-                count++;
-            } else {
-                subjectFields[i - 1].setText("");
-                scoreFields[i - 1].setText("0.0");
-            }
-        }
-
-        // Show overall subject average for this quarter
-        if (count > 0) {
-            double average = total / count;
-            subsAverage.setText(String.format("%.2f", average));
-        } else {
-            subsAverage.setText("0.0");
-        }
+      
     }
 
     /**
@@ -1343,29 +1305,29 @@ public class StudentPortal extends javax.swing.JFrame {
     }//GEN-LAST:event_logStuBtActionPerformed
 
     private void stuGradeManageSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageSearchButtonActionPerformed
-        try {
-            int quarter = Integer.parseInt(stuQuarter.getSelectedItem().toString());
-            int gradeLevel = Integer.parseInt(stuGradeLevel.getSelectedItem().toString());
-            // Fetch grades
-            Map<Integer, SubjectGrade> grades = grade.getStudentGrades(studentId, quarter, gradeLevel);
-
-            if (grades.isEmpty()) {
-                JOptionPane.showMessageDialog(this,
-                        "No grades have been recorded yet for this student in Grade " + gradeLevel
-                        + ", Quarter " + quarter + ".",
-                        "No Grades Found",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                // Display grades if found
-                displayStudentGrades(studentId, quarter, gradeLevel);
-            }
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Please enter a valid Student ID, Grade Level, and Quarter.",
-                    "Invalid Input",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+//        try {
+//            int quarter = Integer.parseInt(stuQuarter.getSelectedItem().toString());
+//            int gradeLevel = Integer.parseInt(stuGradeLevel.getSelectedItem().toString());
+//            // Fetch grades
+//            //Map<Integer, SubjectGrade> grades = grade.getStudentGrades(studentId, quarter, gradeLevel);
+//
+//            if (grades.isEmpty()) {
+//                JOptionPane.showMessageDialog(this,
+//                        "No grades have been recorded yet for this student in Grade " + gradeLevel
+//                        + ", Quarter " + quarter + ".",
+//                        "No Grades Found",
+//                        JOptionPane.INFORMATION_MESSAGE);
+//            } else {
+//                // Display grades if found
+//                displayStudentGrades(studentId, quarter, gradeLevel);
+//            }
+//
+//        } catch (NumberFormatException e) {
+//            JOptionPane.showMessageDialog(this,
+//                    "Please enter a valid Student ID, Grade Level, and Quarter.",
+//                    "Invalid Input",
+//                    JOptionPane.ERROR_MESSAGE);
+//        }
 
     }//GEN-LAST:event_stuGradeManageSearchButtonActionPerformed
 
