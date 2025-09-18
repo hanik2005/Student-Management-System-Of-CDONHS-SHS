@@ -1,7 +1,21 @@
 package Main;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.mysql.cj.xdevapi.Table;
 import java.sql.Connection;
 import db.MyConnection;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.sql.PreparedStatement;
@@ -9,10 +23,13 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.DriverManager;
+import java.util.HashMap;
 import java.util.List;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import picocli.CommandLine.Help.TextTable.Cell;
 
 public class Strand {
 
@@ -59,10 +76,15 @@ public class Strand {
     }
 
     public Object[] getCurrentEnrollment(int studentId) {
-        String sql = "SELECT ss.grade_level, s.strand_name, ss.section_name "
-                + "FROM student_strand ss "
-                + "JOIN strands s ON ss.strand_id = s.strand_id "
-                + "WHERE ss.student_id = ?";
+        String sql = """
+            SELECT ss.grade_level, 
+           s.strand_name, 
+           sec.section_name
+           FROM student_strand ss
+            JOIN strands s ON ss.strand_id = s.strand_id
+            JOIN section sec ON ss.section_id = sec.section_id
+            WHERE ss.student_id = ?
+            """;
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, studentId);
@@ -85,7 +107,7 @@ public class Strand {
 
     public boolean deleteStudentStrandAndGrades(int studentId, int strandId, int gradeLevel) {
         String deleteGradesSQL = """
-        DELETE g FROM grade g
+        DELETE g FROM grade_entry g
         INNER JOIN subject s ON g.subject_id = s.subject_id
         WHERE g.student_id = ? AND s.grade_level IN (11, 12)
     """;
@@ -414,4 +436,93 @@ public class Strand {
             ex.printStackTrace();
         }
     }
+
+    public void generateClassList(String gradeLevel, String strand, String section) {
+        String sql = "SELECT s.student_id, "
+                + "CONCAT(s.last_name, ', ', s.first_name, ' ', COALESCE(s.middle_name, '')) AS full_name, "
+                + "sec.section_name, "
+                + "ss.grade_level, "
+                + "st.strand_name "
+                + "FROM student s "
+                + "INNER JOIN student_strand ss ON s.student_id = ss.student_id "
+                + "INNER JOIN section sec ON ss.section_id = sec.section_id "
+                + "INNER JOIN strands st ON ss.strand_id = st.strand_id "
+                + "WHERE ss.grade_level = ? "
+                + "AND st.strand_name = ? "
+                + "AND sec.section_name = ? "
+                + "ORDER BY s.last_name;";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, gradeLevel);
+            ps.setString(2, strand);
+            ps.setString(3, section);
+            ResultSet rs = ps.executeQuery();
+
+            // Let user choose where to save file
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save Class List PDF");
+            fileChooser.setSelectedFile(new File("ClassList_" + gradeLevel + "_" + strand + "_" + section + ".pdf"));
+
+            int userSelection = fileChooser.showSaveDialog(null);
+            if (userSelection != JFileChooser.APPROVE_OPTION) {
+                System.out.println("Save command canceled.");
+                return;
+            }
+
+            File fileToSave = fileChooser.getSelectedFile();
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, new FileOutputStream(fileToSave));
+            document.open();
+
+            // Add Logo
+            try (InputStream is = getClass().getResourceAsStream("/assets/logo_remBac.png")) {
+                if (is != null) {
+                    byte[] bytes = is.readAllBytes();
+                    Image logo = Image.getInstance(bytes);
+                    logo.scaleAbsolute(80, 80);
+                    logo.setAlignment(Element.ALIGN_CENTER);
+                    document.add(logo);
+                } else {
+                    System.out.println("Logo not found in resources.");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            // Title
+            Paragraph title = new Paragraph("Class List", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            Paragraph sub = new Paragraph("Grade " + gradeLevel + " - " + strand + " - Section " + section,
+                    FontFactory.getFont(FontFactory.HELVETICA, 12));
+            sub.setAlignment(Element.ALIGN_CENTER);
+            sub.setSpacingAfter(20);
+            document.add(sub);
+
+            // Table (2 columns: ID, Full Name)
+            PdfPTable table = new PdfPTable(2);
+            table.setWidthPercentage(100);
+
+            // Headers
+            table.addCell(new PdfPCell(new Phrase("Student ID")));
+            table.addCell(new PdfPCell(new Phrase("Full Name")));
+
+            // Fill rows
+            while (rs.next()) {
+                table.addCell(rs.getString("student_id"));
+                table.addCell(rs.getString("full_name"));
+            }
+
+            document.add(table);
+            document.close();
+
+            System.out.println("PDF Created: " + fileToSave.getAbsolutePath());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+
 }
