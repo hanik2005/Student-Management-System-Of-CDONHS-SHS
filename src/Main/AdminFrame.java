@@ -61,7 +61,7 @@ public class AdminFrame extends javax.swing.JFrame {
     User user = new User();
     Home home = new Home();
     Teacher teacher = new Teacher();
-    MarksSheet marksSheet = new MarksSheet();
+    ListOfHonor marksSheet = new ListOfHonor();
 
     int xx, xy;
     private DefaultTableModel model;

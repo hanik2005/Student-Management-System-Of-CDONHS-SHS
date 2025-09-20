@@ -2706,7 +2706,7 @@
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                               <Table columnCount="3" rowCount="4">
-                                <Column editable="false" title="Student ID" type="java.lang.Object"/>
+                                <Column editable="false" title="LRN" type="java.lang.Object"/>
                                 <Column editable="false" title="Student Name" type="java.lang.Object"/>
                                 <Column editable="true" title="Grade" type="java.lang.Object"/>
                               </Table>
@@ -3510,13 +3510,11 @@
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel77" min="-2" pref="63" max="-2" attributes="0"/>
-                                          <Component id="quarterBox1" min="-2" pref="143" max="-2" attributes="0"/>
+                                          <Component id="quarterHonorBox" min="-2" pref="143" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="stuGradeHonorSearchBt" min="-2" pref="157" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
-                                      <Component id="stuGradeManageRefreshTable1" min="-2" pref="147" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="228" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -3537,13 +3535,10 @@
                                                   <Component id="gradeLevelHonorBox" alignment="3" max="32767" attributes="0"/>
                                                   <Component id="strandHonorBox" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   <Component id="sectionHonorBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="quarterBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="quarterHonorBox" alignment="3" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                              <Component id="stuGradeHonorSearchBt" min="-2" pref="59" max="-2" attributes="0"/>
-                                              <Component id="stuGradeManageRefreshTable1" max="32767" attributes="0"/>
-                                          </Group>
+                                          <Component id="stuGradeHonorSearchBt" min="-2" pref="59" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
@@ -3604,7 +3599,7 @@
                                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                               </AuxValues>
                             </Component>
-                            <Component class="javax.swing.JComboBox" name="quarterBox1">
+                            <Component class="javax.swing.JComboBox" name="quarterHonorBox">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -3620,7 +3615,7 @@
                                 </Property>
                               </Properties>
                               <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="quarterBox1ActionPerformed"/>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="quarterHonorBoxActionPerformed"/>
                               </Events>
                               <AuxValues>
                                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -3705,23 +3700,6 @@
                                 <Property name="text" type="java.lang.String" value="Section"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JButton" name="stuGradeManageRefreshTable1">
-                              <Properties>
-                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="cc" green="ff" red="99" type="rgb"/>
-                                </Property>
-                                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Times New Roman" size="24" style="1"/>
-                                </Property>
-                                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="0" green="0" red="0" type="rgb"/>
-                                </Property>
-                                <Property name="text" type="java.lang.String" value="Refresh"/>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stuGradeManageRefreshTable1ActionPerformed"/>
-                              </Events>
-                            </Component>
                           </SubComponents>
                         </Container>
                         <Container class="javax.swing.JPanel" name="jPanel45">
@@ -3742,17 +3720,13 @@
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="254" max="-2" attributes="0"/>
-                                      <Component id="gradeHonorSaveBt" min="-2" pref="165" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="431" max="-2" attributes="0"/>
                                       <Component id="gradeHonorSectioningPrint" min="-2" pref="165" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace pref="21" max="32767" attributes="0"/>
                                       <Component id="gradeHonorClear" min="-2" pref="165" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="gradeHonorSort" min="-2" pref="165" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="gradeHonorLogout" min="-2" pref="165" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="193" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="364" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -3761,10 +3735,8 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="gradeHonorSaveBt" alignment="3" pref="55" max="32767" attributes="0"/>
                                           <Component id="gradeHonorLogout" alignment="3" pref="55" max="32767" attributes="0"/>
                                           <Component id="gradeHonorClear" alignment="3" pref="55" max="32767" attributes="0"/>
-                                          <Component id="gradeHonorSort" alignment="3" pref="55" max="32767" attributes="0"/>
                                           <Component id="gradeHonorSectioningPrint" alignment="3" pref="55" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
@@ -3773,23 +3745,6 @@
                             </DimensionLayout>
                           </Layout>
                           <SubComponents>
-                            <Component class="javax.swing.JButton" name="gradeHonorSaveBt">
-                              <Properties>
-                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="ff" green="ff" red="66" type="rgb"/>
-                                </Property>
-                                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Times New Roman" size="18" style="1"/>
-                                </Property>
-                                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="0" green="0" red="0" type="rgb"/>
-                                </Property>
-                                <Property name="text" type="java.lang.String" value="Save"/>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gradeHonorSaveBtActionPerformed"/>
-                              </Events>
-                            </Component>
                             <Component class="javax.swing.JButton" name="gradeHonorLogout">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -3824,23 +3779,6 @@
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gradeHonorClearActionPerformed"/>
                               </Events>
                             </Component>
-                            <Component class="javax.swing.JButton" name="gradeHonorSort">
-                              <Properties>
-                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="ff" green="ff" red="66" type="rgb"/>
-                                </Property>
-                                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Times New Roman" size="18" style="1"/>
-                                </Property>
-                                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                                  <Color blue="0" green="0" red="0" type="rgb"/>
-                                </Property>
-                                <Property name="text" type="java.lang.String" value="Sort"/>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gradeHonorSortActionPerformed"/>
-                              </Events>
-                            </Component>
                             <Component class="javax.swing.JButton" name="gradeHonorSectioningPrint">
                               <Properties>
                                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -3871,7 +3809,7 @@
                               <Properties>
                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                   <Table columnCount="3" rowCount="4">
-                                    <Column editable="false" title="Student ID" type="java.lang.Object"/>
+                                    <Column editable="false" title="LRN" type="java.lang.Object"/>
                                     <Column editable="false" title="Student Name" type="java.lang.Object"/>
                                     <Column editable="false" title="Average" type="java.lang.Object"/>
                                   </Table>

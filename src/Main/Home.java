@@ -14,6 +14,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.itextpdf.text.FontFactory;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -79,7 +80,7 @@ public class Home extends javax.swing.JFrame {
     Strand strand = new Strand();
     Grade grade = new Grade();
     User user = new User();
-    MarksSheet marksSheet = new MarksSheet();
+    ListOfHonor listOfHonor = new ListOfHonor();
     Connection con = MyConnection.getConnection();
 
     int xx, xy;
@@ -248,18 +249,15 @@ public class Home extends javax.swing.JFrame {
         stuGradeHonorSearchBt = new javax.swing.JButton();
         jLabel75 = new javax.swing.JLabel();
         gradeLevelHonorBox = new javax.swing.JComboBox<>();
-        quarterBox1 = new javax.swing.JComboBox<>();
+        quarterHonorBox = new javax.swing.JComboBox<>();
         jLabel77 = new javax.swing.JLabel();
         strandHonorBox = new javax.swing.JComboBox<>();
         jLabel78 = new javax.swing.JLabel();
         sectionHonorBox = new javax.swing.JComboBox<>();
         jLabel79 = new javax.swing.JLabel();
-        stuGradeManageRefreshTable1 = new javax.swing.JButton();
         jPanel45 = new javax.swing.JPanel();
-        gradeHonorSaveBt = new javax.swing.JButton();
         gradeHonorLogout = new javax.swing.JButton();
         gradeHonorClear = new javax.swing.JButton();
-        gradeHonorSort = new javax.swing.JButton();
         gradeHonorSectioningPrint = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         ListHonorTable = new javax.swing.JTable();
@@ -1625,7 +1623,7 @@ public class Home extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Student ID", "Student Name", "Grade"
+                "LRN", "Student Name", "Grade"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -2045,12 +2043,12 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        quarterBox1.setBackground(new java.awt.Color(255, 255, 255));
-        quarterBox1.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        quarterBox1.setForeground(new java.awt.Color(0, 0, 0));
-        quarterBox1.addActionListener(new java.awt.event.ActionListener() {
+        quarterHonorBox.setBackground(new java.awt.Color(255, 255, 255));
+        quarterHonorBox.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        quarterHonorBox.setForeground(new java.awt.Color(0, 0, 0));
+        quarterHonorBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quarterBox1ActionPerformed(evt);
+                quarterHonorBoxActionPerformed(evt);
             }
         });
 
@@ -2084,16 +2082,6 @@ public class Home extends javax.swing.JFrame {
         jLabel79.setForeground(new java.awt.Color(0, 0, 0));
         jLabel79.setText("Section");
 
-        stuGradeManageRefreshTable1.setBackground(new java.awt.Color(153, 255, 204));
-        stuGradeManageRefreshTable1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        stuGradeManageRefreshTable1.setForeground(new java.awt.Color(0, 0, 0));
-        stuGradeManageRefreshTable1.setText("Refresh");
-        stuGradeManageRefreshTable1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stuGradeManageRefreshTable1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel43Layout = new javax.swing.GroupLayout(jPanel43);
         jPanel43.setLayout(jPanel43Layout);
         jPanel43Layout.setHorizontalGroup(
@@ -2117,12 +2105,10 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel77, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(quarterBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(quarterHonorBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(stuGradeHonorSearchBt, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75)
-                .addComponent(stuGradeManageRefreshTable1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(228, 228, 228))
         );
         jPanel43Layout.setVerticalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2140,25 +2126,13 @@ public class Home extends javax.swing.JFrame {
                             .addComponent(gradeLevelHonorBox)
                             .addComponent(strandHonorBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(sectionHonorBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(quarterBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(stuGradeHonorSearchBt, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(stuGradeManageRefreshTable1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(quarterHonorBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(stuGradeHonorSearchBt, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         jPanel45.setBackground(new java.awt.Color(153, 255, 204));
         jPanel45.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 255, 204), 4, true));
-
-        gradeHonorSaveBt.setBackground(new java.awt.Color(102, 255, 255));
-        gradeHonorSaveBt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        gradeHonorSaveBt.setForeground(new java.awt.Color(0, 0, 0));
-        gradeHonorSaveBt.setText("Save");
-        gradeHonorSaveBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gradeHonorSaveBtActionPerformed(evt);
-            }
-        });
 
         gradeHonorLogout.setBackground(new java.awt.Color(102, 255, 255));
         gradeHonorLogout.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -2180,16 +2154,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        gradeHonorSort.setBackground(new java.awt.Color(102, 255, 255));
-        gradeHonorSort.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        gradeHonorSort.setForeground(new java.awt.Color(0, 0, 0));
-        gradeHonorSort.setText("Sort");
-        gradeHonorSort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gradeHonorSortActionPerformed(evt);
-            }
-        });
-
         gradeHonorSectioningPrint.setBackground(new java.awt.Color(102, 255, 255));
         gradeHonorSectioningPrint.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         gradeHonorSectioningPrint.setForeground(new java.awt.Color(0, 0, 0));
@@ -2205,27 +2169,21 @@ public class Home extends javax.swing.JFrame {
         jPanel45Layout.setHorizontalGroup(
             jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel45Layout.createSequentialGroup()
-                .addGap(254, 254, 254)
-                .addComponent(gradeHonorSaveBt, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(431, 431, 431)
                 .addComponent(gradeHonorSectioningPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addComponent(gradeHonorClear, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(gradeHonorSort, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(gradeHonorLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(193, 193, 193))
+                .addGap(364, 364, 364))
         );
         jPanel45Layout.setVerticalGroup(
             jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel45Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(gradeHonorSaveBt, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(gradeHonorLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(gradeHonorClear, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                    .addComponent(gradeHonorSort, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                     .addComponent(gradeHonorSectioningPrint, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -2238,7 +2196,7 @@ public class Home extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Student ID", "Student Name", "Average"
+                "LRN", "Student Name", "Average"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -2362,9 +2320,9 @@ public class Home extends javax.swing.JFrame {
         setDate();
         tableViewStudent();
         tableViewStrand();
-        tableViewGrades();
         tableViewSectioningGrade();
         tableViewFormGrade();
+        tableViewHonorTable();
         stuID.setText(String.valueOf(student.getMax()));
         //strandId.setText(String.valueOf(strand.getMax()));
         //idGradeManage.setText(String.valueOf(grade.getMax()));
@@ -2377,6 +2335,14 @@ public class Home extends javax.swing.JFrame {
         StudentTable.setShowGrid(true);
         StudentTable.setGridColor(Color.black);
         StudentTable.setBackground(Color.white);
+    }
+
+    public void tableViewHonorTable() {
+        model = (DefaultTableModel) ListHonorTable.getModel();
+        ListHonorTable.setRowHeight(30);
+        ListHonorTable.setShowGrid(true);
+        ListHonorTable.setGridColor(Color.black);
+        ListHonorTable.setBackground(Color.white);
     }
 
     private void tableViewStrand() {
@@ -2396,14 +2362,6 @@ public class Home extends javax.swing.JFrame {
         GradeSectioningManageTable.setBackground(Color.white);
     }
 
-    private void tableViewGrades() {
-//        //grade.getGradeValue(StudentGradeManagementTable, "");
-//        model = (DefaultTableModel) StudentGradeManagementTable.getModel();
-//        StudentGradeManagementTable.setRowHeight(30);
-//        StudentGradeManagementTable.setShowGrid(true);
-//        StudentGradeManagementTable.setGridColor(Color.black);
-//        StudentGradeManagementTable.setBackground(Color.white);
-    }
     public void tableViewFormGrade() {
         model = (DefaultTableModel) formTable.getModel();
         formTable.setRowHeight(30);
@@ -2445,6 +2403,14 @@ public class Home extends javax.swing.JFrame {
 
     }
 
+    public void clearListGrade() {
+        gradeLevelHonorBox.setSelectedIndex(0);
+        strandHonorBox.removeAllItems();
+        sectionHonorBox.removeAllItems();
+        quarterHonorBox.removeAllItems();
+        ListHonorTable.setModel(new DefaultTableModel(null, new Object[]{"LRN", "Student_Name", "Grade"}));
+    }
+
     private void clearGradeManage() {
         gradeLevelBox.setSelectedIndex(0);
         strandBox.removeAllItems();
@@ -2452,7 +2418,7 @@ public class Home extends javax.swing.JFrame {
         subjectBox.removeAllItems();
         quarterBox.removeAllItems();
 
-        GradeSectioningManageTable.setModel(new DefaultTableModel(null, new Object[]{"Student_ID", "Student_Name", "Grade"}));
+        GradeSectioningManageTable.setModel(new DefaultTableModel(null, new Object[]{"LRN", "Student_Name", "Grade"}));
 
     }
 
@@ -3584,6 +3550,14 @@ public class Home extends javax.swing.JFrame {
         return -1; // or handle appropriately if nothing is selected
     }
 
+    public int getSelectedHonorStrandId() {
+        ComboItem selectedItem = (ComboItem) strandHonorBox.getSelectedItem();
+        if (selectedItem != null) {
+            return selectedItem.getId(); // assuming ComboItem has getId()
+        }
+        return -1; // or handle appropriately if nothing is selected
+    }
+
     private void loadQuarters(JComboBox<String> quarterBox) {
         quarterBox.removeAllItems();
         quarterBox.addItem("1");
@@ -3591,6 +3565,16 @@ public class Home extends javax.swing.JFrame {
         quarterBox.addItem("3");
         quarterBox.addItem("4");
     }
+
+    private void loadHonorQuarters(JComboBox<String> quarterBox) {
+        quarterBox.removeAllItems();
+        quarterBox.addItem("1");
+        quarterBox.addItem("2");
+        quarterBox.addItem("3");
+        quarterBox.addItem("4");
+        quarterBox.addItem("General Average");
+    }
+
     private void gradeLevelBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeLevelBoxActionPerformed
         try {
             int gradeLevel = Integer.parseInt(gradeLevelBox.getSelectedItem().toString());
@@ -3660,14 +3644,26 @@ public class Home extends javax.swing.JFrame {
 
     private void gradeSectioningPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeSectioningPrintActionPerformed
         try {
-            // Check if table has data
-            DefaultTableModel model = (DefaultTableModel) GradeSectioningManageTable.getModel();
-            if (model.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(this, "No data to print!");
+            // ✅ Check if table exists
+            if (GradeSectioningManageTable == null) {
+                JOptionPane.showMessageDialog(this,
+                        "The Grade Sectioning table is missing or not initialized!",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            // Get selections safely
+            // ✅ Check if table has data
+            DefaultTableModel model = (DefaultTableModel) GradeSectioningManageTable.getModel();
+            if (model.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this,
+                        "No data to print in Grade Sectioning table!",
+                        "Empty Table",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // === Get selections safely ===
             Integer subjectId = null;
             Integer sectionId = null;
             Integer strandId = null;
@@ -3679,11 +3675,14 @@ public class Home extends javax.swing.JFrame {
                 strandId = getSelectedStrandId();
                 quarter = Integer.parseInt(quarterBox.getSelectedItem().toString());
             } catch (NullPointerException | NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Please select all required fields (Subject, Section, Strand, Quarter).");
+                JOptionPane.showMessageDialog(this,
+                        "Please select all required fields (Subject, Section, Strand, Quarter).",
+                        "Missing Fields",
+                        JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Ask user where to save the PDF
+            // === Ask user where to save the PDF ===
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save Grade Sectioning PDF");
             fileChooser.setSelectedFile(new File("GradeSectioning.pdf"));
@@ -3694,12 +3693,12 @@ public class Home extends javax.swing.JFrame {
 
             File pdfFile = fileChooser.getSelectedFile();
 
-            // Create PDF document
+            // === Create PDF document ===
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
             document.open();
 
-            // Add Logo
+            // === Add Logo ===
             InputStream is = getClass().getResourceAsStream("/assets/logo_remBac.png");
             if (is != null) {
                 com.itextpdf.text.Image logo = com.itextpdf.text.Image.getInstance(IOUtils.toByteArray(is));
@@ -3710,66 +3709,120 @@ public class Home extends javax.swing.JFrame {
                 System.out.println("Logo not found!");
             }
 
-            // Add Header
-            Paragraph title = new Paragraph("Grade Sectioning", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
+            // === Add Header ===
+            Paragraph title = new Paragraph("Grade Sectioning",
+                    FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18));
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
             String headerText = String.format(
                     "Strand: %s | Grade Level: %s | Section: %s | Subject: %s | Quarter: %d",
-                    getSelectedStrandName(), // you may create a method to get strand name by strandId
-                    getSelectedGradeLevel(), // method to get grade level
-                    getSelectedSectionName(), // method to get section name by sectionId
-                    getSelectedSubjectName(), // method to get subject name by subjectId
+                    getSelectedStrandName(), // your method
+                    getSelectedGradeLevel(), // your method
+                    getSelectedSectionName(), // your method
+                    getSelectedSubjectName(), // your method
                     quarter
             );
-            Paragraph sub = new Paragraph(headerText, FontFactory.getFont(FontFactory.HELVETICA, 12));
+            Paragraph sub = new Paragraph(headerText,
+                    FontFactory.getFont(FontFactory.HELVETICA, 12));
             sub.setAlignment(Element.ALIGN_CENTER);
             sub.setSpacingAfter(20);
             document.add(sub);
 
-            // Create table with 3 columns: Student ID, Full Name, Grade
+            // === Create table with 3 columns: Student ID, Full Name, Grade ===
             PdfPTable pdfTable = new PdfPTable(3);
             pdfTable.setWidthPercentage(100);
 
-            // Table headers
-            pdfTable.addCell(new PdfPCell(new Phrase("Student ID")));
+            // Headers
+            pdfTable.addCell(new PdfPCell(new Phrase("LRN"))); // changed Student ID → LRN if needed
             pdfTable.addCell(new PdfPCell(new Phrase("Full Name")));
             pdfTable.addCell(new PdfPCell(new Phrase("Grade")));
 
-            // Add table data
+            // Rows
             for (int i = 0; i < model.getRowCount(); i++) {
-                String studentId = model.getValueAt(i, 0).toString();
-                String fullName = model.getValueAt(i, 1).toString();
-                String gradeVal = model.getValueAt(i, 2).toString();
-
-                pdfTable.addCell(studentId);
-                pdfTable.addCell(fullName);
-                pdfTable.addCell(gradeVal);
+                pdfTable.addCell(model.getValueAt(i, 0).toString());
+                pdfTable.addCell(model.getValueAt(i, 1).toString());
+                pdfTable.addCell(model.getValueAt(i, 2).toString());
             }
 
             document.add(pdfTable);
             document.close();
 
-            JOptionPane.showMessageDialog(this, "PDF Generated Successfully: " + pdfFile.getAbsolutePath());
+            JOptionPane.showMessageDialog(this,
+                    "PDF Generated Successfully: " + pdfFile.getAbsolutePath());
 
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error generating PDF: " + e.getMessage());
+            JOptionPane.showMessageDialog(this,
+                    "Error generating PDF: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_gradeSectioningPrintActionPerformed
 
     private void stuGradeHonorSearchBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeHonorSearchBtActionPerformed
-        // TODO add your handling code here:
+        try {
+            // 1. Get Grade Level safely
+            String gradeLevelStr = gradeLevelHonorBox.getSelectedItem().toString();
+            int gradeLevel = Integer.parseInt(gradeLevelStr.split(" - ")[0]);
+
+            // 2. Get Strand Id
+            int strandId = getSelectedHonorStrandId();
+
+            // 3. Get Section Id
+            int sectionId = grade.getSelectedSectionId(sectionHonorBox);
+
+            // 4. Get Quarter selection (string)
+            String quarterSelection = "General Average"; // default
+            if (quarterHonorBox.getSelectedItem() != null) {
+                quarterSelection = quarterHonorBox.getSelectedItem().toString();
+            }
+
+            // 5. Call the averages query
+            // Pass subjectId = 0 to compute across all subjects
+            DefaultTableModel model = listOfHonor.getStudentGrades(
+                    gradeLevel, strandId, sectionId, 0, quarterSelection
+            );
+
+            // 6. Apply results to the ListHonorTable
+            ListHonorTable.setModel(model);
+
+            // 7. Handle empty case
+            if (model.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "No honor list results found.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Honor list generated successfully!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error fetching honor list: " + e.getMessage());
+        }
     }//GEN-LAST:event_stuGradeHonorSearchBtActionPerformed
 
     private void gradeLevelHonorBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeLevelHonorBoxActionPerformed
-        // TODO add your handling code here:
+        try {
+            int gradeLevel = Integer.parseInt(gradeLevelHonorBox.getSelectedItem().toString());
+
+            // 1. Load strands available for that grade level
+            grade.loadStrands(strandHonorBox, gradeLevel);
+
+            if (strandHonorBox.getItemCount() > 0) {
+                int strandId = getSelectedHonorStrandId();
+
+                grade.loadSections(sectionHonorBox, strandId, gradeLevel);
+                loadHonorQuarters(quarterHonorBox);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading strands/sections/subjects.");
+        }
     }//GEN-LAST:event_gradeLevelHonorBoxActionPerformed
 
-    private void quarterBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quarterBox1ActionPerformed
+    private void quarterHonorBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quarterHonorBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_quarterBox1ActionPerformed
+    }//GEN-LAST:event_quarterHonorBoxActionPerformed
 
     private void strandHonorBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_strandHonorBoxActionPerformed
         // TODO add your handling code here:
@@ -3779,12 +3832,8 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_sectionHonorBoxActionPerformed
 
-    private void gradeHonorSaveBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeHonorSaveBtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_gradeHonorSaveBtActionPerformed
-
     private void gradeHonorLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeHonorLogoutActionPerformed
-         //LOGOUT
+        //LOGOUT
         int a = JOptionPane.showConfirmDialog(this, "Do you want to Logout now?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
             this.dispose();
@@ -3795,20 +3844,92 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_gradeHonorLogoutActionPerformed
 
     private void gradeHonorClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeHonorClearActionPerformed
-        // TODO add your handling code here:
+        clearListGrade();
     }//GEN-LAST:event_gradeHonorClearActionPerformed
 
-    private void gradeHonorSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeHonorSortActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_gradeHonorSortActionPerformed
-
     private void gradeHonorSectioningPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradeHonorSectioningPrintActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_gradeHonorSectioningPrintActionPerformed
+        try {
+            // === Check if table has data ===
+            if (ListHonorTable.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this,
+                        "No data available in the Honor Sectioning table.",
+                        "Empty Table",
+                        JOptionPane.WARNING_MESSAGE);
+                return; // stop execution
+            }
 
-    private void stuGradeManageRefreshTable1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stuGradeManageRefreshTable1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_stuGradeManageRefreshTable1ActionPerformed
+            // === Let user pick save location ===
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save Honor Sectioning PDF");
+            fileChooser.setSelectedFile(new File("HonorSectioning.pdf"));
+
+            int userSelection = fileChooser.showSaveDialog(this);
+            if (userSelection != JFileChooser.APPROVE_OPTION) {
+                return; // cancelled
+            }
+
+            File fileToSave = fileChooser.getSelectedFile();
+            String fileName = fileToSave.getAbsolutePath();
+
+            // === Create PDF ===
+            Document document = new Document();
+            PdfWriter.getInstance(document, new java.io.FileOutputStream(fileName));
+            document.open();
+
+            // === Add Logo ===
+            InputStream is = getClass().getResourceAsStream("/assets/logo_remBac.png");
+            if (is != null) {
+                com.itextpdf.text.Image logo = com.itextpdf.text.Image.getInstance(IOUtils.toByteArray(is));
+                logo.scaleAbsolute(80, 80);
+                logo.setAlignment(com.itextpdf.text.Image.ALIGN_CENTER);
+                document.add(logo);
+            } else {
+                System.out.println("Logo not found!");
+            }
+
+            // === Title ===
+            com.itextpdf.text.Font titleFont
+                    = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 14, com.itextpdf.text.Font.BOLD);
+            document.add(new Paragraph("HONOR SECTIONING REPORT - CDONHS-SHS", titleFont));
+            document.add(new Paragraph(" ")); // empty line
+
+            // === Section Information (from comboboxes) ===
+            String section = sectionHonorBox.getSelectedItem() != null ? sectionHonorBox.getSelectedItem().toString() : "N/A";
+            String gradeLevel = gradeLevelHonorBox.getSelectedItem() != null ? gradeLevelHonorBox.getSelectedItem().toString() : "N/A";
+            String strand = strandHonorBox.getSelectedItem() != null ? strandHonorBox.getSelectedItem().toString() : "N/A";
+
+            document.add(new Paragraph("Grade Level: " + gradeLevel));
+            document.add(new Paragraph("Strand: " + strand));
+            document.add(new Paragraph("Section: " + section));
+            document.add(new Paragraph(" ")); // empty line
+
+            // === Create table with same columns as JTable ===
+            PdfPTable pdfTable = new PdfPTable(ListHonorTable.getColumnCount());
+            pdfTable.setWidthPercentage(100);
+
+            // Add column headers
+            for (int i = 0; i < ListHonorTable.getColumnCount(); i++) {
+                pdfTable.addCell(new PdfPCell(new Paragraph(ListHonorTable.getColumnName(i))));
+            }
+
+            // Add row data
+            for (int row = 0; row < ListHonorTable.getRowCount(); row++) {
+                for (int col = 0; col < ListHonorTable.getColumnCount(); col++) {
+                    Object value = ListHonorTable.getValueAt(row, col);
+                    pdfTable.addCell(new PdfPCell(new Paragraph(value != null ? value.toString() : "")));
+                }
+            }
+
+            document.add(pdfTable);
+            document.close();
+
+            JOptionPane.showMessageDialog(this, "Honor Sectioning saved at: " + fileName);
+
+        } catch (DocumentException | java.io.IOException e) {
+            JOptionPane.showMessageDialog(this, "Error generating PDF: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_gradeHonorSectioningPrintActionPerformed
 
     private String getSelectedStrandName() {
         String name = "";
@@ -3888,7 +4009,7 @@ public class Home extends javax.swing.JFrame {
         }
         return gradeLevel;
     }
-    
+
     public void updatesComboBox() {
         try {
             // Make sure subject is selected
@@ -4015,9 +4136,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton gradeClear;
     private javax.swing.JButton gradeHonorClear;
     private javax.swing.JButton gradeHonorLogout;
-    private javax.swing.JButton gradeHonorSaveBt;
     private javax.swing.JButton gradeHonorSectioningPrint;
-    private javax.swing.JButton gradeHonorSort;
     private javax.swing.JComboBox<String> gradeLevelBox;
     private javax.swing.JComboBox<String> gradeLevelHonorBox;
     private javax.swing.JComboBox<String> gradeLevelStudentBox;
@@ -4109,7 +4228,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton logoutFormGradeBt;
     private javax.swing.JComboBox<String> quarterBox;
-    private javax.swing.JComboBox<String> quarterBox1;
+    private javax.swing.JComboBox<String> quarterHonorBox;
     private javax.swing.JButton searchBt_1;
     public static javax.swing.JComboBox<String> sectionBox;
     public static javax.swing.JComboBox<String> sectionHonorBox;
@@ -4130,7 +4249,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JTextField stuGradeIDManage;
     private javax.swing.JComboBox<String> stuGradeLevel;
     private javax.swing.JButton stuGradeManageRefreshTable;
-    private javax.swing.JButton stuGradeManageRefreshTable1;
     private javax.swing.JButton stuGradeManageSearchButton;
     private javax.swing.JTextField stuID;
     private javax.swing.JTextField stuLRN;

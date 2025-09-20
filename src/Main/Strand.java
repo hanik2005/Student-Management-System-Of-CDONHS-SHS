@@ -438,7 +438,7 @@ public class Strand {
     }
 
     public void generateClassList(String gradeLevel, String strand, String section) {
-        String sql = "SELECT s.student_id, "
+        String sql = "SELECT s.LRN, "
                 + "CONCAT(s.last_name, ', ', s.first_name, ' ', COALESCE(s.middle_name, '')) AS full_name, "
                 + "sec.section_name, "
                 + "ss.grade_level, "
@@ -505,12 +505,12 @@ public class Strand {
             table.setWidthPercentage(100);
 
             // Headers
-            table.addCell(new PdfPCell(new Phrase("Student ID")));
+            table.addCell(new PdfPCell(new Phrase("LRN")));
             table.addCell(new PdfPCell(new Phrase("Full Name")));
 
             // Fill rows
             while (rs.next()) {
-                table.addCell(rs.getString("student_id"));
+                table.addCell(rs.getString("LRN"));
                 table.addCell(rs.getString("full_name"));
             }
 

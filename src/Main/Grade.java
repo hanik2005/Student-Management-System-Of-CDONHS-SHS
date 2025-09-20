@@ -107,12 +107,12 @@ public class Grade {
     public DefaultTableModel getStudentGrades(int gradeLevel, int strandId, int sectionId, int subjectId, int quarter) {
         DefaultTableModel model = new DefaultTableModel(
                 null,
-                new Object[]{"Student ID", "Student Name", "Grade"}
+                new Object[]{"LRN", "Student Name", "Grade"}
         );
 
         try (Connection conn = MyConnection.getConnection()) {
             String sql = """
-            SELECT s.student_id,
+            SELECT s.LRN,
                    CONCAT(s.last_name, ', ', s.first_name, ' ', COALESCE(s.middle_name, '')) AS student_name,
                    g.grade
             FROM student s
@@ -138,21 +138,21 @@ public class Grade {
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                int studentId = rs.getInt("student_id");
+                String lrn = rs.getString("LRN");
                 String studentName = rs.getString("student_name");
 
                 BigDecimal gradeObj = (BigDecimal) rs.getObject("grade");
-                Integer grade = null;
+                Double grade = null;
                 if (gradeObj != null) {
-                    grade = gradeObj.intValue();
+                    grade = gradeObj.doubleValue();
                 }
 
                 // If null, just display 60 but don’t insert yet
                 if (grade == null) {
-                    grade = 60;
+                    grade = 60.00;
                 }
 
-                model.addRow(new Object[]{studentId, studentName, grade});
+                model.addRow(new Object[]{lrn, studentName, grade});
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -161,34 +161,110 @@ public class Grade {
         return model;
     }
 
+//    public void saveStudentGrades(int subjectId, int sectionId, int quarter, DefaultTableModel model) {
+//        try (Connection conn = MyConnection.getConnection()) {
+//            conn.setAutoCommit(false); // transaction safety
+//
+//            String checkSql = "SELECT entry_id FROM grade_entry WHERE student_id = ? AND subject_id = ? AND section_id = ? AND quarter = ?";
+//            String insertSql = "INSERT INTO grade_entry (student_id, subject_id, section_id, quarter, grade) VALUES (?, ?, ?, ?, ?)";
+//            String updateSql = "UPDATE grade_entry SET grade = ? WHERE entry_id = ?";
+//
+//            PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+//            PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+//            PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+//
+//            for (int i = 0; i < model.getRowCount(); i++) {
+//                int studentId = (int) model.getValueAt(i, 0);
+//                Object gradeObj = model.getValueAt(i, 2);
+//
+//                // Default to 60 if null
+//                Double grade = gradeObj != null ? Double.parseDouble(gradeObj.toString()) : 60.0;
+//
+//                // ❌ Prevent saving grades below 60
+//                if (grade < 60) {
+//                    JOptionPane.showMessageDialog(null,
+//                            "Grade for Student ID " + studentId + " cannot be below 60.",
+//                            "Invalid Grade",
+//                            JOptionPane.WARNING_MESSAGE);
+//                    conn.rollback(); // cancel transaction
+//                    return; // stop saving further
+//                }
+//
+//                // Check if grade entry exists
+//                checkStmt.setInt(1, studentId);
+//                checkStmt.setInt(2, subjectId);
+//                checkStmt.setInt(3, sectionId);
+//                checkStmt.setInt(4, quarter);
+//                ResultSet rs = checkStmt.executeQuery();
+//
+//                if (rs.next()) {
+//                    // Update existing grade
+//                    int entryId = rs.getInt("entry_id");
+//                    updateStmt.setDouble(1, grade);
+//                    updateStmt.setInt(2, entryId);
+//                    updateStmt.executeUpdate();
+//                } else {
+//                    // Insert new grade
+//                    insertStmt.setInt(1, studentId);
+//                    insertStmt.setInt(2, subjectId);
+//                    insertStmt.setInt(3, sectionId);
+//                    insertStmt.setInt(4, quarter);
+//                    insertStmt.setDouble(5, grade);
+//                    insertStmt.executeUpdate();
+//                }
+//            }
+//
+//            conn.commit();
+//            JOptionPane.showMessageDialog(null, "Grades saved successfully!");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JOptionPane.showMessageDialog(null, "Error saving grades: " + e.getMessage());
+//        }
+//    }
     public void saveStudentGrades(int subjectId, int sectionId, int quarter, DefaultTableModel model) {
         try (Connection conn = MyConnection.getConnection()) {
-            conn.setAutoCommit(false); // transaction safety
+            conn.setAutoCommit(false);
 
+            // Queries
+            String getStudentIdSql = "SELECT student_id FROM student WHERE lrn = ?";
             String checkSql = "SELECT entry_id FROM grade_entry WHERE student_id = ? AND subject_id = ? AND section_id = ? AND quarter = ?";
             String insertSql = "INSERT INTO grade_entry (student_id, subject_id, section_id, quarter, grade) VALUES (?, ?, ?, ?, ?)";
             String updateSql = "UPDATE grade_entry SET grade = ? WHERE entry_id = ?";
 
+            PreparedStatement getStudentIdStmt = conn.prepareStatement(getStudentIdSql);
             PreparedStatement checkStmt = conn.prepareStatement(checkSql);
             PreparedStatement insertStmt = conn.prepareStatement(insertSql);
             PreparedStatement updateStmt = conn.prepareStatement(updateSql);
 
             for (int i = 0; i < model.getRowCount(); i++) {
-                int studentId = (int) model.getValueAt(i, 0);
+                String lrn = model.getValueAt(i, 0).toString(); // first column = LRN
                 Object gradeObj = model.getValueAt(i, 2);
 
-                // Default to 60 if null
                 Double grade = gradeObj != null ? Double.parseDouble(gradeObj.toString()) : 60.0;
 
                 // ❌ Prevent saving grades below 60
                 if (grade < 60) {
                     JOptionPane.showMessageDialog(null,
-                            "Grade for Student ID " + studentId + " cannot be below 60.",
+                            "Grade for LRN " + lrn + " cannot be below 60.",
                             "Invalid Grade",
                             JOptionPane.WARNING_MESSAGE);
-                    conn.rollback(); // cancel transaction
-                    return; // stop saving further
+                    conn.rollback();
+                    return;
                 }
+
+                // 🔎 Find student_id from LRN
+                getStudentIdStmt.setString(1, lrn);
+                ResultSet studentRs = getStudentIdStmt.executeQuery();
+                if (!studentRs.next()) {
+                    JOptionPane.showMessageDialog(null,
+                            "No student found with LRN: " + lrn,
+                            "Student Not Found",
+                            JOptionPane.WARNING_MESSAGE);
+                    conn.rollback();
+                    return;
+                }
+                int studentId = studentRs.getInt("student_id");
 
                 // Check if grade entry exists
                 checkStmt.setInt(1, studentId);
@@ -198,13 +274,11 @@ public class Grade {
                 ResultSet rs = checkStmt.executeQuery();
 
                 if (rs.next()) {
-                    // Update existing grade
                     int entryId = rs.getInt("entry_id");
                     updateStmt.setDouble(1, grade);
                     updateStmt.setInt(2, entryId);
                     updateStmt.executeUpdate();
                 } else {
-                    // Insert new grade
                     insertStmt.setInt(1, studentId);
                     insertStmt.setInt(2, subjectId);
                     insertStmt.setInt(3, sectionId);
@@ -339,7 +413,5 @@ public class Grade {
         return model;
     }
     // Get Strand name by strandId
-
-    
 
 }
